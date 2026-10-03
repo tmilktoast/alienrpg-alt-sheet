@@ -1,0 +1,98 @@
+<section class="tab aas-tab aas-gear {{tab.cssClass}}" data-group="primary" data-tab="gear">
+  <section class="aas-panel aas-carry">
+    <div class="aas-encumbrance {{#if encumbrance.encumbered}}encumbered{{/if}}">
+      <div class="aas-encumbrance-label">
+        <span>{{localize 'ALIENRPG.Encumbrance'}}</span>
+        <span>
+          <b>{{encumbrance.value}}</b> / {{encumbrance.max}} {{localize 'ALIENRPG.AbbreviationKg'}}
+          {{#if encumbrance.encumbered}}<span class="aas-tag aas-tag-danger">{{localize 'ALTSHEET.Encumbered'}}</span>{{/if}}
+        </span>
+      </div>
+      <div class="aas-meter aas-meter-marked"><span style="width: {{encumbrance.pct}}%"></span></div>
+    </div>
+    <label class="aas-labelled">
+      <span>{{localize 'ALIENRPG.Cash'}}</span>
+      <input type="text" class="aas-cash" name="system.general.cash.value" value="{{system.general.cash.value}}">
+    </label>
+  </section>
+
+  <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.StateLegend'}}</p>
+
+  {{#each gear as |section|}}
+  <section class="aas-panel">
+    <header class="aas-panel-head">
+      <h2>{{section.label}}</h2>
+      <button type="button" class="aas-button" data-action="addItem" data-type="{{section.type}}">
+        <i class="fa-solid fa-plus" inert></i> {{localize 'ALTSHEET.Add'}}
+      </button>
+    </header>
+    <ol class="aas-list">
+      {{#each section.items as |item|}}
+      <li class="aas-item draggable {{item.state}}" data-item-id="{{item.id}}">
+        <img src="{{item.img}}" alt="">
+        <div class="aas-item-name">
+          <span>{{item.name}}</span>
+          {{#if item.meta}}<span class="aas-item-meta">{{item.meta}}</span>{{/if}}
+        </div>
+        <span class="aas-item-weight">
+          {{#unless item.stored}}{{item.weight}} {{localize 'ALIENRPG.AbbreviationKg'}}{{/unless}}
+        </span>
+        <div class="aas-segmented" role="group">
+          <button type="button" class="{{#if item.equipped}}active{{/if}}" data-action="setItemState" data-state="true"
+            aria-pressed="{{#if item.equipped}}true{{else}}false{{/if}}"
+            data-tooltip="{{localize 'ALTSHEET.State.EquippedTip'}}">{{localize 'ALTSHEET.State.Equipped'}}</button>
+          <button type="button" class="{{#if item.carried}}active{{/if}}" data-action="setItemState" data-state="false"
+            aria-pressed="{{#if item.carried}}true{{else}}false{{/if}}"
+            data-tooltip="{{localize 'ALTSHEET.State.CarriedTip'}}">{{localize 'ALTSHEET.State.Carried'}}</button>
+          <button type="button" class="{{#if item.stored}}active{{/if}}" data-action="setItemState" data-state="fLocker"
+            aria-pressed="{{#if item.stored}}true{{else}}false{{/if}}"
+            data-tooltip="{{localize 'ALTSHEET.State.StoredTip'}}">{{localize 'ALTSHEET.State.Stored'}}</button>
+        </div>
+        <div class="aas-item-controls">
+          <button type="button" class="aas-icon" data-action="editItem" data-tooltip="{{localize 'ALTSHEET.Edit'}}"
+            aria-label="{{localize 'ALTSHEET.Edit'}}"><i class="fa-solid fa-pen-to-square" inert></i></button>
+          <button type="button" class="aas-icon" data-action="deleteItem" data-tooltip="{{localize 'ALTSHEET.Delete'}}"
+            aria-label="{{localize 'ALTSHEET.Delete'}}"><i class="fa-solid fa-trash" inert></i></button>
+        </div>
+        <div class="aas-item-fields">
+          {{#each item.fields as |field|}}
+          <label class="aas-field">
+            <span>{{field.label}}</span>
+            {{#if field.path}}
+            <input type="number" min="0" step="1" value="{{field.value}}" data-item-field="{{field.path}}">
+            {{else}}
+            <b>{{field.value}}</b>
+            {{/if}}
+          </label>
+          {{/each}}
+          {{#if item.power}}
+          <div class="aas-rollgroup">
+            <button type="button" class="aas-roll aas-roll-small" data-action="roll" data-roll-type="supply"
+              data-spbutt="Power" data-id="{{item.id}}" data-label="{{localize 'ALIENRPG.Power'}}"
+              data-tooltip="{{localize 'ALTSHEET.PowerRoll'}}">
+              <span class="aas-roll-name">{{localize 'ALIENRPG.Power'}}</span>
+              <span class="aas-die">{{item.power}}</span>
+            </button>
+          </div>
+          {{/if}}
+        </div>
+      </li>
+      {{else}}
+      <li class="aas-empty">{{localize 'ALTSHEET.NoItems'}}</li>
+      {{/each}}
+    </ol>
+  </section>
+  {{/each}}
+
+  <section class="aas-panel">
+    <header class="aas-panel-head">
+      <h2>{{localize 'ALIENRPG.AdHoc'}}</h2>
+    </header>
+    {{#if editable}}
+    <prose-mirror name="system.adhocitems" data-document-uuid="{{actor.uuid}}" value="{{system.adhocitems}}"
+      collaborate="true" toggled="true">{{{enrichedAdhocitems}}}</prose-mirror>
+    {{else}}
+    <div class="aas-prose">{{{enrichedAdhocitems}}}</div>
+    {{/if}}
+  </section>
+</section>

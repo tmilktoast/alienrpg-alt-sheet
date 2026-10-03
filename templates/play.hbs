@@ -1,0 +1,329 @@
+<section class="tab aas-tab aas-play {{tab.cssClass}}" data-group="primary" data-tab="play">
+  <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.RollHint'}}</p>
+
+  <div class="aas-columns">
+    <div class="aas-column">
+      <section class="aas-panel">
+        <header class="aas-panel-head">
+          <h2>{{localize 'ALTSHEET.AttributesSkills'}}</h2>
+        </header>
+
+        {{#each attributeGroups as |attr|}}
+        <div class="aas-attribute">
+          <div class="aas-skill-row aas-attribute-row">
+            {{#if @root.editMode}}
+            <label class="aas-inline-edit">
+              <span>{{localize 'ALTSHEET.Base'}}</span>
+              <input type="number" name="system.attributes.{{attr.key}}.value" value="{{attr.base}}" min="0" step="1">
+            </label>
+            {{/if}}
+            <div class="aas-rollgroup">
+              <button type="button" class="aas-roll" data-action="roll" data-roll-type="ability" data-attr="attribute"
+                data-roll="{{attr.base}}" data-mod="{{attr.total}}" data-label="{{attr.label}}"
+                data-tooltip="{{attr.tooltip}}">
+                <span class="aas-roll-name">{{attr.label}}</span>
+                <span class="aas-die {{#if attr.modified}}modified{{/if}}">{{attr.total}}</span>
+              </button>
+              <button type="button" class="aas-mods" data-action="rollMods"
+                data-tooltip="{{localize 'ALTSHEET.RollWithMods'}}" aria-label="{{localize 'ALTSHEET.RollWithMods'}}">
+                <i class="fa-solid fa-sliders" inert></i>
+              </button>
+            </div>
+          </div>
+
+          {{#each attr.skills as |skill|}}
+          <div class="aas-skill-row">
+            {{#if @root.editMode}}
+            <label class="aas-inline-edit">
+              <span>{{localize 'ALTSHEET.Rank'}}</span>
+              <input type="number" name="system.skills.{{skill.key}}.value" value="{{skill.rank}}" min="0" step="1">
+            </label>
+            {{/if}}
+            <div class="aas-rollgroup">
+              <button type="button" class="aas-roll" data-action="roll" data-roll-type="ability"
+                data-roll="{{skill.total}}" data-label="{{skill.label}}" data-tooltip="{{skill.tooltip}}">
+                <span class="aas-roll-name">{{skill.label}}</span>
+                {{#unless @root.editMode}}<span class="aas-rank">{{localize 'ALTSHEET.Rank'}} {{skill.rank}}</span>{{/unless}}
+                <span class="aas-die">{{skill.total}}</span>
+              </button>
+              <button type="button" class="aas-mods" data-action="rollMods"
+                data-tooltip="{{localize 'ALTSHEET.RollWithMods'}}" aria-label="{{localize 'ALTSHEET.RollWithMods'}}">
+                <i class="fa-solid fa-sliders" inert></i>
+              </button>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+        {{/each}}
+
+        {{#if isEvolved}}
+        <details class="aas-details" data-section="stunts">
+          <summary>{{localize 'ALIENRPG.Stunts'}}</summary>
+          <div class="aas-prose">{{{localize 'ALIENRPG.EvolvedStunts'}}}</div>
+        </details>
+        {{/if}}
+      </section>
+
+      <section class="aas-panel">
+        <header class="aas-panel-head">
+          <h2>{{localize 'ALIENRPG.Talents'}}</h2>
+          <button type="button" class="aas-button" data-action="addItem" data-type="talent">
+            <i class="fa-solid fa-plus" inert></i> {{localize 'ALTSHEET.Add'}}
+          </button>
+        </header>
+        {{#each talentList}}
+        <details class="aas-details draggable" data-section="talent-{{id}}" data-item-id="{{id}}">
+          <summary>
+            <span class="aas-summary-name">{{name}}</span>
+            <button type="button" class="aas-icon" data-action="editItem" data-tooltip="{{localize 'ALTSHEET.Edit'}}"
+              aria-label="{{localize 'ALTSHEET.Edit'}}"><i class="fa-solid fa-pen-to-square" inert></i></button>
+            <button type="button" class="aas-icon" data-action="deleteItem" data-tooltip="{{localize 'ALTSHEET.Delete'}}"
+              aria-label="{{localize 'ALTSHEET.Delete'}}"><i class="fa-solid fa-trash" inert></i></button>
+          </summary>
+          <div class="aas-prose">
+            {{#if description}}{{{description}}}{{else}}<p class="aas-empty">{{localize 'ALTSHEET.NoDescription'}}</p>{{/if}}
+          </div>
+        </details>
+        {{else}}
+        <p class="aas-empty">{{localize 'ALTSHEET.NoTalents'}}</p>
+        {{/each}}
+      </section>
+    </div>
+
+    <div class="aas-column">
+      <section class="aas-panel">
+        <header class="aas-panel-head">
+          <h2>{{localize 'ALTSHEET.Weapons'}}</h2>
+        </header>
+        <ol class="aas-list">
+          {{#each weapons}}
+          <li class="aas-weapon draggable {{#if empty}}empty{{/if}}" data-item-id="{{id}}">
+            <img src="{{img}}" alt="">
+            <div class="aas-weapon-body">
+              <div class="aas-weapon-name">
+                <span>{{name}}</span>
+                {{#if typeLabel}}<span class="aas-tag">{{typeLabel}}</span>{{/if}}
+                {{#if armorPiercing}}<span class="aas-tag">{{localize 'ALIENRPG.ArmorPiercing'}}</span>{{/if}}
+                {{#if fullAuto}}<span class="aas-tag">{{localize 'ALIENRPG.FullAuto'}}</span>{{/if}}
+                <button type="button" class="aas-icon" data-action="editItem" data-tooltip="{{localize 'ALTSHEET.Edit'}}"
+                  aria-label="{{localize 'ALTSHEET.Edit'}}"><i class="fa-solid fa-pen-to-square" inert></i></button>
+              </div>
+              <div class="aas-stats">
+                <span>{{localize 'ALIENRPG.Damage'}} <b>{{damage}}</b></span>
+                <span>{{localize 'ALIENRPG.Range'}} <b>{{range}}</b></span>
+                <span>{{localize 'ALIENRPG.Bonus'}} <b>{{bonus}}</b></span>
+              </div>
+              <div class="aas-weapon-supply">
+                {{#if ranged}}
+                <div class="aas-stepper aas-stepper-small">
+                  <span class="aas-stepper-label">{{localize 'ALIENRPG.ammo'}}</span>
+                  <button type="button" data-action="stepField" data-path="system.attributes.rounds.value" data-step="-1"
+                    data-min="0" aria-label="{{localize 'ALTSHEET.Decrease' name=(localize 'ALIENRPG.ammo')}}">
+                    <i class="fa-solid fa-minus" inert></i>
+                  </button>
+                  <b class="{{#if empty}}aas-danger{{/if}}">{{rounds}}</b>
+                  <button type="button" data-action="stepField" data-path="system.attributes.rounds.value" data-step="1"
+                    data-min="0" aria-label="{{localize 'ALTSHEET.Increase' name=(localize 'ALIENRPG.ammo')}}">
+                    <i class="fa-solid fa-plus" inert></i>
+                  </button>
+                  {{#if empty}}<span class="aas-tag aas-tag-danger">{{localize 'ALTSHEET.Empty'}}</span>{{/if}}
+                </div>
+                {{/if}}
+                {{#if power}}
+                <div class="aas-rollgroup">
+                  <button type="button" class="aas-roll aas-roll-small" data-action="roll" data-roll-type="supply"
+                    data-spbutt="Power" data-id="{{id}}" data-label="{{localize 'ALIENRPG.Power'}}"
+                    data-tooltip="{{localize 'ALTSHEET.PowerRoll'}}">
+                    <span class="aas-roll-name">{{localize 'ALIENRPG.Power'}}</span>
+                    <span class="aas-die">{{power}}</span>
+                  </button>
+                </div>
+                {{/if}}
+                {{#if typed}}
+                <div class="aas-rollgroup aas-attack">
+                  <button type="button" class="aas-roll aas-roll-primary" data-action="roll" data-roll-type="weapon"
+                    data-label="{{name}}" data-item="{{name}}"
+                    data-tooltip="{{localize 'ALTSHEET.RollFor' name=name}}">
+                    <span class="aas-roll-name">{{localize 'ALTSHEET.Attack'}}</span>
+                    <span class="aas-die">{{pool}}</span>
+                  </button>
+                  <button type="button" class="aas-mods" data-action="rollMods"
+                    data-tooltip="{{localize 'ALTSHEET.RollWithMods'}}" aria-label="{{localize 'ALTSHEET.RollWithMods'}}">
+                    <i class="fa-solid fa-sliders" inert></i>
+                  </button>
+                </div>
+                {{else}}
+                <span class="aas-empty">{{localize 'ALTSHEET.NoType'}}</span>
+                {{/if}}
+              </div>
+            </div>
+          </li>
+          {{else}}
+          <li class="aas-empty">{{localize 'ALTSHEET.NoWeapons'}}</li>
+          {{/each}}
+        </ol>
+      </section>
+
+      <section class="aas-panel">
+        <header class="aas-panel-head">
+          <h2>{{localize 'ALTSHEET.Conditions'}}</h2>
+        </header>
+
+        {{#if hasStress}}
+        <div class="aas-roll-row">
+          {{#if vitals.resolve}}
+          <div class="aas-rollgroup">
+            <button type="button" class="aas-roll" data-action="roll" data-roll-type="stress"
+              data-roll="{{vitals.resolve.base}}" data-mod="{{vitals.resolve.mod}}"
+              data-label="{{localize 'ALIENRPG.Resolve'}}" data-tooltip="{{localize 'ALIENRPG.RollStress'}}">
+              <i class="fa-solid fa-dice-d6" inert></i>
+              <span class="aas-roll-name">{{localize 'ALTSHEET.StressResponseRoll'}}</span>
+            </button>
+            <button type="button" class="aas-mods" data-action="rollMods"
+              data-tooltip="{{localize 'ALTSHEET.RollWithMods'}}" aria-label="{{localize 'ALTSHEET.RollWithMods'}}">
+              <i class="fa-solid fa-sliders" inert></i>
+            </button>
+          </div>
+          {{/if}}
+          <div class="aas-rollgroup">
+            <button type="button" class="aas-roll" data-action="roll" data-roll-type="panic"
+              data-panicroll="{{vitals.stress.value}}" data-mod="{{vitals.stress.mod}}"
+              data-label="{{localize 'ALIENRPG.Panic'}}" data-tooltip="{{localize 'ALIENRPG.RollPanic'}}">
+              <i class="fa-solid fa-dice-d6" inert></i>
+              <span class="aas-roll-name">{{localize 'ALTSHEET.PanicRoll'}}</span>
+            </button>
+            <button type="button" class="aas-mods" data-action="rollMods"
+              data-tooltip="{{localize 'ALTSHEET.RollWithMods'}}" aria-label="{{localize 'ALTSHEET.RollWithMods'}}">
+              <i class="fa-solid fa-sliders" inert></i>
+            </button>
+          </div>
+        </div>
+        {{/if}}
+
+        <div class="aas-chips">
+          {{#each conditions.active}}
+          <button type="button" class="aas-chip active" data-action="toggleStatus" data-status-id="{{id}}"
+            {{#if disabled}}disabled{{/if}} data-tooltip="{{localize 'ALTSHEET.ToggleCondition'}}">
+            <img src="{{img}}" alt="">{{label}}<i class="fa-solid fa-xmark" inert></i>
+          </button>
+          {{/each}}
+          {{#each conditions.other}}
+          <span class="aas-chip active aas-chip-static"><img src="{{img}}" alt="">{{name}}</span>
+          {{/each}}
+          {{#unless conditions.active.length}}{{#unless conditions.other.length}}
+          <span class="aas-empty">{{localize 'ALTSHEET.NoConditions'}}</span>
+          {{/unless}}{{/unless}}
+        </div>
+
+        <details class="aas-details" data-section="conditions">
+          <summary>{{localize 'ALTSHEET.AllConditions'}}</summary>
+          {{#each conditions.groups}}
+          <h3>{{label}}</h3>
+          <div class="aas-chips">
+            {{#each list}}
+            <button type="button" class="aas-chip {{#if active}}active{{/if}}" data-action="toggleStatus"
+              data-status-id="{{id}}" {{#if disabled}}disabled{{/if}} aria-pressed="{{#if active}}true{{else}}false{{/if}}"
+              {{#if tooltip}}data-tooltip-html="{{tooltip}}"{{else}}data-tooltip="{{localize 'ALTSHEET.ToggleCondition'}}"{{/if}}>
+              <img src="{{img}}" alt="">{{label}}
+            </button>
+            {{/each}}
+          </div>
+          {{/each}}
+        </details>
+      </section>
+
+      <section class="aas-panel">
+        <header class="aas-panel-head">
+          <h2>{{localize 'ALIENRPG.CriticalInjuries'}}</h2>
+          <div class="aas-rollgroup">
+            <button type="button" class="aas-roll aas-roll-small" data-action="roll" data-roll-type="crit"
+              data-label="{{localize 'ALIENRPG.CriticalInjuries'}}">
+              <i class="fa-solid fa-dice-d6" inert></i>
+              <span class="aas-roll-name">{{localize 'ALIENRPG.RollCrit'}}</span>
+            </button>
+            <button type="button" class="aas-mods" data-action="rollMods" data-tooltip="{{localize 'ALTSHEET.ManualCrit'}}"
+              aria-label="{{localize 'ALTSHEET.ManualCrit'}}"><i class="fa-solid fa-list" inert></i></button>
+          </div>
+        </header>
+        <ol class="aas-list">
+          {{#each injuries}}
+          <li class="aas-injury draggable" data-item-id="{{id}}">
+            <img src="{{img}}" alt="">
+            <div class="aas-injury-body">
+              <div class="aas-weapon-name">
+                <span>{{name}}</span>
+                {{#if fatal}}<span class="aas-tag aas-tag-danger">{{localize 'ALTSHEET.Fatal'}}</span>{{/if}}
+              </div>
+              {{#if effects}}<div class="aas-stats">{{effects}}</div>{{/if}}
+            </div>
+            <button type="button" class="aas-icon" data-action="editItem" data-tooltip="{{localize 'ALTSHEET.Edit'}}"
+              aria-label="{{localize 'ALTSHEET.Edit'}}"><i class="fa-solid fa-pen-to-square" inert></i></button>
+            <button type="button" class="aas-icon" data-action="deleteItem" data-tooltip="{{localize 'ALTSHEET.Delete'}}"
+              aria-label="{{localize 'ALTSHEET.Delete'}}"><i class="fa-solid fa-trash" inert></i></button>
+          </li>
+          {{else}}
+          <li class="aas-empty">{{localize 'ALTSHEET.NoCrits'}}</li>
+          {{/each}}
+        </ol>
+      </section>
+
+      <section class="aas-panel">
+        <header class="aas-panel-head">
+          <h2>{{localize 'ALIENRPG.Radiation'}}</h2>
+          <div class="aas-button-row" data-label="{{localize 'ALIENRPG.Radiation'}}" >
+            <button type="button" class="aas-button" data-action="radiation" data-op="remove"
+              data-label="{{localize 'ALIENRPG.Radiation'}}" data-roll="{{radiation.value}}"
+              data-tooltip="{{localize 'ALTSHEET.RemoveRad'}}" aria-label="{{localize 'ALTSHEET.RemoveRad'}}">
+              <i class="fa-solid fa-minus" inert></i>
+            </button>
+            <button type="button" class="aas-button" data-action="radiation" data-op="add"
+              data-label="{{localize 'ALIENRPG.Radiation'}}" data-roll="{{radiation.value}}"
+              data-tooltip="{{localize 'ALTSHEET.AddRad'}}" aria-label="{{localize 'ALTSHEET.AddRad'}}">
+              <i class="fa-solid fa-plus" inert></i>
+            </button>
+          </div>
+        </header>
+        <div class="aas-pips aas-pips-static">
+          {{#each radiation.pips}}
+          <span class="aas-pip {{#if filled}}filled{{/if}} {{#if permanent}}permanent{{/if}}"></span>
+          {{/each}}
+        </div>
+        {{#if editMode}}
+        <div class="aas-button-row">
+          <span class="aas-stepper-label">{{localize 'ALTSHEET.Permanent'}} <b>{{radiation.permanent}}</b></span>
+          <button type="button" class="aas-button" data-action="radiation" data-op="removePermanent"
+            data-label="{{localize 'ALIENRPG.Radiation'}}" data-roll="{{radiation.value}}"
+            data-tooltip="{{localize 'ALTSHEET.RemovePermanentRad'}}"
+            aria-label="{{localize 'ALTSHEET.RemovePermanentRad'}}"><i class="fa-solid fa-minus" inert></i></button>
+          <button type="button" class="aas-button" data-action="radiation" data-op="addPermanent"
+            data-label="{{localize 'ALIENRPG.Radiation'}}" data-roll="{{radiation.value}}"
+            data-tooltip="{{localize 'ALTSHEET.AddPermanentRad'}}"
+            aria-label="{{localize 'ALTSHEET.AddPermanentRad'}}"><i class="fa-solid fa-plus" inert></i></button>
+        </div>
+        {{/if}}
+      </section>
+
+      <section class="aas-panel">
+        <header class="aas-panel-head">
+          <h2>{{localize 'ALTSHEET.Supplies'}}</h2>
+          <span class="aas-panel-note">{{localize 'ALTSHEET.SuppliesHint'}}</span>
+        </header>
+        <div class="aas-roll-row">
+          {{#each supplies}}
+          <div class="aas-rollgroup">
+            <button type="button" class="aas-roll aas-roll-small" data-action="roll" data-roll-type="supply"
+              data-spbutt="{{key}}" data-label="{{label}}" data-tooltip="{{localize 'ALIENRPG.Supply'}}">
+              <span class="aas-roll-name">{{label}}</span>
+              <span class="aas-die">{{value}}</span>
+            </button>
+            <button type="button" class="aas-mods" data-action="rollMods"
+              data-tooltip="{{localize 'ALTSHEET.RollWithMods'}}" aria-label="{{localize 'ALTSHEET.RollWithMods'}}">
+              <i class="fa-solid fa-sliders" inert></i>
+            </button>
+          </div>
+          {{/each}}
+        </div>
+      </section>
+    </div>
+  </div>
+</section>

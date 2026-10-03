@@ -1,0 +1,41 @@
+{
+  "id": "alienrpg-alt-sheet",
+  "title": "Alien RPG Alternate Sheet",
+  "description": "An alternate character sheet for the Alien RPG system (Evolved rules): a play view with every roll as a visible button, readable type, and gear you can equip, carry or stow in one click.",
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "Brian",
+      "email": "brian@gibbous.org"
+    }
+  ],
+  "compatibility": {
+    "minimum": "13",
+    "verified": "14"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "alienrpg",
+        "type": "system",
+        "compatibility": {
+          "minimum": "4.0.0",
+          "verified": "4.1.17"
+        }
+      }
+    ]
+  },
+  "esmodules": [
+    "scripts/alt-sheet.mjs"
+  ],
+  "styles": [
+    "styles/alt-sheet.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ]
+}

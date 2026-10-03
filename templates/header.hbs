@@ -1,0 +1,104 @@
+<header class="aas-header">
+  {{#if editMode}}
+  <img class="aas-portrait editable" src="{{actor.img}}" alt="{{actor.name}}" data-action="editImage" data-edit="img"
+    data-tooltip="{{localize 'ALTSHEET.EditPortrait'}}">
+  {{else}}
+  <img class="aas-portrait" src="{{actor.img}}" alt="{{actor.name}}">
+  {{/if}}
+
+  <div class="aas-identity">
+    {{#if editMode}}
+    <input class="aas-name" type="text" name="name" value="{{actor.name}}" placeholder="{{localize 'ALIENRPG.Name'}}">
+    <select class="aas-career" name="system.general.career.value" aria-label="{{localize 'ALIENRPG.Career'}}">
+      {{#each bio.careers}}
+      <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+      {{/each}}
+    </select>
+    {{else}}
+    <h1 class="aas-name">{{actor.name}}</h1>
+    <div class="aas-career">
+      {{bio.career}}
+      {{#each specialities}}
+      <button type="button" class="aas-link" data-item-id="{{id}}" data-action="editItem"
+        data-tooltip="{{localize 'ALTSHEET.Specialty'}}">{{name}}</button>
+      {{/each}}
+    </div>
+    {{/if}}
+  </div>
+
+  {{#if editable}}
+  <button type="button" class="aas-edit-toggle {{#if editMode}}active{{/if}}" data-action="toggleEdit"
+    aria-pressed="{{#if editMode}}true{{else}}false{{/if}}"
+    data-tooltip="{{#if editMode}}{{localize 'ALTSHEET.EditModeOn'}}{{else}}{{localize 'ALTSHEET.EditModeOff'}}{{/if}}">
+    <i class="fa-solid {{#if editMode}}fa-lock-open{{else}}fa-lock{{/if}}" inert></i>
+    <span>{{localize 'ALTSHEET.EditMode'}}</span>
+  </button>
+  {{/if}}
+
+  {{#if limited}}
+  <p class="aas-limited">{{localize 'ALTSHEET.Limited'}}</p>
+  {{else}}
+  <div class="aas-vitals">
+    <div class="aas-vital {{vitals.health.cls}}">
+      <span class="aas-vital-label">{{localize 'ALIENRPG.Health'}}</span>
+      <div class="aas-stepper">
+        <button type="button" data-action="stepField" data-path="system.header.health.value" data-step="-1" data-min="0"
+          data-max="{{vitals.health.max}}" aria-label="{{localize 'ALTSHEET.Decrease' name=(localize 'ALIENRPG.Health')}}">
+          <i class="fa-solid fa-minus" inert></i>
+        </button>
+        <span class="aas-vital-value"><b>{{vitals.health.value}}</b> / {{vitals.health.max}}</span>
+        <button type="button" data-action="stepField" data-path="system.header.health.value" data-step="1" data-min="0"
+          data-max="{{vitals.health.max}}" aria-label="{{localize 'ALTSHEET.Increase' name=(localize 'ALIENRPG.Health')}}">
+          <i class="fa-solid fa-plus" inert></i>
+        </button>
+      </div>
+      <div class="aas-meter"><span style="width: {{vitals.health.pct}}%"></span></div>
+    </div>
+
+    {{#if vitals.stress}}
+    <div class="aas-vital {{vitals.stress.cls}}">
+      <span class="aas-vital-label">{{localize 'ALIENRPG.Stress'}}</span>
+      <div class="aas-stepper">
+        <button type="button" data-action="stepField" data-path="system.header.stress.value" data-step="-1" data-min="0"
+          aria-label="{{localize 'ALTSHEET.Decrease' name=(localize 'ALIENRPG.Stress')}}">
+          <i class="fa-solid fa-minus" inert></i>
+        </button>
+        <span class="aas-vital-value"><b>{{vitals.stress.value}}</b></span>
+        <button type="button" data-action="stepField" data-path="system.header.stress.value" data-step="1" data-min="0"
+          aria-label="{{localize 'ALTSHEET.Increase' name=(localize 'ALIENRPG.Stress')}}">
+          <i class="fa-solid fa-plus" inert></i>
+        </button>
+      </div>
+      <div class="aas-pips">
+        {{#each vitals.stress.pips}}
+        <button type="button" class="aas-pip {{#if filled}}filled{{/if}}" data-action="setField"
+          data-path="system.header.stress.value" data-value="{{n}}"
+          aria-label="{{localize 'ALTSHEET.SetTo' name=(localize 'ALIENRPG.Stress') value=n}}"></button>
+        {{/each}}
+      </div>
+    </div>
+    {{/if}}
+
+    {{#if vitals.resolve}}
+    <div class="aas-vital"
+      data-tooltip="{{localize 'ALTSHEET.Breakdown' base=vitals.resolve.base mod=vitals.resolve.mod total=vitals.resolve.value}}">
+      <span class="aas-vital-label">{{localize 'ALIENRPG.Resolve'}}</span>
+      <span class="aas-vital-value aas-vital-big"><b>{{vitals.resolve.value}}</b></span>
+    </div>
+    {{/if}}
+
+    <div class="aas-vital">
+      <span class="aas-vital-label">{{localize 'ALIENRPG.Armor'}}</span>
+      <div class="aas-rollgroup">
+        <button type="button" class="aas-roll" data-action="roll" data-roll-type="ability" data-spbutt="armor"
+          data-roll="{{vitals.armor}}" data-label="{{localize 'ALIENRPG.Armor'}}"
+          data-tooltip="{{localize 'ALTSHEET.ArmorRoll'}}">
+          <span class="aas-die">{{vitals.armor}}</span>
+        </button>
+        <button type="button" class="aas-mods" data-action="rollMods" data-tooltip="{{localize 'ALTSHEET.RollWithMods'}}"
+          aria-label="{{localize 'ALTSHEET.RollWithMods'}}"><i class="fa-solid fa-sliders" inert></i></button>
+      </div>
+    </div>
+  </div>
+  {{/if}}
+</header>

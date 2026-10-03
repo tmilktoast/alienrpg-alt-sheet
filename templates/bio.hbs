@@ -1,0 +1,121 @@
+<section class="tab aas-tab aas-bio {{tab.cssClass}}" data-group="primary" data-tab="bio">
+  <div class="aas-columns">
+    <div class="aas-column">
+      <section class="aas-panel aas-form">
+        <label class="aas-labelled">
+          <span>{{localize 'ALIENRPG.Appearance'}}</span>
+          <textarea name="system.general.appearance.value" rows="4">{{system.general.appearance.value}}</textarea>
+        </label>
+        <label class="aas-labelled">
+          <span>{{localize 'ALIENRPG.SignatureItem'}}</span>
+          <input type="text" name="system.general.sigItem.value" value="{{system.general.sigItem.value}}">
+        </label>
+        <label class="aas-labelled">
+          <span>{{localize 'ALIENRPG.PersonalAgenda'}}</span>
+          <textarea name="system.general.agenda.value" rows="3">{{system.general.agenda.value}}</textarea>
+        </label>
+        <label class="aas-labelled">
+          <span>{{localize 'ALIENRPG.relOne'}}</span>
+          <input type="text" name="system.general.relOne.value" value="{{system.general.relOne.value}}">
+        </label>
+        <label class="aas-labelled">
+          <span>{{localize 'ALIENRPG.relTwo'}}</span>
+          <input type="text" name="system.general.relTwo.value" value="{{system.general.relTwo.value}}">
+        </label>
+      </section>
+    </div>
+
+    <div class="aas-column">
+      <section class="aas-panel">
+        <header class="aas-panel-head">
+          <h2>{{localize 'ALIENRPG.XP'}}</h2>
+          <div class="aas-stepper aas-stepper-small">
+            <button type="button" data-action="stepField" data-path="system.general.xp.value" data-step="-1" data-min="0"
+              data-max="{{bio.xp.max}}" aria-label="{{localize 'ALTSHEET.Decrease' name=(localize 'ALIENRPG.XP')}}">
+              <i class="fa-solid fa-minus" inert></i>
+            </button>
+            <b>{{bio.xp.value}}</b>
+            <button type="button" data-action="stepField" data-path="system.general.xp.value" data-step="1" data-min="0"
+              data-max="{{bio.xp.max}}" aria-label="{{localize 'ALTSHEET.Increase' name=(localize 'ALIENRPG.XP')}}">
+              <i class="fa-solid fa-plus" inert></i>
+            </button>
+          </div>
+        </header>
+        <div class="aas-pips aas-pips-wrap">
+          {{#each bio.xp.pips}}
+          <button type="button" class="aas-pip {{#if filled}}filled{{/if}}" data-action="setField"
+            data-path="system.general.xp.value" data-value="{{n}}"
+            aria-label="{{localize 'ALTSHEET.SetTo' name=(localize 'ALIENRPG.XP') value=n}}"></button>
+          {{/each}}
+        </div>
+      </section>
+
+      <section class="aas-panel">
+        <header class="aas-panel-head">
+          <h2>{{localize 'ALIENRPG.StoryPoints'}}</h2>
+          <div class="aas-stepper aas-stepper-small">
+            <button type="button" data-action="stepField" data-path="system.general.sp.value" data-step="-1" data-min="0"
+              data-max="{{bio.sp.max}}" aria-label="{{localize 'ALTSHEET.Decrease' name=(localize 'ALIENRPG.StoryPoints')}}">
+              <i class="fa-solid fa-minus" inert></i>
+            </button>
+            <b>{{bio.sp.value}}</b>
+            <button type="button" data-action="stepField" data-path="system.general.sp.value" data-step="1" data-min="0"
+              data-max="{{bio.sp.max}}" aria-label="{{localize 'ALTSHEET.Increase' name=(localize 'ALIENRPG.StoryPoints')}}">
+              <i class="fa-solid fa-plus" inert></i>
+            </button>
+          </div>
+        </header>
+        <div class="aas-pips aas-pips-wrap">
+          {{#each bio.sp.pips}}
+          <button type="button" class="aas-pip {{#if filled}}filled{{/if}}" data-action="setField"
+            data-path="system.general.sp.value" data-value="{{n}}"
+            aria-label="{{localize 'ALTSHEET.SetTo' name=(localize 'ALIENRPG.StoryPoints') value=n}}"></button>
+          {{/each}}
+        </div>
+      </section>
+
+      <section class="aas-panel">
+        <header class="aas-panel-head">
+          <h2>{{localize 'ALIENRPG.AgendaStory'}}</h2>
+          <button type="button" class="aas-button" data-action="addItem" data-type="agenda">
+            <i class="fa-solid fa-plus" inert></i> {{localize 'ALTSHEET.Add'}}
+          </button>
+        </header>
+        {{#each agendaList}}
+        <details class="aas-details draggable" data-section="agenda-{{id}}" data-item-id="{{id}}">
+          <summary>
+            <span class="aas-summary-name">{{name}}</span>
+            <button type="button" class="aas-icon" data-action="editItem" data-tooltip="{{localize 'ALTSHEET.Edit'}}"
+              aria-label="{{localize 'ALTSHEET.Edit'}}"><i class="fa-solid fa-pen-to-square" inert></i></button>
+            <button type="button" class="aas-icon" data-action="deleteItem" data-tooltip="{{localize 'ALTSHEET.Delete'}}"
+              aria-label="{{localize 'ALTSHEET.Delete'}}"><i class="fa-solid fa-trash" inert></i></button>
+          </summary>
+          <div class="aas-prose">
+            {{#if description}}{{{description}}}{{else}}<p class="aas-empty">{{localize 'ALTSHEET.NoDescription'}}</p>{{/if}}
+          </div>
+        </details>
+        {{else}}
+        <p class="aas-empty">{{localize 'ALTSHEET.NoItems'}}</p>
+        {{/each}}
+      </section>
+
+      {{#if isSynthetic}}
+      <section class="aas-panel">
+        <label class="aas-check">
+          <input type="checkbox" name="system.header.synthstress" {{checked system.header.synthstress}}>
+          <span>{{localize 'ALTSHEET.SynthStress'}}</span>
+        </label>
+      </section>
+      {{/if}}
+
+      {{#if isGM}}
+      <section class="aas-panel">
+        <label class="aas-check" data-tooltip="{{localize 'ALIENRPG.NPCpopUp'}}">
+          <input type="checkbox" name="system.header.npc" {{checked system.header.npc}}>
+          <span>NPC</span>
+        </label>
+      </section>
+      {{/if}}
+    </div>
+  </div>
+</section>

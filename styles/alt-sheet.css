@@ -1,0 +1,1081 @@
+/* Alien RPG Alternate Sheet. Everything is scoped under .alien-alt-sheet and prefixed aas-. */
+
+.alien-alt-sheet {
+  --aas-bg: #121618;
+  --aas-panel: #1a2023;
+  --aas-raised: #242c30;
+  --aas-raised-hover: #2e383d;
+  --aas-border: #344046;
+  --aas-text: #e8eeea;
+  --aas-muted: #9fada8;
+  --aas-accent: #9be564;
+  --aas-accent-dim: #2c4420;
+  --aas-warn: #f2b84b;
+  --aas-danger: #ff6b5e;
+  --aas-danger-dim: #4a211e;
+  --aas-font: "Signika", "Segoe UI", system-ui, -apple-system, sans-serif;
+  color-scheme: dark;
+}
+
+.alien-alt-sheet .window-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+  background: var(--aas-bg);
+  color: var(--aas-text);
+  font-family: var(--aas-font);
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.alien-alt-sheet .window-content *,
+.alien-alt-sheet .window-content *::before,
+.alien-alt-sheet .window-content *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- Resets: neutralize Foundry's and the system's defaults inside the sheet ---------- */
+
+.alien-alt-sheet .window-content :is(h1, h2, h3, p, ol, ul, li) {
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-family: inherit;
+  color: inherit;
+  text-shadow: none;
+  list-style: none;
+}
+
+.alien-alt-sheet .window-content button {
+  width: auto;
+  height: auto;
+  min-height: 0;
+  margin: 0;
+  flex: none;
+  font: inherit;
+  line-height: 1.2;
+  color: inherit;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  box-shadow: none;
+  text-shadow: none;
+  cursor: pointer;
+}
+
+.alien-alt-sheet .window-content button:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.alien-alt-sheet .window-content :is(button, summary, a, input, select, textarea):focus-visible {
+  outline: 2px solid var(--aas-accent);
+  outline-offset: 1px;
+}
+
+.alien-alt-sheet .window-content :is(input[type="text"], input[type="number"], select, textarea) {
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 5px 8px;
+  font: inherit;
+  color: var(--aas-text);
+  background: var(--aas-bg);
+  border: 1px solid var(--aas-border);
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+.alien-alt-sheet .window-content textarea {
+  resize: vertical;
+  min-height: 3.5em;
+}
+
+.alien-alt-sheet .window-content :is(input, select, textarea):disabled {
+  opacity: 0.6;
+}
+
+.alien-alt-sheet .window-content img {
+  border: none;
+}
+
+/* ---------- Header ---------- */
+
+.alien-alt-sheet .aas-header {
+  display: grid;
+  grid-template-columns: 96px 1fr auto;
+  grid-template-areas:
+    "portrait identity edit"
+    "portrait vitals vitals";
+  gap: 10px 14px;
+  padding: 12px 14px;
+  background: var(--aas-panel);
+  border-bottom: 1px solid var(--aas-border);
+  flex: none;
+}
+
+.alien-alt-sheet .aas-portrait {
+  grid-area: portrait;
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 6px;
+  border: 1px solid var(--aas-border);
+  background: var(--aas-bg);
+}
+
+.alien-alt-sheet .aas-portrait.editable {
+  cursor: pointer;
+  outline: 2px dashed var(--aas-accent);
+  outline-offset: 2px;
+}
+
+.alien-alt-sheet .aas-identity {
+  grid-area: identity;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  min-width: 0;
+}
+
+.alien-alt-sheet .window-content .aas-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.alien-alt-sheet .window-content input.aas-name {
+  padding: 2px 8px;
+}
+
+.alien-alt-sheet .aas-career {
+  flex: none;
+  color: var(--aas-muted);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.alien-alt-sheet .window-content select.aas-career {
+  width: auto;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--aas-text);
+}
+
+.alien-alt-sheet .window-content .aas-link {
+  padding: 0 4px;
+  color: var(--aas-accent);
+  text-transform: inherit;
+  letter-spacing: inherit;
+  text-decoration: underline dotted;
+}
+
+.alien-alt-sheet .window-content .aas-edit-toggle {
+  grid-area: edit;
+  align-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  color: var(--aas-muted);
+  background: var(--aas-raised);
+  border-color: var(--aas-border);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.alien-alt-sheet .window-content .aas-edit-toggle.active {
+  color: #10160c;
+  background: var(--aas-warn);
+  border-color: var(--aas-warn);
+}
+
+.alien-alt-sheet .aas-limited {
+  grid-area: vitals;
+  color: var(--aas-muted);
+}
+
+.alien-alt-sheet .aas-vitals {
+  grid-area: vitals;
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.alien-alt-sheet .aas-vital {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding: 6px 10px 8px;
+  background: var(--aas-bg);
+  border: 1px solid var(--aas-border);
+  border-radius: 6px;
+}
+
+.alien-alt-sheet .aas-vital:nth-last-child(-n + 2) {
+  flex: 0 0 auto;
+  min-width: 84px;
+}
+
+.alien-alt-sheet .aas-vital-label,
+.alien-alt-sheet .aas-stepper-label,
+.alien-alt-sheet .aas-panel-note {
+  color: var(--aas-muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.alien-alt-sheet .aas-vital-value {
+  font-size: 15px;
+  color: var(--aas-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.alien-alt-sheet .aas-vital-value b {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--aas-text);
+}
+
+.alien-alt-sheet .aas-vital-big b {
+  font-size: 26px;
+}
+
+.alien-alt-sheet .aas-vital.warn .aas-vital-value b {
+  color: var(--aas-warn);
+}
+
+.alien-alt-sheet .aas-vital.danger .aas-vital-value b {
+  color: var(--aas-danger);
+}
+
+/* ---------- Steppers, meters, pips ---------- */
+
+.alien-alt-sheet .aas-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.alien-alt-sheet .aas-stepper-small {
+  justify-content: flex-start;
+  gap: 6px;
+}
+
+.alien-alt-sheet .aas-stepper-small b {
+  min-width: 1.6em;
+  text-align: center;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+
+.alien-alt-sheet .window-content .aas-stepper button,
+.alien-alt-sheet .window-content .aas-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 7px;
+  font-size: 12px;
+  color: var(--aas-text);
+  background: var(--aas-raised);
+  border-color: var(--aas-border);
+}
+
+.alien-alt-sheet .window-content .aas-stepper button:hover:not(:disabled),
+.alien-alt-sheet .window-content .aas-button:hover:not(:disabled) {
+  background: var(--aas-raised-hover);
+  border-color: var(--aas-accent);
+}
+
+.alien-alt-sheet .aas-meter {
+  position: relative;
+  height: 6px;
+  background: var(--aas-raised);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.alien-alt-sheet .aas-meter span {
+  display: block;
+  height: 100%;
+  background: var(--aas-accent);
+  border-radius: 3px;
+}
+
+.alien-alt-sheet .warn .aas-meter span {
+  background: var(--aas-warn);
+}
+
+.alien-alt-sheet .danger .aas-meter span,
+.alien-alt-sheet .encumbered .aas-meter span {
+  background: var(--aas-danger);
+}
+
+/* Half of the bar is the point where the system applies Encumbered. */
+.alien-alt-sheet .aas-meter-marked::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: var(--aas-text);
+  opacity: 0.6;
+}
+
+.alien-alt-sheet .aas-pips {
+  display: flex;
+  gap: 4px;
+}
+
+.alien-alt-sheet .aas-pips-wrap {
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.alien-alt-sheet .window-content .aas-pip {
+  flex: 1 1 0;
+  height: 10px;
+  min-width: 10px;
+  padding: 0;
+  background: var(--aas-raised);
+  border: 1px solid var(--aas-border);
+  border-radius: 3px;
+}
+
+.alien-alt-sheet .window-content .aas-pips-wrap .aas-pip {
+  flex: 0 0 18px;
+  height: 18px;
+  border-radius: 50%;
+}
+
+.alien-alt-sheet .window-content .aas-pip.filled {
+  background: var(--aas-accent);
+  border-color: var(--aas-accent);
+}
+
+.alien-alt-sheet .window-content .warn .aas-pip.filled {
+  background: var(--aas-warn);
+  border-color: var(--aas-warn);
+}
+
+.alien-alt-sheet .window-content .danger .aas-pip.filled,
+.alien-alt-sheet .window-content .aas-pip.permanent {
+  background: var(--aas-danger);
+  border-color: var(--aas-danger);
+}
+
+.alien-alt-sheet .window-content button.aas-pip:hover:not(:disabled) {
+  border-color: var(--aas-text);
+}
+
+.alien-alt-sheet .aas-pips-static .aas-pip {
+  height: 12px;
+}
+
+/* ---------- Tabs ---------- */
+
+.alien-alt-sheet .window-content nav.sheet-tabs {
+  display: flex;
+  flex: none;
+  gap: 2px;
+  margin: 0;
+  padding: 0 14px;
+  background: var(--aas-panel);
+  border: none;
+  border-bottom: 1px solid var(--aas-border);
+}
+
+.alien-alt-sheet .window-content nav.sheet-tabs > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  color: var(--aas-muted);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-shadow: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+}
+
+.alien-alt-sheet .window-content nav.sheet-tabs > a:hover {
+  color: var(--aas-text);
+}
+
+.alien-alt-sheet .window-content nav.sheet-tabs > a.active {
+  color: var(--aas-accent);
+  border-bottom-color: var(--aas-accent);
+}
+
+.alien-alt-sheet .aas-tab {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 12px 14px 16px;
+  overflow-y: auto;
+}
+
+.alien-alt-sheet .aas-tab:not(.active) {
+  display: none;
+}
+
+.alien-alt-sheet .aas-tab.active {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.alien-alt-sheet .aas-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+}
+
+.alien-alt-sheet .aas-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+/* ---------- Panels ---------- */
+
+.alien-alt-sheet .aas-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px 12px;
+  background: var(--aas-panel);
+  border: 1px solid var(--aas-border);
+  border-radius: 6px;
+}
+
+.alien-alt-sheet .aas-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 26px;
+}
+
+.alien-alt-sheet .window-content .aas-panel h2 {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--aas-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.alien-alt-sheet .window-content .aas-panel h3 {
+  margin-top: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--aas-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.alien-alt-sheet .aas-hint {
+  color: var(--aas-muted);
+  font-size: 12px;
+}
+
+.alien-alt-sheet .aas-empty {
+  color: var(--aas-muted);
+  font-size: 13px;
+  font-style: italic;
+}
+
+.alien-alt-sheet .aas-danger {
+  color: var(--aas-danger);
+}
+
+.alien-alt-sheet .aas-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.alien-alt-sheet .aas-button-row,
+.alien-alt-sheet .aas-roll-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.alien-alt-sheet .aas-roll-row .aas-rollgroup {
+  flex: 1 1 auto;
+}
+
+/* ---------- Roll buttons ---------- */
+
+.alien-alt-sheet .aas-rollgroup {
+  display: flex;
+  align-items: stretch;
+  min-width: 0;
+}
+
+.alien-alt-sheet .window-content .aas-roll {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 32px;
+  padding: 3px 4px 3px 10px;
+  text-align: left;
+  background: var(--aas-raised);
+  border-color: var(--aas-border);
+}
+
+.alien-alt-sheet .window-content .aas-rollgroup .aas-roll:not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.alien-alt-sheet .window-content .aas-roll:hover:not(:disabled),
+.alien-alt-sheet .window-content .aas-mods:hover:not(:disabled) {
+  background: var(--aas-raised-hover);
+  border-color: var(--aas-accent);
+}
+
+.alien-alt-sheet .window-content .aas-roll > i {
+  color: var(--aas-accent);
+}
+
+.alien-alt-sheet .aas-roll-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.alien-alt-sheet .aas-rank {
+  flex: none;
+  color: var(--aas-muted);
+  font-size: 12px;
+}
+
+/* The number of dice a click will roll. */
+.alien-alt-sheet .aas-die {
+  flex: none;
+  min-width: 28px;
+  padding: 3px 6px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--aas-accent);
+  background: var(--aas-accent-dim);
+  border-radius: 3px;
+}
+
+.alien-alt-sheet .aas-die.modified {
+  color: var(--aas-warn);
+}
+
+.alien-alt-sheet .window-content .aas-mods {
+  width: 28px;
+  padding: 0;
+  color: var(--aas-muted);
+  font-size: 12px;
+  background: var(--aas-raised);
+  border-color: var(--aas-border);
+  border-left: none;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.alien-alt-sheet .window-content .aas-roll-small {
+  min-height: 26px;
+  font-size: 13px;
+}
+
+.alien-alt-sheet .aas-roll-small .aas-die {
+  font-size: 13px;
+  padding: 1px 6px;
+}
+
+.alien-alt-sheet .window-content .aas-roll-primary {
+  border-color: var(--aas-accent);
+}
+
+/* ---------- Attributes and skills ---------- */
+
+.alien-alt-sheet .aas-attribute {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.alien-alt-sheet .aas-attribute + .aas-attribute {
+  margin-top: 6px;
+}
+
+.alien-alt-sheet .aas-skill-row {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+  padding-left: 14px;
+}
+
+.alien-alt-sheet .aas-skill-row .aas-rollgroup {
+  flex: 1 1 auto;
+}
+
+.alien-alt-sheet .aas-attribute-row {
+  padding-left: 0;
+}
+
+.alien-alt-sheet .aas-attribute-row .aas-roll-name {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.alien-alt-sheet .aas-inline-edit {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--aas-warn);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.alien-alt-sheet .window-content .aas-inline-edit input {
+  width: 48px;
+  text-align: center;
+  border-color: var(--aas-warn);
+}
+
+/* ---------- Details (talents, stunts, all conditions) ---------- */
+
+.alien-alt-sheet .aas-details {
+  background: var(--aas-bg);
+  border: 1px solid var(--aas-border);
+  border-radius: 4px;
+}
+
+.alien-alt-sheet .aas-details > summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.alien-alt-sheet .aas-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.alien-alt-sheet .aas-details > summary::before {
+  content: "▸";
+  flex: none;
+  width: 1em;
+  color: var(--aas-accent);
+}
+
+.alien-alt-sheet .aas-details[open] > summary::before {
+  content: "▾";
+}
+
+.alien-alt-sheet .aas-summary-name {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.alien-alt-sheet .aas-details > :not(summary) {
+  margin: 0 10px 10px;
+}
+
+.alien-alt-sheet .window-content .aas-details > h3 {
+  margin: 4px 10px 6px;
+}
+
+.alien-alt-sheet .aas-prose {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.alien-alt-sheet .window-content .aas-prose :is(p, ol, ul) {
+  margin: 0 0 0.6em;
+}
+
+.alien-alt-sheet .window-content .aas-prose :is(ol, ul) {
+  padding-left: 1.4em;
+}
+
+.alien-alt-sheet .window-content .aas-prose ol > li {
+  list-style: decimal;
+}
+
+.alien-alt-sheet .window-content .aas-prose ul > li {
+  list-style: disc;
+}
+
+.alien-alt-sheet .window-content .aas-icon {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  color: var(--aas-muted);
+  font-size: 13px;
+}
+
+.alien-alt-sheet .window-content .aas-icon:hover:not(:disabled) {
+  color: var(--aas-text);
+  background: var(--aas-raised-hover);
+}
+
+/* ---------- Weapons, injuries ---------- */
+
+.alien-alt-sheet .aas-weapon,
+.alien-alt-sheet .aas-injury {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px;
+  background: var(--aas-bg);
+  border: 1px solid var(--aas-border);
+  border-radius: 4px;
+}
+
+.alien-alt-sheet .aas-weapon.empty {
+  border-color: var(--aas-danger);
+}
+
+.alien-alt-sheet :is(.aas-weapon, .aas-injury, .aas-item) > img {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 3px;
+}
+
+.alien-alt-sheet .aas-weapon-body,
+.alien-alt-sheet .aas-injury-body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.alien-alt-sheet .aas-weapon-name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.alien-alt-sheet .aas-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  color: var(--aas-muted);
+  font-size: 12px;
+}
+
+.alien-alt-sheet .aas-stats b {
+  color: var(--aas-text);
+  font-size: 13px;
+}
+
+.alien-alt-sheet .aas-weapon-supply {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+}
+
+.alien-alt-sheet .aas-weapon-name .aas-icon {
+  margin: -4px -4px -4px auto;
+}
+
+.alien-alt-sheet .aas-weapon-supply .aas-attack {
+  margin-left: auto;
+}
+
+.alien-alt-sheet .aas-tag {
+  padding: 1px 6px;
+  color: var(--aas-muted);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border: 1px solid var(--aas-border);
+  border-radius: 3px;
+}
+
+.alien-alt-sheet .aas-tag-danger {
+  color: var(--aas-danger);
+  border-color: var(--aas-danger);
+}
+
+/* ---------- Conditions ---------- */
+
+.alien-alt-sheet .aas-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.alien-alt-sheet .window-content .aas-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px 3px 4px;
+  font-size: 13px;
+  color: var(--aas-muted);
+  background: var(--aas-raised);
+  border: 1px solid var(--aas-border);
+  border-radius: 14px;
+}
+
+.alien-alt-sheet .aas-chip img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.alien-alt-sheet .window-content button.aas-chip:hover:not(:disabled) {
+  color: var(--aas-text);
+  border-color: var(--aas-warn);
+}
+
+.alien-alt-sheet .window-content .aas-chip.active {
+  color: var(--aas-text);
+  background: var(--aas-danger-dim);
+  border-color: var(--aas-warn);
+}
+
+/* ---------- Gear ---------- */
+
+.alien-alt-sheet .aas-carry {
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.alien-alt-sheet .aas-encumbrance {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.alien-alt-sheet .aas-encumbrance-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  color: var(--aas-muted);
+}
+
+.alien-alt-sheet .aas-encumbrance-label b {
+  color: var(--aas-text);
+  font-size: 16px;
+}
+
+.alien-alt-sheet .aas-carry .aas-labelled {
+  flex: 0 0 180px;
+}
+
+.alien-alt-sheet .aas-labelled {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.alien-alt-sheet .aas-labelled > span {
+  color: var(--aas-muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.alien-alt-sheet .aas-item {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) auto auto auto;
+  grid-template-areas:
+    "img name weight state controls"
+    "img fields fields fields fields";
+  align-items: center;
+  gap: 4px 10px;
+  padding: 8px;
+  background: var(--aas-bg);
+  border: 1px solid var(--aas-border);
+  border-left: 3px solid var(--aas-border);
+  border-radius: 4px;
+}
+
+.alien-alt-sheet .aas-item.equipped {
+  border-left-color: var(--aas-accent);
+}
+
+.alien-alt-sheet .aas-item.stored :is(img, .aas-item-name, .aas-item-fields) {
+  opacity: 0.6;
+}
+
+.alien-alt-sheet .aas-item > img {
+  grid-area: img;
+  align-self: start;
+}
+
+.alien-alt-sheet .aas-item-name {
+  grid-area: name;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  font-weight: 600;
+}
+
+.alien-alt-sheet .aas-item-meta {
+  color: var(--aas-muted);
+  font-size: 11px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.alien-alt-sheet .aas-item-weight {
+  grid-area: weight;
+  color: var(--aas-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.alien-alt-sheet .aas-segmented {
+  grid-area: state;
+  display: flex;
+}
+
+.alien-alt-sheet .window-content .aas-segmented button {
+  padding: 4px 9px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--aas-muted);
+  background: var(--aas-raised);
+  border-color: var(--aas-border);
+  border-radius: 0;
+}
+
+.alien-alt-sheet .window-content .aas-segmented button + button {
+  border-left: none;
+}
+
+.alien-alt-sheet .window-content .aas-segmented button:first-child {
+  border-radius: 4px 0 0 4px;
+}
+
+.alien-alt-sheet .window-content .aas-segmented button:last-child {
+  border-radius: 0 4px 4px 0;
+}
+
+.alien-alt-sheet .window-content .aas-segmented button:hover:not(:disabled) {
+  color: var(--aas-text);
+  background: var(--aas-raised-hover);
+}
+
+.alien-alt-sheet .window-content .aas-segmented button.active {
+  color: #10160c;
+  background: var(--aas-accent);
+  border-color: var(--aas-accent);
+}
+
+.alien-alt-sheet .aas-item-controls {
+  grid-area: controls;
+  display: flex;
+}
+
+.alien-alt-sheet .aas-item-fields {
+  grid-area: fields;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 14px;
+}
+
+.alien-alt-sheet .aas-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--aas-muted);
+  font-size: 12px;
+}
+
+.alien-alt-sheet .aas-field b {
+  color: var(--aas-text);
+  font-size: 13px;
+}
+
+.alien-alt-sheet .window-content .aas-field input {
+  width: 52px;
+  padding: 2px 4px;
+  text-align: center;
+}
+
+/* ---------- Bio, notes ---------- */
+
+.alien-alt-sheet .aas-form {
+  gap: 10px;
+}
+
+.alien-alt-sheet .aas-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.alien-alt-sheet .window-content .aas-check input {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+}
+
+.alien-alt-sheet .window-content prose-mirror {
+  min-height: 160px;
+  color: var(--aas-text);
+  background: var(--aas-bg);
+  border: 1px solid var(--aas-border);
+  border-radius: 4px;
+}
+
+.alien-alt-sheet .aas-notes prose-mirror {
+  flex: 1 1 auto;
+}
