@@ -9,21 +9,25 @@
   <div class="aas-identity">
     {{#if editMode}}
     <input class="aas-name" type="text" name="name" value="{{actor.name}}" placeholder="{{localize 'ALIENRPG.Name'}}">
-    <select class="aas-career" name="system.general.career.value" aria-label="{{localize 'ALIENRPG.Career'}}">
-      {{#each bio.careers}}
-      <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
-      {{/each}}
-    </select>
     {{else}}
     <h1 class="aas-name">{{actor.name}}</h1>
+    {{/if}}
     <div class="aas-career">
-      {{bio.career}}
+      <span class="aas-career-label">{{localize 'ALIENRPG.Career'}}</span>
       {{#each specialities}}
-      <button type="button" class="aas-link" data-item-id="{{id}}" data-action="editItem"
-        data-tooltip="{{localize 'ALTSHEET.Specialty'}}">{{name}}</button>
+      <span class="aas-career-item draggable" data-item-id="{{id}}">
+        <button type="button" class="aas-link" data-action="editItem"
+          data-tooltip="{{localize 'ALTSHEET.CareerOpen'}}">{{name}}</button>
+        {{#if @root.editMode}}
+        <button type="button" class="aas-icon" data-action="deleteItem" data-tooltip="{{localize 'ALTSHEET.Delete'}}"
+          aria-label="{{localize 'ALTSHEET.Delete'}}"><i class="fa-solid fa-xmark" inert></i></button>
+        {{/if}}
+      </span>
+      {{else}}
+      {{#if bio.career}}<span data-tooltip="{{localize 'ALTSHEET.CareerLegacy'}}">{{bio.career}}</span>{{/if}}
+      {{#if bio.careerHint}}<span class="aas-empty">{{localize 'ALTSHEET.CareerDrop'}}</span>{{/if}}
       {{/each}}
     </div>
-    {{/if}}
   </div>
 
   {{#if editable}}

@@ -330,14 +330,11 @@ export function prepareRules() {
 
 function prepareBio(actor) {
   const { xp, sp, career } = actor.system.general;
-  const careers = Object.entries(CONFIG.ALIENRPG.career_list).map(([value, c]) => ({
-    value,
-    label: loc(c.label),
-    selected: String(career.value) === value,
-  }));
+  // Careers are Career/Specialty items now. The system's older career field shares its list with
+  // talents, where 0 means "general talent"; it is only shown until an item replaces it.
+  const legacy = Number(career.value) ? CONFIG.ALIENRPG.career_list[career.value] : null;
   return {
-    careers,
-    career: careers.find((c) => c.selected)?.label ?? "",
+    career: legacy ? loc(legacy.label) : "",
     xp: { value: xp.value, max: xp.max, pips: pips(xp.value, xp.max) },
     sp: { value: sp.value, max: sp.max, pips: pips(sp.value, sp.max) },
   };
@@ -445,6 +442,8 @@ function makeSheet(Base, type) {
           })),
         );
 
+      const bio = prepareBio(actor);
+
       return Object.assign(context, {
         editMode: this._editMode && this.isEditable,
         hasStress,
@@ -455,7 +454,7 @@ function makeSheet(Base, type) {
         conditions: prepareConditions(actor, context.statuses, { hasStress }),
         radiation: prepareRadiation(actor),
         supplies: prepareSupplies(actor),
-        bio: prepareBio(actor),
+        bio: { ...bio, careerHint: this.isEditable && (this._editMode || !bio.career) },
         rules: prepareRules(),
         talentList: await described(context.talents),
         agendaList: await described(context.agendas),
