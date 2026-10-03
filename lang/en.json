@@ -5,7 +5,50 @@
       "Play": "Play",
       "Gear": "Gear",
       "Bio": "Bio",
-      "Notes": "Notes"
+      "Notes": "Notes",
+      "Rules": "Rules"
+    },
+    "Rules": {
+      "ActionsHint": "Each round you can perform one full action and one quick action, or two quick actions.",
+      "FullActions": "Full actions",
+      "QuickActions": "Quick actions",
+      "Interrupt": "Interrupt",
+      "FullNotes": {
+        "FullCover": "Ranged attacks against you get –3 dice and must penetrate the barrier. You cannot dodge. Cluttered zones only."
+      },
+      "QuickNotes": {
+        "PartialCover": "Ranged attacks against you get –2 dice. You can still dodge. Cluttered zones only.",
+        "Defend": "Declare before the attacker rolls. Each success you roll cancels one of the attacker's.",
+        "Aim": "+2 dice to the attack. Short range or more, on your turn immediately before the attack.",
+        "Dodge": "Declare before the attacker rolls. Each success you roll cancels one of the attacker's. Not possible in full cover.",
+        "Rally": "On a success they are no longer broken and recover 1 Health per success."
+      },
+      "Full": {
+        "CloseCombat": "Attack in close combat",
+        "RangedAttack": "Make a ranged attack",
+        "JumpClimb": "Jump or climb",
+        "FullCover": "Take full cover",
+        "Terminal": "Interact with a terminal",
+        "Machinery": "Use machinery",
+        "FirstAid": "Give first aid",
+        "ClearJam": "Clear a jammed weapon",
+        "Persuade": "Persuade someone",
+        "GiveOrders": "Give orders",
+        "Drive": "Drive a vehicle"
+      },
+      "Quick": {
+        "MoveZone": "Move into an adjacent zone",
+        "MoveRange": "Move between Short and Adjacent range",
+        "MoveDoor": "Move to a door or hatch and peek through",
+        "LockDoor": "Lock a door or hatch",
+        "PartialCover": "Take partial cover",
+        "Defend": "Defend against a close combat attack",
+        "Aim": "Aim a ranged attack",
+        "Dodge": "Dodge a ranged attack",
+        "Reload": "Reload a weapon",
+        "PickUp": "Pick up an item from the ground",
+        "Rally": "Rally a broken character"
+      }
     },
     "EditMode": "Edit",
     "EditModeOn": "Editing: attributes, skill ranks, name and career are unlocked. Click to lock.",

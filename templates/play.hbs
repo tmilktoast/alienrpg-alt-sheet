@@ -63,7 +63,9 @@
         </details>
         {{/if}}
       </section>
+    </div>
 
+    <div class="aas-column">
       <section class="aas-panel">
         <header class="aas-panel-head">
           <h2>{{localize 'ALIENRPG.Talents'}}</h2>
@@ -88,9 +90,7 @@
         <p class="aas-empty">{{localize 'ALTSHEET.NoTalents'}}</p>
         {{/each}}
       </section>
-    </div>
 
-    <div class="aas-column">
       <section class="aas-panel">
         <header class="aas-panel-head">
           <h2>{{localize 'ALTSHEET.Weapons'}}</h2>
@@ -142,7 +142,7 @@
                 {{#if typed}}
                 <div class="aas-rollgroup aas-attack">
                   <button type="button" class="aas-roll aas-roll-primary" data-action="roll" data-roll-type="weapon"
-                    data-label="{{name}}" data-item="{{name}}"
+                    data-item-id="{{id}}" data-label="{{name}}" data-item="{{name}}"
                     data-tooltip="{{localize 'ALTSHEET.RollFor' name=name}}">
                     <span class="aas-roll-name">{{localize 'ALTSHEET.Attack'}}</span>
                     <span class="aas-die">{{pool}}</span>
@@ -203,7 +203,8 @@
         <div class="aas-chips">
           {{#each conditions.active}}
           <button type="button" class="aas-chip active" data-action="toggleStatus" data-status-id="{{id}}"
-            {{#if disabled}}disabled{{/if}} data-tooltip="{{localize 'ALTSHEET.ToggleCondition'}}">
+            {{#if disabled}}disabled{{/if}}
+            {{#if tooltip}}data-tooltip-html="{{tooltip}}"{{else}}data-tooltip="{{localize 'ALTSHEET.ToggleCondition'}}"{{/if}}>
             <img src="{{img}}" alt="">{{label}}<i class="fa-solid fa-xmark" inert></i>
           </button>
           {{/each}}

@@ -10,6 +10,7 @@ system's sheet for `character` and `synthetic` actors, so either can be used per
 - **Gear tab** — weapons, armor and items with an Equipped / Carried / Stowed switch on each row,
   ammo and quantities edited in place, and an encumbrance bar.
 - **Bio tab** — appearance, agenda, buddy and rival, experience, story points and agenda cards.
+- **Rules tab** — a quick reference; for now the full and quick actions you can take in a round.
 - **Edit lock** — attributes, skill ranks, name, career and portrait only change when the Edit
   button in the header is on. A blank character opens unlocked.
 

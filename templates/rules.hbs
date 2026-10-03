@@ -1,0 +1,37 @@
+<section class="tab aas-tab aas-rules {{tab.cssClass}}" data-group="primary" data-tab="rules">
+  <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Rules.ActionsHint'}}</p>
+
+  <div class="aas-columns">
+    <section class="aas-panel">
+      <header class="aas-panel-head">
+        <h2>{{localize 'ALTSHEET.Rules.FullActions'}}</h2>
+      </header>
+      <ul class="aas-reference">
+        {{#each rules.full}}
+        <li>
+          <span class="aas-reference-name">{{label}}</span>
+          {{#if interrupt}}<span class="aas-tag">{{localize 'ALTSHEET.Rules.Interrupt'}}</span>{{/if}}
+          {{#if skill}}<span class="aas-rank">{{skill}}</span>{{/if}}
+          {{#if note}}<p class="aas-reference-note">{{note}}</p>{{/if}}
+        </li>
+        {{/each}}
+      </ul>
+    </section>
+
+    <section class="aas-panel">
+      <header class="aas-panel-head">
+        <h2>{{localize 'ALTSHEET.Rules.QuickActions'}}</h2>
+      </header>
+      <ul class="aas-reference">
+        {{#each rules.quick}}
+        <li>
+          <span class="aas-reference-name">{{label}}</span>
+          {{#if interrupt}}<span class="aas-tag">{{localize 'ALTSHEET.Rules.Interrupt'}}</span>{{/if}}
+          {{#if skill}}<span class="aas-rank">{{skill}}</span>{{/if}}
+          {{#if note}}<p class="aas-reference-note">{{note}}</p>{{/if}}
+        </li>
+        {{/each}}
+      </ul>
+    </section>
+  </div>
+</section>

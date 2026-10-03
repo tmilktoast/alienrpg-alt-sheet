@@ -23,12 +23,47 @@ const RANGES = {
   5: "ALIENRPG.Extreme",
 };
 
+/** World roll tables the system draws responses from; each result's description is the rule text. */
+const RESPONSE_TABLES = { stress: "Stress Response Table", panic: "Panic Response Table" };
+
 const TABS = {
   play: "fa-solid fa-dice-d6",
   gear: "fa-solid fa-toolbox",
   bio: "fa-solid fa-id-card",
   notes: "fa-solid fa-pen",
+  rules: "fa-solid fa-book",
 };
+
+/**
+ * Reference lists for the Rules tab: a string key under ALTSHEET.Rules, then the skill the action
+ * rolls, if any. Quick actions flagged true can be taken out of turn as an interrupt.
+ */
+const FULL_ACTIONS = [
+  ["CloseCombat", "closeCbt"],
+  ["RangedAttack", "rangedCbt"],
+  ["JumpClimb", "mobility"],
+  ["FullCover", null],
+  ["Terminal", "comtech"],
+  ["Machinery", "heavyMach"],
+  ["FirstAid", "medicalAid"],
+  ["ClearJam", "heavyMach"],
+  ["Persuade", "manipulation"],
+  ["GiveOrders", "command"],
+  ["Drive", "piloting"],
+];
+const QUICK_ACTIONS = [
+  ["MoveZone"],
+  ["MoveRange"],
+  ["MoveDoor"],
+  ["LockDoor"],
+  ["PartialCover"],
+  ["Defend", "closeCbt", true],
+  ["Aim"],
+  ["Dodge", "mobility", true],
+  ["Reload"],
+  ["PickUp"],
+  ["Rally", "command"],
+];
 
 /** Classes the system's stylesheet hangs its CRT look on; dropped so it doesn't restyle this sheet. */
 const SYSTEM_CLASSES = ["alienrpg", "ALIENRPG"];
@@ -214,6 +249,13 @@ export function prepareGear(actor) {
   return Object.values(sections);
 }
 
+/** What a stress or panic response does, as written on the table the system rolls it from. */
+function responseDescription(status) {
+  if (!status.tableNumber) return "";
+  const table = game.tables.getName(RESPONSE_TABLES[status.resp]);
+  return table?.getResultsForRoll(status.tableNumber)[0]?.description ?? "";
+}
+
 /**
  * Sort the system's status effects into general, stress response and panic response groups.
  * @param {Record<string, object>} statuses  As built by the system sheet's _prepareStatusEffects
@@ -229,7 +271,7 @@ export function prepareConditions(actor, statuses, { hasStress }) {
       active: status.active === "active",
       disabled: status.disabled,
       level: status.tableNumber ?? 0,
-      tooltip: status.tooltip,
+      tooltip: status.tooltip || responseDescription(status),
     });
   }
   for (const list of Object.values(lists)) list.sort((a, b) => a.level - b.level);
@@ -268,6 +310,22 @@ export function prepareSupplies(actor) {
     label: loc(`ALIENRPG.${key}`),
     value: actor.system.consumables[key.toLowerCase()].value,
   }));
+}
+
+export function prepareRules() {
+  const skills = CONFIG.ALIENRPG.skills;
+  const entries = (group, actions) =>
+    actions.map(([key, skill, interrupt]) => {
+      const note = `ALTSHEET.Rules.${group}Notes.${key}`;
+      return {
+        label: loc(`ALTSHEET.Rules.${group}.${key}`),
+        skill: skills[skill] ? loc(skills[skill].name) : "",
+        interrupt: !!interrupt,
+        // Only some actions have an effect worth spelling out.
+        note: game.i18n.has(note) ? loc(note) : "",
+      };
+    });
+  return { full: entries("Full", FULL_ACTIONS), quick: entries("Quick", QUICK_ACTIONS) };
 }
 
 function prepareBio(actor) {
@@ -325,6 +383,7 @@ function makeSheet(Base, type) {
       gear: { template: `${TEMPLATES}/gear.hbs`, scrollable: [""] },
       bio: { template: `${TEMPLATES}/bio.hbs`, scrollable: [""] },
       notes: { template: `${TEMPLATES}/notes.hbs`, scrollable: [""] },
+      rules: { template: `${TEMPLATES}/rules.hbs`, scrollable: [""] },
     };
 
     /** Whether attributes, skill ranks, name and career are unlocked. Decided on first render. */
@@ -397,6 +456,7 @@ function makeSheet(Base, type) {
         radiation: prepareRadiation(actor),
         supplies: prepareSupplies(actor),
         bio: prepareBio(actor),
+        rules: prepareRules(),
         talentList: await described(context.talents),
         agendaList: await described(context.agendas),
         injuries: context.critInj.map((item) => ({
