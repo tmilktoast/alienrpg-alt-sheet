@@ -4,6 +4,11 @@ An alternate character sheet for the [Alien RPG system](https://github.com/pwats
 (`alienrpg` 4.x, Foundry v13–v14), built for the **Evolved** rules. It registers alongside the
 system's sheet for `character` and `synthetic` actors, so either can be used per character.
 
+<p>
+  <img src="docs/preview-play.png" alt="Play tab: attributes, skills, weapons and conditions with roll buttons" width="49%">
+  <img src="docs/preview-gear.png" alt="Gear tab: weapons, armor and items with Equipped / Carried / Stowed switches" width="49%">
+</p>
+
 - **Play tab** — attributes and skills, equipped weapons, conditions, critical injuries, radiation
   and supplies on one screen. Every roll is a button showing the number of dice it rolls. The
   slider button beside it (or shift-click, or right-click) asks for modifiers first.
