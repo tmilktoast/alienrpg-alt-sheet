@@ -65,6 +65,10 @@ const QUICK_ACTIONS = [
   ["Rally", "command"],
 ];
 
+/** The rulebook's page on actions, at the ids it has once the official journals are imported. */
+const ACTIONS_JOURNAL =
+  "JournalEntry.L92GZt9CnwKtgm30.JournalEntryPage.Z0Y4W3DMfbqDO78Y#full-actions-and-quick-actions";
+
 /** Classes the system's stylesheet hangs its CRT look on; dropped so it doesn't restyle this sheet. */
 const SYSTEM_CLASSES = ["alienrpg", "ALIENRPG"];
 
@@ -328,6 +332,15 @@ export function prepareRules() {
   return { full: entries("Full", FULL_ACTIONS), quick: entries("Quick", QUICK_ACTIONS) };
 }
 
+/** A link to the rulebook's actions page, or nothing if the world lacks it or the user can't read it. */
+async function prepareActionsLink() {
+  const page = await fromUuid(ACTIONS_JOURNAL.split("#")[0]);
+  if (!page?.testUserPermission(game.user, "OBSERVER")) return "";
+  return foundry.applications.ux.TextEditor.enrichHTML(
+    `@UUID[${ACTIONS_JOURNAL}]{${loc("ALTSHEET.Rules.ActionsLink")}}`,
+  );
+}
+
 function prepareBio(actor) {
   const { xp, sp, career } = actor.system.general;
   // Careers are Career/Specialty items now. The system's older career field shares its list with
@@ -455,7 +468,7 @@ function makeSheet(Base, type) {
         radiation: prepareRadiation(actor),
         supplies: prepareSupplies(actor),
         bio: { ...bio, careerHint: this.isEditable && (this._editMode || !bio.career) },
-        rules: prepareRules(),
+        rules: { ...prepareRules(), actionsLink: await prepareActionsLink() },
         talentList: await described(context.talents),
         agendaList: await described(context.agendas),
         injuries: context.critInj.map((item) => ({

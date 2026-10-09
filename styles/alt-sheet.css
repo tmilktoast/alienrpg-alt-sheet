@@ -1093,6 +1093,20 @@
 
 /* ---------- Rules reference ---------- */
 
+.alien-alt-sheet .aas-rules-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.alien-alt-sheet .window-content .aas-rules-head h2 {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
 .alien-alt-sheet .window-content .aas-reference {
   display: flex;
   flex-direction: column;

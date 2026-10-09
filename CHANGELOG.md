@@ -3,6 +3,13 @@
 Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` field in
 `module.json`.
 
+## 0.2.1 — 2026-10-09
+
+### Added
+
+- The Rules tab has an Actions heading with a link to the rulebook's Full Actions & Quick Actions
+  page. The link shows when the official journals are imported and the player can read the page.
+
 ## 0.2.0 — 2026-10-09
 
 ### Added

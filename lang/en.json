@@ -9,6 +9,8 @@
       "Rules": "Rules"
     },
     "Rules": {
+      "Actions": "Actions",
+      "ActionsLink": "Full Actions & Quick Actions",
       "ActionsHint": "Each round you can perform one full action and one quick action, or two quick actions.",
       "FullActions": "Full actions",
       "QuickActions": "Quick actions",
