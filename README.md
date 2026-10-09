@@ -17,6 +17,14 @@ system's sheet for `character` and `synthetic` actors, so either can be used per
 The sheet subclasses the system's own sheet class and calls the system's roll methods, so dice,
 pushes, panic and supply rolls behave exactly as they do on the original sheet.
 
+## Installing
+
+In Foundry's Setup → **Add-on Modules** → **Install Module**, paste this manifest URL:
+
+```
+https://github.com/tmilktoast/alienrpg-alt-sheet/releases/latest/download/module.json
+```
+
 ## Using it
 
 Open a character, click the ⋮ menu in the window header → **Configure Sheet**, and pick

@@ -3,7 +3,7 @@
 Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` field in
 `module.json`.
 
-## Unreleased
+## 0.2.0 — 2026-10-09
 
 ### Added
 
