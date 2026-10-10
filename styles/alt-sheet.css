@@ -1584,3 +1584,55 @@
 .alien-alt-journal.sheet.journal-entry .journal-entry-page hr {
   border-color: var(--aas-border);
 }
+
+/* A page's editor: a window of its own, tagged with the class when its journal uses this sheet. */
+
+.alien-alt-journal.journal-sheet.journal-entry-page .window-content {
+  background: var(--aas-bg);
+  color: var(--aas-text);
+  font-family: var(--aas-font);
+}
+
+.alien-alt-journal.journal-sheet .window-header .window-title {
+  color: var(--aas-text);
+}
+
+.alien-alt-journal.journal-sheet.journal-entry-page .journal-header .title {
+  height: auto;
+  padding: 4px 8px;
+  font-family: var(--aas-font);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-align: left;
+  color: var(--aas-text);
+  background: var(--aas-panel);
+  border: 1px solid var(--aas-border);
+  text-shadow: none;
+}
+
+.alien-alt-journal.journal-sheet.journal-entry-page .editor-menu {
+  background: var(--aas-panel);
+  border: 1px solid var(--aas-border);
+  border-radius: 4px;
+}
+
+.alien-alt-journal.journal-sheet.journal-entry-page .editor :is(h1, h2, h3, h4) {
+  font-family: var(--aas-font);
+  text-shadow: none;
+}
+
+.alien-alt-journal.journal-sheet.journal-entry-page .editor :is(h1, h2) {
+  color: var(--aas-accent);
+  border-bottom: 1px solid var(--aas-border);
+}
+
+.alien-alt-journal.journal-sheet.journal-entry-page .editor :is(h3, h4) {
+  color: var(--aas-text);
+}
+
+.alien-alt-journal.journal-sheet.journal-entry-page .editor-content {
+  font-family: var(--aas-font);
+  font-size: 15px;
+  line-height: 1.55;
+}

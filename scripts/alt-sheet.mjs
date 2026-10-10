@@ -199,6 +199,9 @@ const QUICK_ACTIONS = [
 const ACTIONS_JOURNAL =
   "JournalEntry.L92GZt9CnwKtgm30.JournalEntryPage.Z0Y4W3DMfbqDO78Y#full-actions-and-quick-actions";
 
+/** The class the module's stylesheet restyles Foundry's journal markup under. */
+const JOURNAL_CLASS = "alien-alt-journal";
+
 /** Classes the system's stylesheet hangs its CRT look on; dropped so it doesn't restyle this sheet. */
 const SYSTEM_CLASSES = ["alienrpg", "ALIENRPG"];
 
@@ -1835,7 +1838,7 @@ function makeItemSheet(Base) {
 function makeJournalSheet(Base) {
   return class AltJournalSheet extends Base {
     static DEFAULT_OPTIONS = {
-      classes: ["alien-alt-journal"],
+      classes: [JOURNAL_CLASS],
     };
   };
 }
@@ -1904,9 +1907,13 @@ Hooks.once("ready", () => {
     }
   } else console.warn(`${MODULE_ID} | No ${SYSTEM_ID} item sheet found; skipping.`);
 
-  const JournalBase = foundry.applications.sheets.journal.JournalEntrySheet;
-  foundry.applications.apps.DocumentSheetConfig.registerSheet(JournalEntry, MODULE_ID, makeJournalSheet(JournalBase), {
+  const AltJournalSheet = makeJournalSheet(foundry.applications.sheets.journal.JournalEntrySheet);
+  foundry.applications.apps.DocumentSheetConfig.registerSheet(JournalEntry, MODULE_ID, AltJournalSheet, {
     makeDefault: false,
     label: "ALTSHEET.SheetLabel.journal",
+  });
+  // A page's editor is a window of its own. Give it the journal's look when its journal has it.
+  Hooks.on("renderJournalEntryPageSheet", (app) => {
+    if (app.document.parent?.sheet instanceof AltJournalSheet) app.element?.classList.add(JOURNAL_CLASS);
   });
 });

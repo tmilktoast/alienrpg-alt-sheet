@@ -45,6 +45,8 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
   installation or project, what it adds to each colony stat, whether it is completed, and notes.
 - **Journal sheet** — an alternate sheet for journal entries: Foundry's journal sheet with the
   sidebar, title, headings and links restyled to match the other alternate sheets.
+- A journal page's editor window takes the alternate journal look when its journal uses the
+  Alternate Journal Sheet.
 - The pilot's Piloting roll adds the vehicle's manoeuvrability, which the system's sheet leaves out.
 
 ### Fixed

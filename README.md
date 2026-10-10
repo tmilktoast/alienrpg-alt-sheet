@@ -44,7 +44,8 @@ system's sheet for `character`, `synthetic`, `creature`, `vehicles`, `spacecraft
   modules, ship weapons, skill stunts, agendas, critical injuries, ship component damage and colony
   initiatives.
 - **Journal sheet** — Foundry's journal sheet in the same look: the sidebar, title, headings and
-  links are restyled, and what a page's own layout sets is left alone.
+  links are restyled, and what a page's own layout sets is left alone. A page's editor window takes
+  the same look when its journal uses this sheet.
 
 The sheet subclasses the system's own sheet class and calls the system's roll methods, so dice,
 pushes, panic and supply rolls behave exactly as they do on the original sheet.
