@@ -130,6 +130,7 @@ const NAMED_ITEM_TYPES = {
   agenda: "agenda",
   injury: "critical-injury",
   shipDamage: "spacecraft-crit",
+  initiative: "colony-initiative",
 };
 /** The tabs after Details that each item type has; a type not listed has Notes and Modifiers. */
 const ITEM_EXTRA_TABS = {
@@ -142,9 +143,10 @@ const ITEM_EXTRA_TABS = {
   agenda: [],
   "critical-injury": ["modifiers"],
   "spacecraft-crit": [],
+  "colony-initiative": ["notes"],
 };
 /** Item types whose image the system sets itself each time their sheet draws. */
-const ITEM_FIXED_IMAGE = ["specialty", "planet-system", "talent", "spacecraft-crit"];
+const ITEM_FIXED_IMAGE = ["specialty", "planet-system", "talent", "spacecraft-crit", "colony-initiative"];
 /** Which of the system's numbered item types (`item_types_list`) use each optional field. */
 const ITEM_FIELDS = {
   power: ["3", "4", "8", "10"],
@@ -804,6 +806,20 @@ export function prepareItemDetails(item, { evolved }) {
     case "agenda":
       details.description = "system.general.comment.value";
       break;
+    // What an initiative adds to each of its colony's stats.
+    case "colony-initiative":
+      typed("system.header.type", cfg.colony_policy_list, header.type);
+      for (const key of Object.keys(COLONY_STATS)) {
+        fields.push({
+          label: loc(`ALIENRPG.${key}`),
+          name: `system.modifiers.${key}.value`,
+          value: modifiers[key].value,
+          kind: "number",
+        });
+      }
+      details.checks.push({ label: loc("ALIENRPG.completed"), name: "system.header.completed", checked: header.completed });
+      details.description = "system.header.comment";
+      break;
     case "spacecraft-crit":
       typed("system.header.type.value", cfg.crit_list, type);
       fields.push({
@@ -928,6 +944,8 @@ export function prepareItemModifiers(item) {
   const cfg = CONFIG.ALIENRPG;
   const { modifiers, header } = item.system;
   // A computer's own dice sit on the Details tab; what is left here are bonuses to its user.
+  // A colony initiative's modifiers are to its colony's stats; they are fields on its Details tab.
+  if (!modifiers?.skills) return [];
   const computer = item.type === "item" && header?.type?.value === ITEM_COMPUTER;
   const row = (group, key, label) => ({
     label,

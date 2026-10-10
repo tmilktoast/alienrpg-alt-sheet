@@ -41,6 +41,8 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
   time, whether it is fatal, its effect and its modifiers.
 - **Ship damage sheet** — an alternate sheet for `spacecraft-crit` items: minor or major, the
   repair roll and the effect.
+- **Colony initiative sheet** — an alternate sheet for `colony-initiative` items: policy,
+  installation or project, what it adds to each colony stat, whether it is completed, and notes.
 - **Journal sheet** — an alternate sheet for journal entries: Foundry's journal sheet with the
   sidebar, title, headings and links restyled to match the other alternate sheets.
 - The pilot's Piloting roll adds the vehicle's manoeuvrability, which the system's sheet leaves out.
@@ -54,7 +56,7 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
 
 - Each sheet is listed under its own name in Configure Sheet — Alternate Character Sheet,
   Alternate Synthetic Sheet, Alternate Creature Sheet, Alternate Vehicle Sheet, Alternate Item Sheet,
-  Alternate Career Sheet, Alternate System Sheet and Alternate Journal Sheet — in place of "Alternate Sheet" for all of them.
+  Alternate Career Sheet, Alternate System Sheet, Alternate Journal Sheet and so on — in place of "Alternate Sheet" for all of them.
 - The ranged attack dialog starts on Short range instead of Adjacent. A weapon that only reaches
   Adjacent still starts there.
 

@@ -19,7 +19,8 @@
       "stunts": "Alternate Skill Stunts Sheet",
       "agenda": "Alternate Agenda Sheet",
       "injury": "Alternate Critical Injury Sheet",
-      "shipDamage": "Alternate Ship Damage Sheet"
+      "shipDamage": "Alternate Ship Damage Sheet",
+      "initiative": "Alternate Colony Initiative Sheet"
     },
     "Tabs": {
       "Play": "Play",
