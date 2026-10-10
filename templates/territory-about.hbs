@@ -1,0 +1,31 @@
+<section class="tab aas-tab aas-territory-about {{tab.cssClass}}" data-group="primary" data-tab="about">
+  <section class="aas-panel">
+    <header class="aas-panel-head">
+      <h2>{{localize 'ALIENRPG.Description'}}</h2>
+    </header>
+    {{#if editMode}}
+    <textarea name="system.comment.value" rows="12" aria-label="{{localize 'ALIENRPG.Description'}}">{{about.description}}</textarea>
+    {{else}}
+    {{#if about.description}}
+    <div class="aas-prose aas-special">{{about.description}}</div>
+    {{else}}
+    <p class="aas-empty">{{localize 'ALTSHEET.NoDescription'}}</p>
+    {{/if}}
+    {{/if}}
+  </section>
+
+  <section class="aas-panel">
+    <header class="aas-panel-head">
+      <h2>{{localize 'ALIENRPG.Sectors'}}</h2>
+    </header>
+    {{#if editMode}}
+    <textarea name="system.sectors.value" rows="12" aria-label="{{localize 'ALIENRPG.Sectors'}}">{{about.sectors}}</textarea>
+    {{else}}
+    {{#if about.sectors}}
+    <div class="aas-prose aas-special">{{about.sectors}}</div>
+    {{else}}
+    <p class="aas-empty">{{localize 'ALTSHEET.Territory.NoSectors'}}</p>
+    {{/if}}
+    {{/if}}
+  </section>
+</section>

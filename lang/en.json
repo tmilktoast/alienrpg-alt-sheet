@@ -9,7 +9,8 @@
       "journal": "Alternate Journal Sheet",
       "career": "Alternate Career Sheet",
       "system": "Alternate System Sheet",
-      "spacecraft": "Alternate Spacecraft Sheet"
+      "spacecraft": "Alternate Spacecraft Sheet",
+      "territory": "Alternate Territory Sheet"
     },
     "Tabs": {
       "Play": "Play",
@@ -23,7 +24,9 @@
       "Details": "Details",
       "Modifiers": "Modifiers",
       "Ship": "Ship",
-      "Combat": "Combat"
+      "Combat": "Combat",
+      "Systems": "Systems",
+      "About": "About"
     },
     "Rules": {
       "Actions": "Actions",
@@ -198,6 +201,16 @@
       "NoDamage": "None.",
       "PhasesHint": "Pick what the ship does in a phase, then announce it to the chat.",
       "Announce": "Announce"
+    },
+    "Territory": {
+      "EditModeOn": "Editing: name, description and sectors are unlocked. Click to lock.",
+      "EditModeOff": "Locked for reading. Click to edit name, description and sectors.",
+      "Limited": "You only have limited access to this territory.",
+      "Count": "{count} systems",
+      "Systems": "Systems",
+      "NoSector": "No sector",
+      "NoSystems": "No systems. Drag Planet/System items here or add one.",
+      "NoSectors": "No sectors described."
     },
     "Item": {
       "EditImage": "Change image",

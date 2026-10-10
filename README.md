@@ -2,7 +2,7 @@
 
 An alternate character sheet for the [Alien RPG system](https://github.com/pwatson100/alienrpg)
 (`alienrpg` 4.x, Foundry v13–v14), built for the **Evolved** rules. It registers alongside the
-system's sheet for `character`, `synthetic`, `creature`, `vehicles` and `spacecraft` actors, so either can be used per actor.
+system's sheet for `character`, `synthetic`, `creature`, `vehicles`, `spacecraft` and `territory` actors, so either can be used per actor.
 
 <p>
   <img src="docs/preview-play.png" alt="Play tab: attributes, skills, weapons and conditions with roll buttons" width="49%">
@@ -28,6 +28,8 @@ system's sheet for `character`, `synthetic`, `creature`, `vehicles` and `spacecr
   with each station's roll (Piloting with thrusters, Comtech, Heavy Machinery); armaments with Fire
   and Launch buttons; minor and major component damage; a Combat tab that announces each phase's
   action; and a Cargo tab with the ship's modules.
+- **Territory sheet** — a territory's systems grouped by sector, each opening its own sheet, and
+  an About tab for its description and sectors.
 - **Gear sheets** — one sheet for weapons, armor and items: the fields that apply to that kind of
   gear on a Details tab with its description, a Notes tab, and a Modifiers tab for the bonuses it
   gives whoever has it equipped. A computer's own dice are roll buttons.

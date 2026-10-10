@@ -1240,6 +1240,24 @@
   font-weight: 600;
 }
 
+/* A header with no vitals row. */
+.alien-alt-sheet .aas-header-simple {
+  grid-template-columns: 64px 1fr auto;
+  grid-template-areas: "portrait identity edit";
+  align-items: center;
+}
+
+.alien-alt-sheet .aas-header-simple .aas-portrait {
+  width: 64px;
+  height: 64px;
+  object-position: center;
+}
+
+.alien-alt-sheet .aas-header-simple .aas-limited {
+  grid-area: auto;
+  grid-column: 1 / -1;
+}
+
 /* ---------- Item sheet ---------- */
 
 .alien-alt-sheet.aas-item-sheet .aas-header {

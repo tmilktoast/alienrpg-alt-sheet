@@ -49,6 +49,10 @@ const SPACECRAFT_TABS = {
   cargo: "fa-solid fa-toolbox",
   notes: "fa-solid fa-pen",
 };
+const TERRITORY_TABS = {
+  systems: "fa-solid fa-sun",
+  about: "fa-solid fa-book-open",
+};
 
 /**
  * What each crew seat rolls, by the kind of actor crewed: the crew member's skill, plus one of the
@@ -1384,6 +1388,63 @@ function makeSpacecraftSheet(Base) {
 }
 
 /**
+ * The alternate sheet for territories: the systems in a stretch of space, grouped by sector, and
+ * what is known about it.
+ * @param {typeof foundry.applications.sheets.ActorSheetV2} Base  The system's territory sheet
+ */
+function makeTerritorySheet(Base) {
+  return class AltTerritorySheet extends makeBase(Base) {
+    static DEFAULT_OPTIONS = {
+      position: { width: 640, height: 720 },
+    };
+
+    static PARTS = {
+      header: { template: `${TEMPLATES}/simple-header.hbs` },
+      tabs: { template: "templates/generic/tab-navigation.hbs" },
+      systems: { template: `${TEMPLATES}/territory-systems.hbs`, scrollable: [""] },
+      about: { template: `${TEMPLATES}/territory-about.hbs`, scrollable: [""] },
+    };
+
+    static TABS = TERRITORY_TABS;
+
+    async _prepareContext(options) {
+      const context = await super._prepareContext(options);
+      const actor = this.actor;
+      const { comment, sectors } = actor.system;
+      const systems = actor.items.filter((item) => item.type === "planet-system");
+
+      // A blank territory opens unlocked, since the first thing to do is fill it in.
+      this._editMode ??= !comment.value && !sectors.value && !systems.length;
+
+      const bySector = new Map();
+      for (const item of systems) {
+        const { sector, system, commonName } = item.system.header;
+        const key = sector.value || loc("ALTSHEET.Territory.NoSector");
+        if (!bySector.has(key)) bySector.set(key, []);
+        bySector.get(key).push({
+          id: item.id,
+          name: item.name,
+          img: item.img,
+          system: system.value,
+          // The rulebooks' common names carry the odd line break tag.
+          commonName: commonName.value.replace(/<[^>]+>/g, " ").trim(),
+        });
+      }
+      const byName = (a, b) => a.localeCompare(b, undefined, { numeric: true });
+
+      return Object.assign(context, {
+        editMode: this._editMode && this.isEditable,
+        header: { key: "Territory", subtitle: fmt("ALTSHEET.Territory.Count", { count: systems.length }) },
+        sectors: [...bySector.entries()]
+          .sort(([a], [b]) => byName(a, b))
+          .map(([name, list]) => ({ name, systems: list.sort((a, b) => byName(a.system || a.name, b.system || b.name)) })),
+        about: { description: comment.value, sectors: sectors.value },
+      });
+    }
+  };
+}
+
+/**
  * The alternate sheet for items. One class lays out every item type it is registered for, as the
  * system's own item sheet does: gear (weapons, armor and items), careers and systems.
  * @param {typeof foundry.applications.sheets.ItemSheetV2} Base  The system's item sheet
@@ -1503,7 +1564,12 @@ Hooks.once("init", () => {
 // queued during init, which happens just before "ready".
 Hooks.once("ready", () => {
   if (game.system.id !== SYSTEM_ID) return;
-  const sheets = { creature: makeCreatureSheet, vehicles: makeVehicleSheet, spacecraft: makeSpacecraftSheet };
+  const sheets = {
+    creature: makeCreatureSheet,
+    vehicles: makeVehicleSheet,
+    spacecraft: makeSpacecraftSheet,
+    territory: makeTerritorySheet,
+  };
   for (const type of SHEET_TYPES) sheets[type] = (Base) => makeSheet(Base, type);
   for (const [type, make] of Object.entries(sheets)) {
     const Base = Object.values(CONFIG.Actor.sheetClasses[type] ?? {}).find((s) => s.id.startsWith(`${SYSTEM_ID}.`))?.cls;

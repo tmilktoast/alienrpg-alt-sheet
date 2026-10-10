@@ -1,0 +1,34 @@
+<section class="tab aas-tab aas-territory {{tab.cssClass}}" data-group="primary" data-tab="systems">
+  <section class="aas-panel">
+    <header class="aas-panel-head">
+      <h2>{{localize 'ALTSHEET.Territory.Systems'}}</h2>
+      <button type="button" class="aas-button" data-action="addItem" data-type="planet-system">
+        <i class="fa-solid fa-plus" inert></i> {{localize 'ALTSHEET.Add'}}
+      </button>
+    </header>
+
+    {{#each sectors}}
+    <h3>{{name}}</h3>
+    <ol class="aas-list">
+      {{#each systems}}
+      <li class="aas-injury draggable" data-item-id="{{id}}">
+        <img src="{{img}}" alt="">
+        <div class="aas-injury-body">
+          <div class="aas-weapon-name">
+            <button type="button" class="aas-link" data-action="editItem">{{name}}</button>
+          </div>
+          <div class="aas-stats">
+            {{#if system}}<span>{{localize 'ALIENRPG.System'}} <b>{{system}}</b></span>{{/if}}
+            {{#if commonName}}<span>{{localize 'ALIENRPG.CommonName'}} <b>{{commonName}}</b></span>{{/if}}
+          </div>
+        </div>
+        <button type="button" class="aas-icon" data-action="deleteItem" data-tooltip="{{localize 'ALTSHEET.Delete'}}"
+          aria-label="{{localize 'ALTSHEET.Delete'}}"><i class="fa-solid fa-trash" inert></i></button>
+      </li>
+      {{/each}}
+    </ol>
+    {{else}}
+    <p class="aas-empty">{{localize 'ALTSHEET.Territory.NoSystems'}}</p>
+    {{/each}}
+  </section>
+</section>

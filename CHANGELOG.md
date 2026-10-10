@@ -18,6 +18,8 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
 - **Spacecraft sheet** — an alternate sheet for `spacecraft` actors, with Ship, Combat, Cargo and
   Notes tabs. Picking a major component damage result by hand works here; the system's own dialog
   for it fails to open.
+- **Territory sheet** — an alternate sheet for `territory` actors: systems grouped by sector, and
+  an About tab.
 - **Gear sheets** — an alternate sheet for `weapon`, `armor` and `item` items, with Details, Notes
   and Modifiers tabs. Details shows only the fields that kind of gear uses; a computer's skill dice
   are roll buttons.
