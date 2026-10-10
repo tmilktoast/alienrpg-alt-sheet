@@ -39,6 +39,13 @@ const CREATURE_TABS = {
   creature: "fa-solid fa-dice-d6",
   notes: "fa-solid fa-pen",
 };
+const VEHICLE_TABS = {
+  vehicle: "fa-solid fa-dice-d6",
+  cargo: "fa-solid fa-toolbox",
+};
+
+/** Templates included from other templates, which Foundry has to load before a sheet renders. */
+const PARTIALS = [`${TEMPLATES}/gear-list.hbs`];
 
 /** What the system stores for a creature with no attack or critical injury table picked. */
 const NO_TABLE = "None";
@@ -162,34 +169,41 @@ function itemState(item) {
   return ITEM_STATES[item.system.header.active] ?? "carried";
 }
 
+function weaponRow(item) {
+  const { attributes: a, header } = item.system;
+  const ranged = header.type.value === WEAPON_RANGED;
+  const melee = header.type.value === WEAPON_MELEE;
+  return {
+    id: item.id,
+    name: item.name,
+    img: item.img,
+    ranged,
+    typed: ranged || melee,
+    typeLabel: ranged ? loc("ALIENRPG.WepTypeRanged") : melee ? loc("ALIENRPG.WepTypeMelee") : "",
+    damage: a.damage.value,
+    bonus: signed(a.bonus.value || 0),
+    range: rangeLabel(a.range.value),
+    rounds: a.rounds.value,
+    power: a.power.value,
+    armorPiercing: header.armorpiercing,
+    fullAuto: header.fullauto,
+    empty: ranged && a.rounds.value <= 0,
+  };
+}
+
+function sortedWeapons(actor) {
+  return actor.items.filter((item) => item.type === "weapon").sort((a, b) => (a.sort || 0) - (b.sort || 0));
+}
+
 /** Equipped weapons, with the dice pool an attack will roll. */
 export function prepareWeapons(actor) {
   const skills = actor.system.skills;
-  return actor.items
-    .filter((item) => item.type === "weapon" && itemState(item) === "equipped")
-    .sort((a, b) => (a.sort || 0) - (b.sort || 0))
+  return sortedWeapons(actor)
+    .filter((item) => itemState(item) === "equipped")
     .map((item) => {
-      const { attributes: a, header } = item.system;
-      const ranged = header.type.value === WEAPON_RANGED;
-      const melee = header.type.value === WEAPON_MELEE;
-      const bonus = a.bonus.value || 0;
-      return {
-        id: item.id,
-        name: item.name,
-        img: item.img,
-        ranged,
-        typed: ranged || melee,
-        typeLabel: ranged ? loc("ALIENRPG.WepTypeRanged") : melee ? loc("ALIENRPG.WepTypeMelee") : "",
-        pool: (skills[ranged ? "rangedCbt" : "closeCbt"]?.mod ?? 0) + bonus,
-        damage: a.damage.value,
-        bonus: signed(bonus),
-        range: rangeLabel(a.range.value),
-        rounds: a.rounds.value,
-        power: a.power.value,
-        armorPiercing: header.armorpiercing,
-        fullAuto: header.fullauto,
-        empty: ranged && a.rounds.value <= 0,
-      };
+      const row = weaponRow(item);
+      const bonus = item.system.attributes.bonus.value || 0;
+      return { ...row, pool: (skills[row.ranged ? "rangedCbt" : "closeCbt"]?.mod ?? 0) + bonus };
     });
 }
 
@@ -421,6 +435,70 @@ export function prepareCreatureSkills(actor) {
   return { skills: [skill("mobility"), skill("observation")], acid: skill("acidSplash") };
 }
 
+export function prepareVehicleVitals(actor) {
+  const a = actor.system.attributes;
+  const { value, max } = a.hull;
+  return {
+    hull: {
+      value,
+      max,
+      pct: max > 0 ? Math.min(Math.max(value / max, 0), 1) * 100 : 0,
+      cls: value <= 0 ? "danger" : value < max ? "warn" : "",
+    },
+    // The system makes no roll for an armor rating of zero.
+    armor: { value: a.armorrating.value, rollable: a.armorrating.value > 0 },
+    speed: a.speed.value,
+    manoeuvrability: { value: a.manoeuvrability.value, label: signed(a.manoeuvrability.value) },
+  };
+}
+
+/** A vehicle's occupants in seat order, with the rolls each one makes from their own sheet's numbers. */
+export function prepareCrew(actor, { evolved }) {
+  const { crewPositionFlags: seats, crewPositionFlagsLocalized: labels } = CONFIG.ALIENRPG.vehicle;
+  const manoeuvrability = actor.system.attributes.manoeuvrability.value;
+  return actor.system.crew.occupants
+    .map(({ id, position }) => {
+      const member = game.actors.get(id);
+      const row = {
+        id,
+        name: member?.name ?? loc("ALTSHEET.Vehicle.MissingCrew"),
+        img: member?.img ?? "icons/svg/mystery-man.svg",
+        missing: !member,
+        seat: seats.indexOf(position),
+        positions: seats.map((value) => ({ value, label: loc(labels[value]), selected: value === position })),
+      };
+      if (!member) return row;
+
+      if (position === "PILOT") {
+        const skill = member.system.skills.piloting.mod;
+        row.piloting = {
+          skill,
+          manoeuvrability,
+          total: skill + manoeuvrability,
+          modified: manoeuvrability !== 0,
+          label: `${actor.name} - ${loc("ALIENRPG.Skillpiloting")}`,
+          tooltip: fmt("ALTSHEET.Vehicle.PilotingBreakdown", {
+            skill,
+            mod: signed(manoeuvrability),
+            total: skill + manoeuvrability,
+          }),
+        };
+      }
+
+      const hasStress = member.type === "character" || !!member.system.header.synthstress;
+      if (hasStress) {
+        const vitals = prepareVitals(member, { evolved, hasStress });
+        // Evolved rolls a stress response against Resolve; the first edition rolls panic against stress.
+        if (!evolved) row.stress = { panicroll: vitals.stress.value, mod: vitals.stress.mod, label: loc("ALIENRPG.Panic") };
+        else if (vitals.resolve) {
+          row.stress = { roll: vitals.resolve.base, mod: vitals.resolve.mod, label: loc("ALIENRPG.Resolve") };
+        }
+      }
+      return row;
+    })
+    .sort((a, b) => a.seat - b.seat || a.name.localeCompare(b.name));
+}
+
 /**
  * One of a creature's roll tables, by the name the system stores for it.
  * @param {string} name       The table's name, or "None"
@@ -463,6 +541,7 @@ function makeBase(Base) {
         roll: { handler: AltBase.#onRoll, buttons: [0, 2] },
         rollMods: AltBase.#onRollMods,
         stepField: AltBase.#onStepField,
+        addItem: AltBase.#onAddItem,
         editItem: AltBase.#onEditItem,
         deleteItem: AltBase.#onDeleteItem,
       },
@@ -521,6 +600,19 @@ function makeBase(Base) {
         if (input) input.disabled = true;
       }
 
+      // Item values edited in place. They aren't actor fields, so keep them out of the form submit.
+      for (const input of html.querySelectorAll("[data-item-field]")) {
+        input.addEventListener("change", (event) => {
+          event.stopPropagation();
+          const value = Math.max(0, Math.round(Number(input.value) || 0));
+          this._item(input)?.update({ [input.dataset.itemField]: value });
+        });
+      }
+
+      html.querySelector(".aas-cash")?.addEventListener("change", (event) => {
+        event.target.value = formatCash(event.target.value);
+      });
+
       for (const details of html.querySelectorAll("details[data-section]")) {
         const key = details.dataset.section;
         details.open = this._openSections.has(key);
@@ -573,6 +665,16 @@ function makeBase(Base) {
       if (next !== current) await doc.update({ [path]: next });
     }
 
+    static async #onAddItem(event, target) {
+      const { type } = target.dataset;
+      const cls = getDocumentClass("Item");
+      const data = { name: cls.defaultName({ type, parent: this.actor }), type };
+      // A weapon with no type can't be rolled, so start from the common case.
+      if (type === "weapon") data.system = { header: { type: { value: WEAPON_RANGED } } };
+      const item = await cls.create(data, { parent: this.actor });
+      item?.sheet.render(true);
+    }
+
     static #onEditItem(event, target) {
       this._item(target)?.sheet.render(true);
     }
@@ -601,7 +703,6 @@ function makeSheet(Base, type) {
         setField: AltSheet.#onSetField,
         radiation: AltSheet.#onRadiation,
         setItemState: AltSheet.#onSetItemState,
-        addItem: AltSheet.#onAddItem,
       },
     };
 
@@ -646,6 +747,8 @@ function makeSheet(Base, type) {
         attributeGroups: prepareAttributes(actor),
         weapons: prepareWeapons(actor),
         gear: prepareGear(actor),
+        itemStates: true,
+        powerRolls: true,
         conditions: prepareConditions(actor, context.statuses, { hasStress }),
         radiation: prepareRadiation(actor),
         supplies: prepareSupplies(actor),
@@ -657,24 +760,6 @@ function makeSheet(Base, type) {
         encumbrance: { ...sys.general.encumbrance, value: Math.round(sys.general.encumbrance.value * 100) / 100 },
         enrichedNotes: await enrich(actor, sys.notes),
         enrichedAdhocitems: await enrich(actor, sys.adhocitems),
-      });
-    }
-
-    async _onRender(context, options) {
-      await super._onRender(context, options);
-      const html = this.element;
-
-      // Item values edited in place. They aren't actor fields, so keep them out of the form submit.
-      for (const input of html.querySelectorAll("[data-item-field]")) {
-        input.addEventListener("change", (event) => {
-          event.stopPropagation();
-          const value = Math.max(0, Math.round(Number(input.value) || 0));
-          this._item(input)?.update({ [input.dataset.itemField]: value });
-        });
-      }
-
-      html.querySelector(".aas-cash")?.addEventListener("change", (event) => {
-        event.target.value = formatCash(event.target.value);
       });
     }
 
@@ -751,16 +836,6 @@ function makeSheet(Base, type) {
     static async #onSetItemState(event, target) {
       await this._item(target)?.update({ "system.header.active": target.dataset.state });
     }
-
-    static async #onAddItem(event, target) {
-      const { type } = target.dataset;
-      const cls = getDocumentClass("Item");
-      const data = { name: cls.defaultName({ type, parent: this.actor }), type };
-      // A weapon with no type can't be rolled, so start from the common case.
-      if (type === "weapon") data.system = { header: { type: { value: WEAPON_RANGED } } };
-      const item = await cls.create(data, { parent: this.actor });
-      item?.sheet.render(true);
-    }
   }
 
   // Sheets are registered by class name, so the two actor types need distinct ones.
@@ -831,6 +906,112 @@ function makeCreatureSheet(Base) {
   return AltCreatureSheet;
 }
 
+/**
+ * The alternate sheet for vehicles: hull and handling in the header, the crew and their rolls, the
+ * mounted weapons, and a cargo tab.
+ * @param {typeof foundry.applications.sheets.ActorSheetV2} Base  The system's vehicle sheet
+ */
+function makeVehicleSheet(Base) {
+  class AltVehicleSheet extends makeBase(Base) {
+    static DEFAULT_OPTIONS = {
+      position: { width: 800, height: 760 },
+      actions: {
+        openCrew: AltVehicleSheet.#onOpenCrew,
+        removeCrew: AltVehicleSheet.#onRemoveCrew,
+      },
+    };
+
+    static PARTS = {
+      header: { template: `${TEMPLATES}/vehicle-header.hbs` },
+      tabs: { template: "templates/generic/tab-navigation.hbs" },
+      vehicle: { template: `${TEMPLATES}/vehicle.hbs`, scrollable: [""] },
+      cargo: { template: `${TEMPLATES}/vehicle-cargo.hbs`, scrollable: [""] },
+    };
+
+    static TABS = VEHICLE_TABS;
+
+    async _prepareContext(options) {
+      const context = await super._prepareContext(options);
+      const actor = this.actor;
+      const { attributes, crew } = actor.system;
+
+      // A blank vehicle opens unlocked, since the first thing to do is fill it in.
+      this._editMode ??= !attributes.hull.max && !attributes.speed.value && !attributes.armorrating.value;
+
+      return Object.assign(context, {
+        editMode: this._editMode && this.isEditable,
+        vitals: prepareVehicleVitals(actor),
+        crewList: prepareCrew(actor, { evolved: context.isEvolved }),
+        // The system seats a driver on top of the passengers a vehicle is rated for.
+        seats: { taken: crew.occupants.length, max: attributes.passengers.value + 1 },
+        weapons: sortedWeapons(actor).map(weaponRow),
+        gear: prepareGear(actor),
+        details: {
+          passengers: attributes.passengers.value,
+          cost: attributes.cost.value,
+          description: attributes.comment.value,
+        },
+      });
+    }
+
+    async _onRender(context, options) {
+      await super._onRender(context, options);
+
+      // Seats aren't actor fields the form can submit; the system keeps them in its occupant list.
+      for (const select of this.element.querySelectorAll("select[data-crew-position]")) {
+        select.addEventListener("change", (event) => {
+          event.stopPropagation();
+          this.actor.addVehicleOccupant(this.#crewId(select), select.value);
+        });
+      }
+    }
+
+    #crewId(target) {
+      return target.closest("[data-crew-id]")?.dataset.crewId;
+    }
+
+    async _roll(target, withMods) {
+      const actor = this.actor;
+      const data = target.dataset;
+      switch (data.rollType) {
+        case "ability":
+          return withMods ? actor.rollAbilityMod(actor, data) : actor.abilityRoll(actor, data);
+        // The system asks who is firing, the range and any modifiers before every vehicle attack.
+        case "weapon": {
+          const item = this._item(target);
+          if (!item) return;
+          const { header, attributes } = item.system;
+          if (header.type.value === WEAPON_RANGED && attributes.rounds.value <= 0) {
+            return ui.notifications.warn(loc("ALIENRPG.noAmmo"));
+          }
+          if (game.settings.get(SYSTEM_ID, "evolved")) data.isEvolved = true;
+          return item.roll(false, data);
+        }
+        // A crew member's own stress response (Evolved) or panic roll, made as that character.
+        case "crewStress": {
+          const member = game.actors.get(this.#crewId(target));
+          if (!member) return;
+          if (game.settings.get(SYSTEM_ID, "evolved")) {
+            return withMods ? member.rollResolveMod(member, data) : member.rollResolve(member, data);
+          }
+          return withMods ? member.rollPanicMod(member, data) : member.rollPanic(member, data);
+        }
+      }
+    }
+
+    static #onOpenCrew(event, target) {
+      game.actors.get(this.#crewId(target))?.sheet.render(true);
+    }
+
+    static async #onRemoveCrew(event, target) {
+      const occupants = this.actor.removeVehicleOccupant(this.#crewId(target));
+      await this.actor.update({ "system.crew.occupants": occupants, "system.crew.passengerQty": occupants.length });
+    }
+  }
+
+  return AltVehicleSheet;
+}
+
 /** Format cash the way the system's sheet does, following its dollar-sign setting. */
 function formatCash(text) {
   const value = Number(String(text).replace(/[^0-9.-]+/g, "")) || 0;
@@ -844,11 +1025,15 @@ function formatCash(text) {
   }).format(value);
 }
 
+Hooks.once("init", () => {
+  if (game.system.id === SYSTEM_ID) foundry.applications.handlebars.loadTemplates(PARTIALS);
+});
+
 // The system's sheet classes only show up in CONFIG once Foundry has applied the registrations
 // queued during init, which happens just before "ready".
 Hooks.once("ready", () => {
   if (game.system.id !== SYSTEM_ID) return;
-  const sheets = { creature: makeCreatureSheet };
+  const sheets = { creature: makeCreatureSheet, vehicles: makeVehicleSheet };
   for (const type of SHEET_TYPES) sheets[type] = (Base) => makeSheet(Base, type);
   for (const [type, make] of Object.entries(sheets)) {
     const Base = Object.values(CONFIG.Actor.sheetClasses[type] ?? {}).find((s) => s.id.startsWith(`${SYSTEM_ID}.`))?.cls;

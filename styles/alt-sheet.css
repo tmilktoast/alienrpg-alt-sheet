@@ -1179,3 +1179,24 @@
 .alien-alt-sheet .window-content .aas-attacks .aas-prose > :last-child {
   margin-bottom: 0;
 }
+
+/* ---------- Vehicle sheet ---------- */
+
+.alien-alt-sheet .window-content .aas-crew select {
+  flex: none;
+  width: auto;
+}
+
+.alien-alt-sheet .aas-crew .aas-link {
+  padding: 0;
+}
+
+.alien-alt-sheet .aas-form-row {
+  display: flex;
+  gap: 10px;
+}
+
+.alien-alt-sheet .aas-form-row > .aas-labelled {
+  flex: 1 1 0;
+  min-width: 0;
+}

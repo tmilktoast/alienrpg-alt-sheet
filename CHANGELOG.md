@@ -11,6 +11,11 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
   header; the Creature tab has the signature attack with a list of what each roll on its table
   does, mobility, observation and acid splash as roll buttons, special abilities and critical
   injuries. Stats, tables and special abilities only change while Edit is on.
+- **Vehicle sheet** — an alternate sheet for `vehicles` actors. Hull, armor, speed and
+  manoeuvrability sit in the header. The Vehicle tab lists the crew with a seat picker, a Piloting
+  roll for the pilot and a stress response (or panic roll) for each crew member, plus the mounted
+  weapons with ammo and an Attack button. The Cargo tab lists weapons, armor and items.
+- The pilot's Piloting roll adds the vehicle's manoeuvrability, which the system's sheet leaves out.
 
 ### Changed
 

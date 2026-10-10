@@ -7,7 +7,9 @@
       "Bio": "Bio",
       "Notes": "Notes",
       "Rules": "Rules",
-      "Creature": "Creature"
+      "Creature": "Creature",
+      "Vehicle": "Vehicle",
+      "Cargo": "Cargo"
     },
     "Rules": {
       "Actions": "Actions",
@@ -72,6 +74,7 @@
     "AttributesSkills": "Attributes & Skills",
     "Rank": "Rank",
     "Base": "Base",
+    "Max": "Max",
     "Stunts": "Stunts",
     "Weapons": "Weapons",
     "NoWeapons": "No weapons equipped. Equip one on the Gear tab.",
@@ -121,7 +124,6 @@
       "EditModeOff": "Locked for play. Click to edit name, health, stats, skills, tables and special abilities.",
       "Limited": "You only have limited access to this creature.",
       "RollHint": "Click a button to roll. Shift-click, right-click or the button beside it to add modifiers or pick a result first.",
-      "Max": "Max",
       "Dice": "Dice",
       "SpeedHint": "How many initiative cards the creature draws each round. It isn't rolled.",
       "Attack": "Signature Attack",
@@ -135,6 +137,24 @@
       "NoSpecial": "No special abilities.",
       "CritTable": "Critical injury table",
       "PickCritTable": "No critical injury table set. Turn Edit on to pick one."
+    },
+    "Vehicle": {
+      "EditModeOn": "Editing: name, hull, armor, speed, manoeuvrability, passengers, cost and description are unlocked. Click to lock.",
+      "EditModeOff": "Locked for play. Click to edit name, hull, armor, speed, manoeuvrability, passengers, cost and description.",
+      "Limited": "You only have limited access to this vehicle.",
+      "ManoeuvrabilityHint": "Added to the pilot's Piloting rolls.",
+      "Crew": "Crew",
+      "Seats": "{taken} / {max} seats",
+      "NoCrew": "No crew. Drag characters or synthetics here from the Actors sidebar.",
+      "MissingCrew": "Missing actor",
+      "OpenCrew": "Open this character's sheet",
+      "RemoveCrew": "Remove from the vehicle",
+      "PilotingBreakdown": "Piloting {skill} + manoeuvrability {mod} = {total} dice",
+      "Details": "Details",
+      "WeaponsHint": "Fired by the crew",
+      "AttackTip": "Asks who is firing, the range and any modifiers, then rolls",
+      "NoWeapons": "No weapons. Drag one here or add it on the Cargo tab.",
+      "CargoHint": "Weapons listed here are the ones on the Vehicle tab. Drag items in from a compendium or the Items sidebar."
     }
   }
 }
