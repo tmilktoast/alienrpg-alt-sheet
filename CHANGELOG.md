@@ -15,6 +15,9 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
   manoeuvrability sit in the header. The Vehicle tab lists the crew with a seat picker, a Piloting
   roll for the pilot and a stress response (or panic roll) for each crew member, plus the mounted
   weapons with ammo and an Attack button. The Cargo tab lists weapons, armor and items.
+- **Gear sheets** — an alternate sheet for `weapon`, `armor` and `item` items, with Details, Notes
+  and Modifiers tabs. Details shows only the fields that kind of gear uses; a computer's skill dice
+  are roll buttons.
 - The pilot's Piloting roll adds the vehicle's manoeuvrability, which the system's sheet leaves out.
 
 ### Changed

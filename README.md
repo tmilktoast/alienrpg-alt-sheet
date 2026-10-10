@@ -24,6 +24,9 @@ system's sheet for `character`, `synthetic`, `creature` and `vehicles` actors, s
 - **Vehicle sheet** — hull, armor, speed and manoeuvrability in the header; the crew with a seat
   picker, the pilot's Piloting roll (manoeuvrability included) and each member's stress response;
   mounted weapons with ammo and an Attack button; and a Cargo tab for everything aboard.
+- **Gear sheets** — one sheet for weapons, armor and items: the fields that apply to that kind of
+  gear on a Details tab with its description, a Notes tab, and a Modifiers tab for the bonuses it
+  gives whoever has it equipped. A computer's own dice are roll buttons.
 
 The sheet subclasses the system's own sheet class and calls the system's roll methods, so dice,
 pushes, panic and supply rolls behave exactly as they do on the original sheet.
@@ -40,7 +43,8 @@ https://github.com/tmilktoast/alienrpg-alt-sheet/releases/latest/download/module
 
 Open a character, creature or vehicle, click the ⋮ menu in the window header → **Configure Sheet**, and pick
 **Alternate Sheet**. To make it the default for every character, set it under *Default Sheet* in the
-same dialog (GM only). Each actor type has its own default.
+same dialog (GM only). Each actor type has its own default. Weapons, armor and items work the same way from an item's
+own ⋮ menu.
 
 ## Local development
 
@@ -67,5 +71,7 @@ system:
   `creatureAutoAttackRoll`, `creatureManAttackRoll` and `creatureAcidRoll`
 - for vehicles, the sheet's actor drop handling (which seats a dropped character), actor methods
   `addVehicleOccupant` and `removeVehicleOccupant`, and `CONFIG.ALIENRPG.vehicle` for the seats
+- for gear, the item sheet's `RollComputer` action and the numbered types in
+  `CONFIG.ALIENRPG.item_types_list`, which decide the fields an item shows
 
 If a system update renames any of those, that is where to look.

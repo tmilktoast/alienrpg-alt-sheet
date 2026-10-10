@@ -1200,3 +1200,66 @@
   flex: 1 1 0;
   min-width: 0;
 }
+
+/* ---------- Item sheet ---------- */
+
+.alien-alt-sheet.aas-item-sheet .aas-header {
+  grid-template-columns: 64px 1fr auto;
+  grid-template-areas: "portrait identity type";
+  align-items: center;
+}
+
+.alien-alt-sheet.aas-item-sheet .aas-portrait {
+  width: 64px;
+  height: 64px;
+  object-position: center;
+}
+
+.alien-alt-sheet .aas-item-type {
+  grid-area: type;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.alien-alt-sheet .window-content .aas-item-type select {
+  width: auto;
+  max-width: 190px;
+}
+
+.alien-alt-sheet .aas-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 8px 10px;
+}
+
+.alien-alt-sheet .aas-panel-grow {
+  flex: 1 1 auto;
+}
+
+.alien-alt-sheet .aas-panel-grow prose-mirror {
+  flex: 1 1 auto;
+}
+
+.alien-alt-sheet .aas-modifier {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--aas-muted);
+}
+
+.alien-alt-sheet .aas-modifier.set {
+  color: var(--aas-text);
+}
+
+.alien-alt-sheet .window-content .aas-modifier input {
+  flex: none;
+  width: 56px;
+  text-align: center;
+}
+
+.alien-alt-sheet .window-content .aas-modifier.set input {
+  border-color: var(--aas-accent);
+}

@@ -1,0 +1,72 @@
+<section class="tab aas-tab aas-item-details {{tab.cssClass}}" data-group="primary" data-tab="details">
+  <section class="aas-panel">
+    <div class="aas-fields">
+      {{#each details.fields}}
+      <label class="aas-labelled">
+        <span>{{label}}</span>
+        {{#if (eq kind "select")}}
+        <select name="{{name}}" data-dtype="Number">
+          {{#each options}}
+          <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
+        {{else if (eq kind "text")}}
+        <input type="text" name="{{name}}" value="{{value}}">
+        {{else if (eq kind "cash")}}
+        <input type="text" class="aas-cash" name="{{name}}" value="{{value}}">
+        {{else if (eq kind "decimal")}}
+        <input type="number" name="{{name}}" value="{{value}}" min="0" step="any">
+        {{else}}
+        <input type="number" name="{{name}}" value="{{value}}" step="1">
+        {{/if}}
+      </label>
+      {{/each}}
+    </div>
+    {{#if details.checks.length}}
+    <div class="aas-roll-row">
+      {{#each details.checks}}
+      <label class="aas-check">
+        <input type="checkbox" name="{{name}}" {{checked checked}}>
+        <span>{{label}}</span>
+      </label>
+      {{/each}}
+    </div>
+    {{/if}}
+  </section>
+
+  {{#if details.computer.length}}
+  <section class="aas-panel">
+    <header class="aas-panel-head">
+      <h2>{{localize 'ALTSHEET.Item.Computer'}}</h2>
+      <span class="aas-panel-note">{{localize 'ALTSHEET.Item.ComputerHint'}}</span>
+    </header>
+    {{#each details.computer}}
+    <div class="aas-skill-row aas-attribute-row">
+      <label class="aas-inline-edit">
+        <span>{{localize 'ALTSHEET.Creature.Dice'}}</span>
+        <input type="number" name="{{name}}" value="{{value}}" step="1">
+      </label>
+      <div class="aas-rollgroup">
+        <button type="button" class="aas-roll" data-action="RollComputer" data-roll="{{value}}" data-label="{{label}}"
+          data-tooltip="{{localize 'ALTSHEET.Item.ComputerRoll'}}" {{#unless value}}disabled{{/unless}}>
+          <span class="aas-roll-name">{{label}}</span>
+          <span class="aas-die">{{value}}</span>
+        </button>
+      </div>
+    </div>
+    {{/each}}
+  </section>
+  {{/if}}
+
+  <section class="aas-panel aas-panel-grow">
+    <header class="aas-panel-head">
+      <h2>{{localize 'ALIENRPG.Description'}}</h2>
+    </header>
+    {{#if editable}}
+    <prose-mirror name="system.attributes.comment.value" data-document-uuid="{{item.uuid}}"
+      value="{{system.attributes.comment.value}}" collaborate="true" toggled="true">{{{enrichedComment}}}</prose-mirror>
+    {{else}}
+    <div class="aas-prose">{{{enrichedComment}}}</div>
+    {{/if}}
+  </section>
+</section>

@@ -1,0 +1,27 @@
+<header class="aas-header">
+  {{#if editable}}
+  <img class="aas-portrait editable" src="{{item.img}}" alt="{{item.name}}" data-action="editImage" data-edit="img"
+    data-tooltip="{{localize 'ALTSHEET.Item.EditImage'}}">
+  {{else}}
+  <img class="aas-portrait" src="{{item.img}}" alt="{{item.name}}">
+  {{/if}}
+
+  <div class="aas-identity">
+    {{#if editable}}
+    <input class="aas-name" type="text" name="name" value="{{item.name}}" placeholder="{{localize 'ALIENRPG.Name'}}">
+    {{else}}
+    <h1 class="aas-name">{{item.name}}</h1>
+    {{/if}}
+  </div>
+
+  <div class="aas-item-type">
+    <span class="aas-vital-label">{{typeLabel}}</span>
+    {{#unless limited}}{{#if details.types}}
+    <select name="system.header.type.value" aria-label="{{localize 'ALIENRPG.Type'}}">
+      {{#each details.types}}
+      <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+      {{/each}}
+    </select>
+    {{/if}}{{/unless}}
+  </div>
+</header>

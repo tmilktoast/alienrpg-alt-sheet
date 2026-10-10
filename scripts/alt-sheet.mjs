@@ -44,6 +44,25 @@ const VEHICLE_TABS = {
   cargo: "fa-solid fa-toolbox",
 };
 
+const ITEM_TABS = {
+  details: "fa-solid fa-list",
+  notes: "fa-solid fa-pen",
+  modifiers: "fa-solid fa-sliders",
+};
+
+/** The item types that are gear, which the alternate item sheet covers. */
+const GEAR_TYPES = ["weapon", "armor", "item"];
+/** Which of the system's numbered item types (`item_types_list`) use each optional field. */
+const ITEM_FIELDS = {
+  power: ["3", "4", "8", "10"],
+  food: ["7", "10"],
+  water: ["7", "10"],
+  airsupply: ["10"],
+};
+/** A computer or mainframe: its skill modifiers are dice the item itself rolls. */
+const ITEM_COMPUTER = "9";
+const COMPUTER_SKILLS = ["comtech", "piloting", "observation", "rangedCbt"];
+
 /** Templates included from other templates, which Foundry has to load before a sheet renders. */
 const PARTIALS = [`${TEMPLATES}/gear-list.hbs`];
 
@@ -517,6 +536,106 @@ async function prepareCreatureTable(actor, name, results = false) {
       }),
     ),
   };
+}
+
+/**
+ * The fields of a weapon, armor or item, as the Details tab lays them out.
+ * @returns {{types: object[]|null, fields: object[], checks: object[], computer: object[]}}
+ */
+export function prepareItemDetails(item, { evolved }) {
+  const cfg = CONFIG.ALIENRPG;
+  const { attributes: a, header, modifiers } = item.system;
+  const type = header.type?.value;
+  const options = (list, selected) =>
+    Object.entries(list).map(([value, { label }]) => ({ value, label: loc(label), selected: value === String(selected) }));
+  const fields = [];
+  const field = (label, key, kind = "number", extra = {}) =>
+    fields.push({ label: loc(label), name: `system.attributes.${key}.value`, value: a[key].value, kind, ...extra });
+  const details = { types: null, fields, checks: [], computer: [] };
+
+  switch (item.type) {
+    case "weapon": {
+      const ranged = type === WEAPON_RANGED;
+      const ranges = evolved ? cfg.evolved_weapon_range_list : cfg.weapon_range_list;
+      details.types = options(cfg.weapon_type_list, type);
+      field("ALIENRPG.Damage", "damage");
+      field("ALIENRPG.Bonus", "bonus");
+      // Only Evolved gives ranged weapons a minimum range.
+      if (evolved && ranged) field("ALIENRPG.minrng", "minrange", "select", { options: options(ranges, a.minrange.value) });
+      field(evolved && ranged ? "ALIENRPG.maxrng" : "ALIENRPG.Range", "range", "select", {
+        options: options(ranges, a.range.value),
+      });
+      if (ranged) field("ALIENRPG.ammo", "rounds");
+      field("ALIENRPG.Power", "power");
+      field("ALIENRPG.QuantityLabel", "quantity");
+      field("ALIENRPG.Class", "class", "text");
+      field("ALIENRPG.Weight", "weight", "decimal");
+      field("ALIENRPG.Cost", "cost", "cash");
+      if (evolved) {
+        const check = (label, key) =>
+          details.checks.push({ label: loc(label), name: `system.header.${key}`, checked: header[key] });
+        check("ALIENRPG.ArmorPiercing", "armorpiercing");
+        if (ranged) check("ALIENRPG.FullAuto", "fullauto");
+      }
+      break;
+    }
+    case "armor":
+      field("ALIENRPG.ArmorRating", "armorrating");
+      field("ALIENRPG.AirSupply", "airsupply");
+      field("ALIENRPG.Weight", "weight", "decimal");
+      field("ALIENRPG.Cost", "cost", "cash");
+      break;
+    default: {
+      const uses = (key) => ITEM_FIELDS[key].includes(type);
+      details.types = options(cfg.item_types_list, type);
+      field("ALIENRPG.QuantityLabel", "quantity");
+      if (uses("power")) field("ALIENRPG.Power", "power");
+      if (uses("food")) field("ALIENRPG.Food", "food");
+      if (uses("water")) field("ALIENRPG.Water", "water");
+      if (uses("airsupply")) field("ALIENRPG.AirSupply", "airsupply");
+      field("ALIENRPG.Weight", "weight", "decimal");
+      field("ALIENRPG.Cost", "cost", "cash");
+      if (type === ITEM_COMPUTER) {
+        details.computer = COMPUTER_SKILLS.map((key) => ({
+          key,
+          label: loc(cfg.skills[key].name),
+          name: `system.modifiers.skills.${key}.value`,
+          value: modifiers.skills[key].value,
+        }));
+      }
+    }
+  }
+  return details;
+}
+
+/** The bonuses an item gives whoever has it equipped: attributes first, then skills by attribute. */
+export function prepareItemModifiers(item) {
+  const cfg = CONFIG.ALIENRPG;
+  const { modifiers, header } = item.system;
+  // A computer's own dice sit on the Details tab; what is left here are bonuses to its user.
+  const computer = item.type === "item" && header.type?.value === ITEM_COMPUTER;
+  const row = (group, key, label) => ({
+    label,
+    name: `system.modifiers.${group}.${key}.value`,
+    value: modifiers[group][key].value,
+  });
+  const groups = [];
+  if (!computer) {
+    groups.push({
+      label: loc("ALIENRPG.Attributes"),
+      rows: [...ATTRIBUTES, "health", "stress", "resolve"]
+        .filter((key) => modifiers.attributes[key])
+        .map((key) => row("attributes", key, loc(cfg.modifiers[key]))),
+    });
+  }
+  for (const attr of ATTRIBUTES) {
+    const rows = Object.entries(cfg.skills)
+      .filter(([key, skill]) => skill.attrib === attr && modifiers.skills[key])
+      .filter(([key]) => !(computer && COMPUTER_SKILLS.includes(key)))
+      .map(([key, skill]) => row("skills", key, loc(skill.name)));
+    if (rows.length) groups.push({ label: loc(cfg.attributes[attr]), rows });
+  }
+  return groups;
 }
 
 /* -------------------------------------------- */
@@ -1012,6 +1131,84 @@ function makeVehicleSheet(Base) {
   return AltVehicleSheet;
 }
 
+/**
+ * The alternate sheet for gear: weapons, armor and items. One class covers all three, as the
+ * system's own item sheet does.
+ * @param {typeof foundry.applications.sheets.ItemSheetV2} Base  The system's item sheet
+ */
+function makeItemSheet(Base) {
+  // As on the actor sheets, the system's render options and part contexts assume its own templates.
+  const Core = Object.getPrototypeOf(Base.prototype);
+
+  return class AltItemSheet extends Base {
+    static DEFAULT_OPTIONS = {
+      classes: ["alien-alt-sheet", "aas-item-sheet"],
+      position: { width: 560, height: 620 },
+      window: { resizable: true },
+    };
+
+    static PARTS = {
+      header: { template: `${TEMPLATES}/item-header.hbs` },
+      tabs: { template: "templates/generic/tab-navigation.hbs" },
+      details: { template: `${TEMPLATES}/item-details.hbs`, scrollable: [""] },
+      notes: { template: `${TEMPLATES}/item-notes.hbs`, scrollable: [""] },
+      modifiers: { template: `${TEMPLATES}/item-modifiers.hbs`, scrollable: [""] },
+    };
+
+    _initializeApplicationOptions(options) {
+      const merged = super._initializeApplicationOptions(options);
+      merged.classes = merged.classes.filter((c) => !SYSTEM_CLASSES.includes(c));
+      return merged;
+    }
+
+    _configureRenderOptions(options) {
+      Core._configureRenderOptions.call(this, options);
+      if (this.document.limited) options.parts = ["header"];
+    }
+
+    _getTabs(parts) {
+      this.tabGroups.primary ??= "details";
+      const tabs = {};
+      for (const id of parts) {
+        if (!(id in ITEM_TABS)) continue;
+        tabs[id] = {
+          id,
+          group: "primary",
+          icon: ITEM_TABS[id],
+          label: `ALTSHEET.Tabs.${id.capitalize()}`,
+          cssClass: this.tabGroups.primary === id ? "active" : "",
+        };
+      }
+      return tabs;
+    }
+
+    async _prepareContext(options) {
+      const context = await super._prepareContext(options);
+      const item = this.item;
+      return Object.assign(context, {
+        details: prepareItemDetails(item, { evolved: context.isEvolved }),
+        modifierGroups: prepareItemModifiers(item),
+        typeLabel: loc(`TYPES.Item.${item.type}`),
+        enrichedComment: await enrich(item, item.system.attributes.comment.value),
+        enrichedNotes: await enrich(item, item.system.notes),
+      });
+    }
+
+    async _preparePartContext(partId, context, options) {
+      context = await Core._preparePartContext.call(this, partId, context, options);
+      if (partId in ITEM_TABS) context.tab = context.tabs[partId];
+      return context;
+    }
+
+    async _onRender(context, options) {
+      await Core._onRender.call(this, context, options);
+      this.element.querySelector(".aas-cash")?.addEventListener("change", (event) => {
+        event.target.value = formatCash(event.target.value);
+      });
+    }
+  };
+}
+
 /** Format cash the way the system's sheet does, following its dollar-sign setting. */
 function formatCash(text) {
   const value = Number(String(text).replace(/[^0-9.-]+/g, "")) || 0;
@@ -1047,4 +1244,13 @@ Hooks.once("ready", () => {
       label: "ALTSHEET.SheetLabel",
     });
   }
+
+  // The system uses one sheet class for every item type; so does this, for the gear types.
+  const ItemBase = Object.values(CONFIG.Item.sheetClasses[GEAR_TYPES[0]] ?? {}).find((s) => s.id.startsWith(`${SYSTEM_ID}.`))?.cls;
+  if (!ItemBase) return console.warn(`${MODULE_ID} | No ${SYSTEM_ID} item sheet found; skipping.`);
+  foundry.applications.apps.DocumentSheetConfig.registerSheet(Item, MODULE_ID, makeItemSheet(ItemBase), {
+    types: GEAR_TYPES,
+    makeDefault: false,
+    label: "ALTSHEET.SheetLabel",
+  });
 });
