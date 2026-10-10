@@ -1240,6 +1240,48 @@
   font-weight: 600;
 }
 
+/* ---------- Colony sheet ---------- */
+
+.alien-alt-sheet .aas-development {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.alien-alt-sheet .aas-stat-table {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.alien-alt-sheet .aas-stat-row {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr) 52px 44px 44px;
+  align-items: center;
+  gap: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.alien-alt-sheet .aas-stat-row > :nth-child(n + 3) {
+  text-align: center;
+}
+
+.alien-alt-sheet .aas-stat-head {
+  color: var(--aas-muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.alien-alt-sheet .aas-stat-name {
+  font-weight: 600;
+}
+
+.alien-alt-sheet .aas-stat-mod {
+  color: var(--aas-warn);
+}
+
 /* A header with no vitals row. */
 .alien-alt-sheet .aas-header-simple {
   grid-template-columns: 64px 1fr auto;

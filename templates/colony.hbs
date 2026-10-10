@@ -1,0 +1,102 @@
+<section class="tab aas-tab aas-colony {{tab.cssClass}}" data-group="primary" data-tab="colony">
+  <div class="aas-columns">
+    <div class="aas-column">
+      <section class="aas-panel">
+        <header class="aas-panel-head">
+          <h2>{{localize 'ALTSHEET.Colony.Development'}}</h2>
+          <span class="aas-panel-note">
+            {{#if colony.next}}{{localize 'ALTSHEET.Colony.Next' next=colony.next}}{{else}}{{localize 'ALTSHEET.Colony.Top'}}{{/if}}
+          </span>
+        </header>
+        <div class="aas-development">
+          <span class="aas-vital-value aas-vital-big"><b>{{colony.total}}</b></span>
+          <span class="aas-tag">{{localize 'ALTSHEET.Colony.Level' level=colony.level}}</span>
+        </div>
+        <div class="aas-meter"><span style="width: {{colony.pct}}%"></span></div>
+
+        <div class="aas-stat-table" role="table">
+          <div class="aas-stat-row aas-stat-head" role="row">
+            <span role="columnheader">{{localize 'ALTSHEET.Colony.Stat'}}</span>
+            <span role="columnheader">{{localize 'ALTSHEET.Colony.Head'}}</span>
+            <span role="columnheader">{{localize 'ALTSHEET.Base'}}</span>
+            <span role="columnheader" data-tooltip="{{localize 'ALTSHEET.Colony.ModsHint'}}">{{localize 'ALTSHEET.Colony.Mods'}}</span>
+            <span role="columnheader">{{localize 'ALTSHEET.Colony.Total'}}</span>
+          </div>
+          {{#each colony.rows}}
+          <div class="aas-stat-row" role="row">
+            <span class="aas-stat-name" role="cell">{{label}}</span>
+            {{#if @root.editMode}}
+            <input type="text" name="{{headPath}}" value="{{head}}" aria-label="{{label}}: {{localize 'ALTSHEET.Colony.Head'}}">
+            <input type="number" name="system.stats.{{key}}.value" value="{{base}}" min="0" step="1"
+              aria-label="{{label}}: {{localize 'ALTSHEET.Base'}}">
+            {{else}}
+            <span role="cell">{{#if head}}{{head}}{{else}}—{{/if}}</span>
+            <span role="cell">{{base}}</span>
+            {{/if}}
+            <span role="cell" class="{{#if modified}}aas-stat-mod{{/if}}">{{mod}}</span>
+            <b role="cell">{{total}}</b>
+          </div>
+          {{/each}}
+        </div>
+      </section>
+
+      <section class="aas-panel">
+        <header class="aas-panel-head">
+          <h2>{{localize 'ALTSHEET.Vehicle.Details'}}</h2>
+        </header>
+        {{#if editMode}}
+        <div class="aas-fields aas-fields-text">
+          {{#each facts}}
+          <label class="aas-labelled"><span>{{label}}</span><input type="text" name="{{name}}" value="{{value}}"></label>
+          {{/each}}
+          <label class="aas-labelled"><span>{{localize 'ALIENRPG.population'}}</span>
+            <input type="number" name="system.attributes.population.value" value="{{population}}" min="0" step="1"></label>
+        </div>
+        {{else}}
+        <dl class="aas-facts">
+          {{#each facts}}
+          <dt>{{label}}</dt><dd>{{#if value}}{{value}}{{else}}—{{/if}}</dd>
+          {{/each}}
+          <dt>{{localize 'ALIENRPG.population'}}</dt><dd>{{population}}</dd>
+        </dl>
+        {{/if}}
+      </section>
+    </div>
+
+    <div class="aas-column">
+      {{#each initiatives as |group|}}
+      <section class="aas-panel">
+        <header class="aas-panel-head">
+          <h2>{{group.label}}</h2>
+          <button type="button" class="aas-button" data-action="addItem" data-type="colony-initiative" data-kind="{{group.type}}">
+            <i class="fa-solid fa-plus" inert></i> {{localize 'ALTSHEET.Add'}}
+          </button>
+        </header>
+        <ol class="aas-list">
+          {{#each group.list}}
+          <li class="aas-injury draggable" data-item-id="{{id}}">
+            <img src="{{img}}" alt="">
+            <div class="aas-injury-body">
+              <div class="aas-weapon-name">
+                <span>{{name}}</span>
+                {{#if completed}}<span class="aas-tag">{{localize 'ALIENRPG.completed'}}</span>{{/if}}
+              </div>
+              {{#if comment}}<div class="aas-stats">{{comment}}</div>{{/if}}
+              {{#if mods.length}}
+              <div class="aas-stats">{{#each mods}}<span>{{label}} <b>{{value}}</b></span>{{/each}}</div>
+              {{/if}}
+            </div>
+            <button type="button" class="aas-icon" data-action="editItem" data-tooltip="{{localize 'ALTSHEET.Edit'}}"
+              aria-label="{{localize 'ALTSHEET.Edit'}}"><i class="fa-solid fa-pen-to-square" inert></i></button>
+            <button type="button" class="aas-icon" data-action="deleteItem" data-tooltip="{{localize 'ALTSHEET.Delete'}}"
+              aria-label="{{localize 'ALTSHEET.Delete'}}"><i class="fa-solid fa-trash" inert></i></button>
+          </li>
+          {{else}}
+          <li class="aas-empty">{{localize 'ALTSHEET.Colony.NoInitiatives'}}</li>
+          {{/each}}
+        </ol>
+      </section>
+      {{/each}}
+    </div>
+  </div>
+</section>

@@ -10,7 +10,8 @@
       "career": "Alternate Career Sheet",
       "system": "Alternate System Sheet",
       "spacecraft": "Alternate Spacecraft Sheet",
-      "territory": "Alternate Territory Sheet"
+      "territory": "Alternate Territory Sheet",
+      "colony": "Alternate Colony Sheet"
     },
     "Tabs": {
       "Play": "Play",
@@ -26,7 +27,8 @@
       "Ship": "Ship",
       "Combat": "Combat",
       "Systems": "Systems",
-      "About": "About"
+      "About": "About",
+      "Colony": "Colony"
     },
     "Rules": {
       "Actions": "Actions",
@@ -211,6 +213,29 @@
       "NoSector": "No sector",
       "NoSystems": "No systems. Drag Planet/System items here or add one.",
       "NoSectors": "No sectors described."
+    },
+    "Colony": {
+      "EditModeOn": "Editing: name, stats, who heads each and the colony's details are unlocked. Click to lock.",
+      "EditModeOff": "Locked for play. Click to edit name, stats, who heads each and the colony's details.",
+      "Limited": "You only have limited access to this colony.",
+      "Development": "Development",
+      "Level": "Level {level}",
+      "Next": "Next level at {next}",
+      "Top": "Top level",
+      "Stat": "Stat",
+      "Head": "Head",
+      "Mods": "Mods",
+      "ModsHint": "What the colony's initiatives add.",
+      "Total": "Total",
+      "NoInitiatives": "None. Drag a Colony Initiative here or add one.",
+      "Facts": {
+        "location": "Location",
+        "mission": "Mission",
+        "established": "Established",
+        "cycles": "Cycles",
+        "sponsor": "Sponsor",
+        "commander": "Commander"
+      }
     },
     "Item": {
       "EditImage": "Change image",

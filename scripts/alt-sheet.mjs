@@ -53,6 +53,23 @@ const TERRITORY_TABS = {
   systems: "fa-solid fa-sun",
   about: "fa-solid fa-book-open",
 };
+const COLONY_TABS = {
+  colony: "fa-solid fa-city",
+  notes: "fa-solid fa-pen",
+};
+/** A colony's stats, each with the field naming who heads it. */
+const COLONY_STATS = {
+  economy: "economydirector",
+  potential: "potentialname",
+  productivity: "productivityname",
+  maintenance: "maintenancename",
+  science: "sciencename",
+  spirit: "spiritname",
+};
+/** The development totals a colony has to pass to reach each level, as on the system's colony sheet. */
+const COLONY_LEVELS = [5, 30, 40, 53, 68, 85];
+/** The system's numbered kinds of colony initiative (`colony_policy_list`). */
+const COLONY_INITIATIVES = { 1: "Policies", 2: "Installations", 3: "Projects" };
 
 /**
  * What each crew seat rolls, by the kind of actor crewed: the crew member's skill, plus one of the
@@ -641,6 +658,58 @@ export function prepareShipDamage(actor) {
   ];
 }
 
+/** A colony's stats with the modifiers its initiatives add, and the development level they come to. */
+export function prepareColonyStats(actor) {
+  const { stats, attributes } = actor.system;
+  const mods = Object.fromEntries(Object.keys(COLONY_STATS).map((key) => [key, 0]));
+  for (const item of actor.items) {
+    if (item.type !== "colony-initiative") continue;
+    for (const key of Object.keys(mods)) mods[key] += Number(item.system.modifiers[key]?.value) || 0;
+  }
+  const rows = Object.entries(COLONY_STATS).map(([key, head]) => ({
+    key,
+    label: loc(`ALIENRPG.${key}`),
+    headPath: `system.attributes.${head}`,
+    head: attributes[head],
+    base: stats[key].value,
+    mod: signed(mods[key]),
+    modified: mods[key] !== 0,
+    total: stats[key].value + mods[key],
+  }));
+  const total = rows.reduce((sum, row) => sum + row.total, 0);
+  const level = COLONY_LEVELS.filter((threshold) => total > threshold).length;
+  const next = COLONY_LEVELS[level];
+  return {
+    rows,
+    total,
+    level,
+    // How far through the current level the colony is; full once there is no level left to reach.
+    pct: next === undefined ? 100 : Math.min(Math.max(total / (next + 1), 0), 1) * 100,
+    next: next === undefined ? null : next + 1,
+  };
+}
+
+/** A colony's initiatives, split into policies, installations and projects. */
+export function prepareColonyInitiatives(actor) {
+  const groups = Object.entries(COLONY_INITIATIVES).map(([type, key]) => ({ type, label: loc(`ALIENRPG.${key}`), list: [] }));
+  const sorted = [...actor.items].sort((a, b) => (a.sort || 0) - (b.sort || 0));
+  for (const item of sorted) {
+    if (item.type !== "colony-initiative") continue;
+    const { header, modifiers } = item.system;
+    groups.find((group) => group.type === header.type)?.list.push({
+      id: item.id,
+      name: item.name,
+      img: item.img,
+      completed: header.completed,
+      comment: (header.comment ?? "").replace(/<[^>]+>/g, " ").trim(),
+      mods: Object.keys(COLONY_STATS)
+        .filter((key) => Number(modifiers[key]?.value))
+        .map((key) => ({ label: loc(`ALIENRPG.${key}`), value: signed(Number(modifiers[key].value)) })),
+    });
+  }
+  return groups;
+}
+
 /**
  * One of a creature's roll tables, by the name the system stores for it.
  * @param {string} name       The table's name, or "None"
@@ -938,6 +1007,8 @@ function makeBase(Base) {
       // A weapon with no type can't be rolled or listed, so start from the common case.
       if (type === "weapon") data.system = { header: { type: { value: WEAPON_RANGED } } };
       if (type === "spacecraftweapons") data.system = { header: { type: { value: SHIP_WEAPON_OFFENSIVE } } };
+      // A colony initiative is a policy, an installation or a project; the button says which.
+      if (type === "colony-initiative") data.system = { header: { type: target.dataset.kind } };
       const item = await cls.create(data, { parent: this.actor });
       item?.sheet.render(true);
     }
@@ -1445,6 +1516,53 @@ function makeTerritorySheet(Base) {
 }
 
 /**
+ * The alternate sheet for colonies: the six stats with who heads each and what its initiatives add,
+ * the development level they come to, and the initiatives themselves.
+ * @param {typeof foundry.applications.sheets.ActorSheetV2} Base  The system's colony sheet
+ */
+function makeColonySheet(Base) {
+  return class AltColonySheet extends makeBase(Base) {
+    static DEFAULT_OPTIONS = {
+      position: { width: 800, height: 780 },
+    };
+
+    static PARTS = {
+      header: { template: `${TEMPLATES}/simple-header.hbs` },
+      tabs: { template: "templates/generic/tab-navigation.hbs" },
+      colony: { template: `${TEMPLATES}/colony.hbs`, scrollable: [""] },
+      notes: { template: `${TEMPLATES}/notes.hbs`, scrollable: [""] },
+    };
+
+    static TABS = COLONY_TABS;
+
+    async _prepareContext(options) {
+      const context = await super._prepareContext(options);
+      const actor = this.actor;
+      const { attributes } = actor.system;
+      const colony = prepareColonyStats(actor);
+
+      // A blank colony opens unlocked, since the first thing to do is fill it in.
+      this._editMode ??= !colony.total && !attributes.location && !attributes.mission;
+
+      return Object.assign(context, {
+        editMode: this._editMode && this.isEditable,
+        header: { key: "Colony", subtitle: fmt("ALTSHEET.Colony.Level", { level: colony.level }) },
+        colony,
+        initiatives: prepareColonyInitiatives(actor),
+        facts: ["location", "mission", "established", "cycles", "sponsor", "commander"].map((key) => ({
+          label: loc(`ALTSHEET.Colony.Facts.${key}`),
+          name: `system.attributes.${key}`,
+          value: attributes[key],
+        })),
+        population: attributes.population.value,
+        notes: notesOf(actor),
+        enrichedNotes: await enrich(actor, notesOf(actor)),
+      });
+    }
+  };
+}
+
+/**
  * The alternate sheet for items. One class lays out every item type it is registered for, as the
  * system's own item sheet does: gear (weapons, armor and items), careers and systems.
  * @param {typeof foundry.applications.sheets.ItemSheetV2} Base  The system's item sheet
@@ -1569,6 +1687,7 @@ Hooks.once("ready", () => {
     vehicles: makeVehicleSheet,
     spacecraft: makeSpacecraftSheet,
     territory: makeTerritorySheet,
+    colony: makeColonySheet,
   };
   for (const type of SHEET_TYPES) sheets[type] = (Base) => makeSheet(Base, type);
   for (const [type, make] of Object.entries(sheets)) {
