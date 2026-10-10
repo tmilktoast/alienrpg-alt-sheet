@@ -41,7 +41,7 @@ system's sheet for `character`, `synthetic`, `creature`, `vehicles`, `spacecraft
   on its own) and Planet/System items (the system's details as labelled fields, then its
   description).
 - **Other item sheets** — the same item sheet again, each under its own name, for talents, ship
-  modules, ship weapons, skill stunts and agendas.
+  modules, ship weapons, skill stunts, agendas and critical injuries.
 - **Journal sheet** — Foundry's journal sheet in the same look: the sidebar, title, headings and
   links are restyled, and what a page's own layout sets is left alone.
 

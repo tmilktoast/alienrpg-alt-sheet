@@ -128,9 +128,19 @@ const NAMED_ITEM_TYPES = {
   shipWeapon: "spacecraftweapons",
   stunts: "skill-stunts",
   agenda: "agenda",
+  injury: "critical-injury",
 };
 /** The tabs after Details that each item type has; a type not listed has Notes and Modifiers. */
-const ITEM_EXTRA_TABS = { specialty: [], "planet-system": [], talent: ["notes"], spacecraftmods: ["notes"], spacecraftweapons: ["notes"], "skill-stunts": [], agenda: [] };
+const ITEM_EXTRA_TABS = {
+  specialty: [],
+  "planet-system": [],
+  talent: ["notes"],
+  spacecraftmods: ["notes"],
+  spacecraftweapons: ["notes"],
+  "skill-stunts": [],
+  agenda: [],
+  "critical-injury": ["modifiers"],
+};
 /** Item types whose image the system sets itself each time their sheet draws. */
 const ITEM_FIXED_IMAGE = ["specialty", "planet-system", "talent"];
 /** Which of the system's numbered item types (`item_types_list`) use each optional field. */
@@ -765,7 +775,7 @@ async function prepareCreatureTable(actor, name, results = false) {
 /**
  * The fields of an item, as the Details tab lays them out, and where its description is kept.
  * @returns {{types: {name: string, options: object[]}|null, names?: object[], fields: object[], checks: object[], computer: object[], description: string,
- *   text?: boolean}}  `text` when the fields hold phrases and want wider columns
+ *   descriptionLabel?: string, text?: boolean}}  `text` when the fields hold phrases and want wider columns
  */
 export function prepareItemDetails(item, { evolved }) {
   const cfg = CONFIG.ALIENRPG;
@@ -791,6 +801,13 @@ export function prepareItemDetails(item, { evolved }) {
       break;
     case "agenda":
       details.description = "system.general.comment.value";
+      break;
+    case "critical-injury":
+      field("ALIENRPG.TimeLimit", "timelimit", "select", { options: options(cfg.crit_timelimit_list, a.timelimit.value) });
+      field("ALIENRPG.HealTime", "healingtime", "text");
+      details.checks.push({ label: loc("ALIENRPG.Fatal"), name: "system.attributes.fatal", checked: a.fatal });
+      details.description = "system.attributes.effects";
+      details.descriptionLabel = "ALIENRPG.Effect";
       break;
     case "talent":
       typed("system.general.career.value", cfg.career_list, item.system.general.career.value);
@@ -1747,7 +1764,12 @@ function makeItemSheet(Base) {
       const description = foundry.utils.getProperty(item, details.description);
       return Object.assign(context, {
         details,
-        description: { name: details.description, value: description, html: await enrich(item, description) },
+        description: {
+          name: details.description,
+          label: loc(details.descriptionLabel ?? "ALIENRPG.Description"),
+          value: description,
+          html: await enrich(item, description),
+        },
         modifierGroups: prepareItemModifiers(item),
         typeLabel: loc(`TYPES.Item.${item.type}`),
         // The system sets a career's and a system's image itself each time their sheet draws.
