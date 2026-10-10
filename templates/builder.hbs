@@ -1,0 +1,149 @@
+{{!-- One attribute or skill being bought: its pips and the buttons to spend or take back a point. --}}
+{{#*inline "scoreRow"}}
+<div class="aas-builder-score {{#if isKey}}key{{/if}}">
+  <span class="aas-builder-score-name">{{label}}{{#if isKey}} <span class="aas-tag">{{localize 'ALTSHEET.Builder.Key'}}</span>{{/if}}</span>
+  <span class="aas-pips aas-pips-static">{{#each pips}}<span class="aas-pip {{#if filled}}filled{{/if}}"></span>{{/each}}</span>
+  <div class="aas-stepper aas-stepper-small">
+    <button type="button" data-action="adjust" data-kind="{{kind}}" data-key="{{key}}" data-step="-1"
+      {{#unless canLower}}disabled{{/unless}} aria-label="{{localize 'ALTSHEET.Decrease' name=label}}">
+      <i class="fa-solid fa-minus" inert></i>
+    </button>
+    <b>{{value}}</b>
+    <button type="button" data-action="adjust" data-kind="{{kind}}" data-key="{{key}}" data-step="1"
+      {{#unless canRaise}}disabled{{/unless}} aria-label="{{localize 'ALTSHEET.Increase' name=label}}">
+      <i class="fa-solid fa-plus" inert></i>
+    </button>
+  </div>
+</div>
+{{/inline}}
+
+<div class="aas-builder-frame">
+  <nav class="aas-builder-steps" aria-label="{{localize 'ALTSHEET.Builder.StepsLabel'}}">
+    {{#each steps}}
+    <button type="button" class="aas-builder-step {{#if active}}active{{/if}} {{#if done}}done{{/if}}" data-action="goTo"
+      data-step="{{id}}" {{#unless enabled}}disabled{{/unless}} {{#if active}}aria-current="step"{{/if}}>
+      <span class="aas-die">{{#if done}}<i class="fa-solid fa-check" inert></i>{{else}}{{number}}{{/if}}</span>
+      <span>{{label}}</span>
+    </button>
+    {{/each}}
+  </nav>
+
+  <div class="aas-builder-body">
+    {{#if (eq step "career")}}
+    <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.CareerHint'}}</p>
+    {{#each groups}}
+    <section class="aas-panel">
+      {{#if name}}<header class="aas-panel-head"><h2>{{name}}</h2></header>{{/if}}
+      <div class="aas-builder-choices">
+        {{#each careers}}
+        <button type="button" class="aas-builder-choice {{#if selected}}active{{/if}}" data-action="pickCareer"
+          data-career-id="{{id}}" aria-pressed="{{#if selected}}true{{else}}false{{/if}}">
+          <img src="{{img}}" alt="">
+          <span class="aas-builder-choice-body">
+            <b>{{name}}</b>
+            <span class="aas-stats">
+              <span>{{localize 'ALTSHEET.Builder.KeyAttribute'}} <b>{{attributeLabel}}</b></span>
+              <span>{{localize 'ALTSHEET.Builder.KeySkills'}} <b>{{skillLabels}}</b></span>
+            </span>
+          </span>
+        </button>
+        {{/each}}
+      </div>
+    </section>
+    {{else}}
+    <p class="aas-empty">{{localize 'ALTSHEET.Builder.NoCareers'}}</p>
+    {{/each}}
+    {{#if career.description}}
+    <section class="aas-panel">
+      <header class="aas-panel-head"><h2>{{career.name}}</h2></header>
+      <div class="aas-prose">{{{career.description}}}</div>
+    </section>
+    {{/if}}
+    {{/if}}
+
+    {{#if (eq step "attributes")}}
+    <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i>
+      {{localize 'ALTSHEET.Builder.AttributesHint' points=rules.attributePoints min=rules.attributeMin max=rules.attributeMax keyMax=rules.keyAttributeMax key=career.attributeLabel}}</p>
+    <section class="aas-panel">
+      <header class="aas-panel-head">
+        <h2>{{localize 'ALIENRPG.Attributes'}}</h2>
+        <span class="aas-tag {{#if attributes.left}}aas-tag-warn{{/if}}">{{localize 'ALTSHEET.Builder.PointsLeft' left=attributes.left}}</span>
+      </header>
+      {{#each attributes.rows}}
+      {{> scoreRow}}
+      {{/each}}
+    </section>
+    {{/if}}
+
+    {{#if (eq step "skills")}}
+    <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i>
+      {{localize 'ALTSHEET.Builder.SkillsHint' points=rules.skillPoints max=rules.skillMax keyMax=rules.keySkillMax keys=career.skillLabels}}</p>
+    <section class="aas-panel">
+      <header class="aas-panel-head">
+        <h2>{{localize 'ALIENRPG.Skills'}}</h2>
+        <span class="aas-tag {{#if skills.left}}aas-tag-warn{{/if}}">{{localize 'ALTSHEET.Builder.PointsLeft' left=skills.left}}</span>
+      </header>
+      {{#each skills.groups}}
+      <h3>{{label}}</h3>
+      {{#each rows}}
+      {{> scoreRow}}
+      {{/each}}
+      {{/each}}
+    </section>
+    {{/if}}
+
+    {{#if (eq step "talent")}}
+    <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.TalentHint' career=career.name}}</p>
+    <section class="aas-panel">
+      <div class="aas-builder-choices aas-builder-choices-wide">
+        {{#each talents}}
+        <button type="button" class="aas-builder-choice {{#if selected}}active{{/if}}" data-action="pickTalent"
+          data-talent="{{name}}" aria-pressed="{{#if selected}}true{{else}}false{{/if}}">
+          <img src="{{img}}" alt="">
+          <span class="aas-builder-choice-body">
+            <b>{{name}}</b>
+            {{#if missing}}
+            <span class="aas-empty">{{localize 'ALTSHEET.Builder.TalentNotInWorld'}}</span>
+            {{else}}
+            <span class="aas-prose">{{{description}}}</span>
+            {{/if}}
+          </span>
+        </button>
+        {{/each}}
+      </div>
+    </section>
+    {{/if}}
+
+    {{#if (eq step "review")}}
+    <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.ReviewHint'}}</p>
+    <section class="aas-panel">
+      <dl class="aas-facts">
+        <dt>{{localize 'ALIENRPG.Career'}}</dt><dd>{{career.name}}</dd>
+        <dt>{{localize 'ALIENRPG.Attributes'}}</dt>
+        <dd>{{#each review.attributes}}<span class="aas-builder-pair">{{label}} <b>{{value}}</b></span>{{/each}}</dd>
+        <dt>{{localize 'ALIENRPG.Skills'}}</dt>
+        <dd>{{#each review.skills}}<span class="aas-builder-pair">{{label}} <b>{{value}}</b></span>{{/each}}</dd>
+        <dt>{{localize 'ALTSHEET.Builder.Steps.talent'}}</dt><dd>{{review.talent}}</dd>
+      </dl>
+    </section>
+    {{#if review.replaces}}
+    <p class="aas-hint aas-danger"><i class="fa-solid fa-triangle-exclamation" inert></i> {{localize 'ALTSHEET.Builder.ReplaceNote'}}</p>
+    {{/if}}
+    {{/if}}
+  </div>
+
+  <footer class="aas-builder-footer">
+    <button type="button" class="aas-button" data-action="back" {{#if isFirst}}disabled{{/if}}>
+      <i class="fa-solid fa-arrow-left" inert></i> {{localize 'ALTSHEET.Builder.Back'}}
+    </button>
+    {{#if isLast}}
+    <button type="button" class="aas-button aas-button-primary" data-action="apply">
+      <i class="fa-solid fa-check" inert></i> {{localize 'ALTSHEET.Builder.Apply'}}
+    </button>
+    {{else}}
+    <button type="button" class="aas-button aas-button-primary" data-action="next" {{#unless canNext}}disabled{{/unless}}>
+      {{localize 'ALTSHEET.Builder.Next'}} <i class="fa-solid fa-arrow-right" inert></i>
+    </button>
+    {{/if}}
+  </footer>
+</div>

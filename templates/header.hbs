@@ -27,6 +27,12 @@
       {{#if bio.career}}<span data-tooltip="{{localize 'ALTSHEET.CareerLegacy'}}">{{bio.career}}</span>{{/if}}
       {{#if bio.careerHint}}<span class="aas-empty">{{localize 'ALTSHEET.CareerDrop'}}</span>{{/if}}
       {{/each}}
+      {{#if editMode}}{{#if canBuild}}
+      <button type="button" class="aas-button" data-action="openBuilder"
+        data-tooltip="{{localize 'ALTSHEET.Builder.OpenHint'}}">
+        <i class="fa-solid fa-wand-magic-sparkles" inert></i> {{localize 'ALTSHEET.Builder.Open'}}
+      </button>
+      {{/if}}{{/if}}
     </div>
   </div>
 

@@ -1,3 +1,5 @@
+import { CharacterBuilder } from "./builder.mjs";
+
 const MODULE_ID = "alienrpg-alt-sheet";
 const SYSTEM_ID = "alienrpg";
 const TEMPLATES = `modules/${MODULE_ID}/templates`;
@@ -1160,6 +1162,7 @@ function makeSheet(Base, type) {
     static DEFAULT_OPTIONS = {
       position: { width: 800, height: 880 },
       actions: {
+        openBuilder: AltSheet.#onOpenBuilder,
         setField: AltSheet.#onSetField,
         radiation: AltSheet.#onRadiation,
         setItemState: AltSheet.#onSetItemState,
@@ -1209,6 +1212,8 @@ function makeSheet(Base, type) {
         gear: prepareGear(actor),
         itemStates: true,
         powerRolls: true,
+        // Androids are built by different rules, which the builder doesn't cover yet.
+        canBuild: actor.type === "character" && this.isEditable,
         conditions: prepareConditions(actor, context.statuses, { hasStress }),
         radiation: prepareRadiation(actor),
         supplies: prepareSupplies(actor),
@@ -1268,6 +1273,10 @@ function makeSheet(Base, type) {
           return withMods ? actor.consumablesCheckMod(...args) : actor.consumablesCheck(...args);
         }
       }
+    }
+
+    static #onOpenBuilder() {
+      new CharacterBuilder({ actor: this.actor }).render(true);
     }
 
     /** Click a pip to fill the track up to it; click the last filled pip to clear it. */

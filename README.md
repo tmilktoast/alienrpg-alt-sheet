@@ -47,6 +47,9 @@ system's sheet for `character`, `synthetic`, `creature`, `vehicles`, `spacecraft
   links are restyled, and what a page's own layout sets is left alone. A page's editor window takes
   the same look when its journal uses this sheet.
 
+- **Character builder** — a Builder button on the character sheet (while Edit is on) walks through
+  career, attributes, skills and a starting talent by the Evolved rules, then writes them to the
+  character in one go. It offers the Career/Specialty items in the world's Items sidebar.
 - **Readable chat** — chat messages on a flat dark card in a plainer typeface, with the system's
   terminal green and display font kept for the sender, headings and labels. Each player can turn it
   off under Configure Settings → Alien RPG Alternate Sheet.
@@ -68,6 +71,20 @@ Open a character, creature or vehicle, click the ⋮ menu in the window header �
 the one named for it — **Alternate Character Sheet**, **Alternate Creature Sheet** and so on. To make it the default for every character, set it under *Default Sheet* in the
 same dialog (GM only). Each actor type has its own default. Weapons, armor and items work the same way from an item's
 own ⋮ menu, and journals from a journal's.
+
+## The character builder's careers
+
+The builder (`scripts/builder.mjs`) needs each career's key attribute, key skills and starting
+talents. For the rulebook's nine careers it has them built in, matched by the Career item's name.
+For any other Career/Specialty item it reads them from the end of the item's description, in the
+form the Colonial Marines manual's specialties use:
+
+```
+KEY ATTRIBUTE: Agility SKILLS: Piloting, Ranged Combat TALENTS: Banter, Overkill
+```
+
+A career it can't work out either way isn't offered. The creation rules' numbers are the `RULES`
+table at the top of the file, and the steps are the `STEPS` list, which is where further steps go.
 
 ## Local development
 

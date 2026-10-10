@@ -28,6 +28,39 @@
         "Hint": "Show chat messages in a plainer typeface on a flat dark card, keeping the terminal green for headings and labels. Turn off for the system's own chat look."
       }
     },
+    "Builder": {
+      "Open": "Builder",
+      "OpenHint": "Create this character step by step: career, attributes, skills and a talent.",
+      "Title": "Character Builder: {name}",
+      "StepsLabel": "Steps",
+      "Steps": {
+        "career": "Career",
+        "attributes": "Attributes",
+        "skills": "Skills",
+        "talent": "Talent",
+        "review": "Review"
+      },
+      "CareerHint": "Your career sets your key attribute, your key skills and the talents you can start with.",
+      "NoCareers": "No careers found. Import the rulebook's Career items into the world's Items sidebar.",
+      "KeyAttribute": "Key attribute",
+      "KeySkills": "Key skills",
+      "Key": "Key",
+      "AttributesHint": "Spend {points} points. Each attribute is at least {min} and at most {max}; {key}, your key attribute, can be {keyMax}.",
+      "SkillsHint": "Spend {points} points. A skill can start at {max} at most; your key skills ({keys}) can start at up to {keyMax}.",
+      "PointsLeft": "{left} left",
+      "TalentHint": "Choose one talent from those a {career} starts with.",
+      "TalentNotInWorld": "Not in this world's Items, so it can't be added for you.",
+      "ReviewHint": "Check your choices. Nothing on the character changes until you apply them.",
+      "ReplaceNote": "This character already has scores. Applying replaces its attributes, skills and career.",
+      "ReplaceTitle": "Replace this character's scores?",
+      "ReplaceWarning": "{name} already has attributes. Applying replaces its attributes, skills and career, and adds the talent.",
+      "Back": "Back",
+      "Next": "Next",
+      "Apply": "Apply to character",
+      "Applied": "{name} is built. Name, appearance, agenda, gear and cash are still yours to fill in.",
+      "CareerGone": "That career is no longer in the world's Items.",
+      "TalentMissing": "{name} isn't in this world's Items, so add that talent by hand."
+    },
     "Tabs": {
       "Play": "Play",
       "Gear": "Gear",
