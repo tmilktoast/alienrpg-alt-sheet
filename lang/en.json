@@ -1,6 +1,12 @@
 {
   "ALTSHEET": {
-    "SheetLabel": "Alternate Sheet",
+    "SheetLabel": {
+      "character": "Alternate Character Sheet",
+      "synthetic": "Alternate Synthetic Sheet",
+      "creature": "Alternate Creature Sheet",
+      "vehicles": "Alternate Vehicle Sheet",
+      "item": "Alternate Item Sheet"
+    },
     "Tabs": {
       "Play": "Play",
       "Gear": "Gear",

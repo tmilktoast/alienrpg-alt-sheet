@@ -1241,7 +1241,7 @@ Hooks.once("ready", () => {
     foundry.applications.apps.DocumentSheetConfig.registerSheet(Actor, MODULE_ID, make(Base), {
       types: [type],
       makeDefault: false,
-      label: "ALTSHEET.SheetLabel",
+      label: `ALTSHEET.SheetLabel.${type}`,
     });
   }
 
@@ -1251,6 +1251,6 @@ Hooks.once("ready", () => {
   foundry.applications.apps.DocumentSheetConfig.registerSheet(Item, MODULE_ID, makeItemSheet(ItemBase), {
     types: GEAR_TYPES,
     makeDefault: false,
-    label: "ALTSHEET.SheetLabel",
+    label: "ALTSHEET.SheetLabel.item",
   });
 });

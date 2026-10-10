@@ -42,7 +42,7 @@ https://github.com/tmilktoast/alienrpg-alt-sheet/releases/latest/download/module
 ## Using it
 
 Open a character, creature or vehicle, click the ⋮ menu in the window header → **Configure Sheet**, and pick
-**Alternate Sheet**. To make it the default for every character, set it under *Default Sheet* in the
+the one named for it — **Alternate Character Sheet**, **Alternate Creature Sheet** and so on. To make it the default for every character, set it under *Default Sheet* in the
 same dialog (GM only). Each actor type has its own default. Weapons, armor and items work the same way from an item's
 own ⋮ menu.
 
