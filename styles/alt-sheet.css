@@ -1203,6 +1203,43 @@
   min-width: 0;
 }
 
+/* ---------- Spacecraft sheet ---------- */
+
+.alien-alt-sheet .aas-portrait-view {
+  cursor: zoom-in;
+}
+
+.alien-alt-sheet .window-content .aas-facts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 12px;
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+}
+
+.alien-alt-sheet .window-content .aas-facts dt {
+  color: var(--aas-muted);
+  font-weight: normal;
+}
+
+.alien-alt-sheet .window-content .aas-facts dd {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.alien-alt-sheet .aas-phase {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.alien-alt-sheet .aas-phase-name {
+  flex: 0 0 170px;
+  font-weight: 600;
+}
+
 /* ---------- Item sheet ---------- */
 
 .alien-alt-sheet.aas-item-sheet .aas-header {

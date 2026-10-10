@@ -8,64 +8,7 @@
           <h2>{{localize 'ALTSHEET.Vehicle.Crew'}}</h2>
           <span class="aas-panel-note">{{localize 'ALTSHEET.Vehicle.Seats' taken=seats.taken max=seats.max}}</span>
         </header>
-        <ol class="aas-list">
-          {{#each crewList}}
-          <li class="aas-weapon aas-crew" data-crew-id="{{id}}">
-            <img src="{{img}}" alt="">
-            <div class="aas-weapon-body">
-              <div class="aas-weapon-name">
-                {{#if missing}}
-                <span class="aas-danger">{{name}}</span>
-                {{else}}
-                <button type="button" class="aas-link" data-action="openCrew"
-                  data-tooltip="{{localize 'ALTSHEET.Vehicle.OpenCrew'}}">{{name}}</button>
-                {{/if}}
-                <button type="button" class="aas-icon" data-action="removeCrew"
-                  data-tooltip="{{localize 'ALTSHEET.Vehicle.RemoveCrew'}}"
-                  aria-label="{{localize 'ALTSHEET.Vehicle.RemoveCrew'}}"><i class="fa-solid fa-xmark" inert></i></button>
-              </div>
-              <div class="aas-weapon-supply">
-                <select data-crew-position aria-label="{{localize 'ALIENRPG.Position'}}" {{#unless @root.editable}}disabled{{/unless}}>
-                  {{#each positions}}
-                  <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
-                  {{/each}}
-                </select>
-                {{#if stress}}
-                <div class="aas-rollgroup">
-                  <button type="button" class="aas-roll aas-roll-small" data-action="roll" data-roll-type="crewStress"
-                    {{#if @root.isEvolved}}data-roll="{{stress.roll}}"{{else}}data-panicroll="{{stress.panicroll}}"{{/if}}
-                    data-mod="{{stress.mod}}" data-label="{{stress.label}}"
-                    data-tooltip="{{#if @root.isEvolved}}{{localize 'ALIENRPG.RollStress'}}{{else}}{{localize 'ALIENRPG.RollPanic'}}{{/if}}">
-                    <i class="fa-solid fa-dice-d6" inert></i>
-                    <span class="aas-roll-name">{{#if @root.isEvolved}}{{localize 'ALTSHEET.StressResponseRoll'}}{{else}}{{localize 'ALTSHEET.PanicRoll'}}{{/if}}</span>
-                  </button>
-                  <button type="button" class="aas-mods" data-action="rollMods"
-                    data-tooltip="{{localize 'ALTSHEET.RollWithMods'}}" aria-label="{{localize 'ALTSHEET.RollWithMods'}}">
-                    <i class="fa-solid fa-sliders" inert></i>
-                  </button>
-                </div>
-                {{/if}}
-                {{#if piloting}}
-                <div class="aas-rollgroup aas-attack">
-                  <button type="button" class="aas-roll aas-roll-primary" data-action="roll" data-roll-type="ability"
-                    data-actorid="{{id}}" data-roll="{{piloting.skill}}" data-mod="{{piloting.manoeuvrability}}"
-                    data-label="{{piloting.label}}" data-tooltip="{{piloting.tooltip}}">
-                    <span class="aas-roll-name">{{localize 'ALIENRPG.Skillpiloting'}}</span>
-                    <span class="aas-die {{#if piloting.modified}}modified{{/if}}">{{piloting.total}}</span>
-                  </button>
-                  <button type="button" class="aas-mods" data-action="rollMods"
-                    data-tooltip="{{localize 'ALTSHEET.RollWithMods'}}" aria-label="{{localize 'ALTSHEET.RollWithMods'}}">
-                    <i class="fa-solid fa-sliders" inert></i>
-                  </button>
-                </div>
-                {{/if}}
-              </div>
-            </div>
-          </li>
-          {{else}}
-          <li class="aas-empty">{{localize 'ALTSHEET.Vehicle.NoCrew'}}</li>
-          {{/each}}
-        </ol>
+        {{> "modules/alienrpg-alt-sheet/templates/crew-list.hbs"}}
       </section>
 
       <section class="aas-panel">

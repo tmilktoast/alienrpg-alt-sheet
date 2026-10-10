@@ -43,6 +43,30 @@ const VEHICLE_TABS = {
   vehicle: "fa-solid fa-dice-d6",
   cargo: "fa-solid fa-toolbox",
 };
+const SPACECRAFT_TABS = {
+  ship: "fa-solid fa-dice-d6",
+  combat: "fa-solid fa-crosshairs",
+  cargo: "fa-solid fa-toolbox",
+  notes: "fa-solid fa-pen",
+};
+
+/**
+ * What each crew seat rolls, by the kind of actor crewed: the crew member's skill, plus one of the
+ * craft's own ratings where it has one that helps. `spbutt` is the system's name for a roll it
+ * gives a dialog of its own.
+ */
+const CREW_ROLLS = {
+  vehicles: { PILOT: { skill: "piloting", bonus: "manoeuvrability" } },
+  spacecraft: {
+    PILOT: { skill: "piloting", bonus: "thrusters" },
+    "SENSOR-OP": { skill: "comtech", spbutt: "comtech" },
+    ENGINEER: { skill: "heavyMach", spbutt: "heavyMach" },
+  },
+};
+const SHIP_WEAPON_OFFENSIVE = "1";
+const SHIP_WEAPON_DEFENSIVE = "2";
+const SHIP_CRIT_MAJOR = "1";
+const SHIP_PHASES = ["sensor", "pilot", "gunner", "engineer"];
 
 const ITEM_TABS = {
   details: "fa-solid fa-list",
@@ -68,7 +92,7 @@ const ITEM_COMPUTER = "9";
 const COMPUTER_SKILLS = ["comtech", "piloting", "observation", "rangedCbt"];
 
 /** Templates included from other templates, which Foundry has to load before a sheet renders. */
-const PARTIALS = [`${TEMPLATES}/gear-list.hbs`];
+const PARTIALS = [`${TEMPLATES}/gear-list.hbs`, `${TEMPLATES}/crew-list.hbs`];
 
 /** What the system stores for a creature with no attack or critical injury table picked. */
 const NO_TABLE = "None";
@@ -484,10 +508,12 @@ export function prepareVehicleVitals(actor) {
   };
 }
 
-/** A vehicle's occupants in seat order, with the rolls each one makes from their own sheet's numbers. */
+/** A craft's occupants in seat order, with the rolls each one makes from their own sheet's numbers. */
 export function prepareCrew(actor, { evolved }) {
-  const { crewPositionFlags: seats, crewPositionFlagsLocalized: labels } = CONFIG.ALIENRPG.vehicle;
-  const manoeuvrability = actor.system.attributes.manoeuvrability.value;
+  const { crewPositionFlags: seats, crewPositionFlagsLocalized: labels } = CONFIG.ALIENRPG[
+    actor.type === "spacecraft" ? "spacecraft" : "vehicle"
+  ];
+  const rolls = CREW_ROLLS[actor.type] ?? {};
   return actor.system.crew.occupants
     .map(({ id, position }) => {
       const member = game.actors.get(id);
@@ -501,19 +527,28 @@ export function prepareCrew(actor, { evolved }) {
       };
       if (!member) return row;
 
-      if (position === "PILOT") {
-        const skill = member.system.skills.piloting.mod;
-        row.piloting = {
+      const seat = rolls[position];
+      if (seat) {
+        const skill = member.system.skills[seat.skill].mod;
+        const skillName = loc(CONFIG.ALIENRPG.skills[seat.skill].name);
+        const bonus = seat.bonus ? actor.system.attributes[seat.bonus].value : 0;
+        row.roll = {
           skill,
-          manoeuvrability,
-          total: skill + manoeuvrability,
-          modified: manoeuvrability !== 0,
-          label: `${actor.name} - ${loc("ALIENRPG.Skillpiloting")}`,
-          tooltip: fmt("ALTSHEET.Vehicle.PilotingBreakdown", {
-            skill,
-            mod: signed(manoeuvrability),
-            total: skill + manoeuvrability,
-          }),
+          bonus,
+          spbutt: seat.spbutt,
+          total: skill + bonus,
+          modified: bonus !== 0,
+          name: skillName,
+          label: `${actor.name} - ${skillName}`,
+          tooltip: seat.bonus
+            ? fmt("ALTSHEET.Vehicle.RollBreakdown", {
+                name: skillName,
+                skill,
+                rating: loc(`ALTSHEET.Vehicle.Rating.${seat.bonus}`),
+                mod: signed(bonus),
+                total: skill + bonus,
+              })
+            : fmt("ALTSHEET.RollFor", { name: skillName }),
         };
       }
 
@@ -529,6 +564,77 @@ export function prepareCrew(actor, { evolved }) {
       return row;
     })
     .sort((a, b) => a.seat - b.seat || a.name.localeCompare(b.name));
+}
+
+export function prepareSpacecraftVitals(actor) {
+  const a = actor.system.attributes;
+  const max = a.hull.value;
+  const value = a.damage.value;
+  return {
+    // Damage counts up towards the hull rating, so the meter fills as things get worse.
+    damage: {
+      value,
+      max,
+      pct: max > 0 ? Math.min(Math.max(value / max, 0), 1) * 100 : 0,
+      cls: max > 0 && value >= max ? "danger" : value > 0 ? "warn" : "",
+    },
+    // The system makes no roll for an armor rating of zero.
+    armor: { value: a.armor.value, rollable: a.armor.value > 0 },
+    thrusters: signed(a.thrusters.value),
+    signature: signed(a.signature.value),
+  };
+}
+
+/** A spacecraft's weapons, split the way the system types them. */
+export function prepareArmaments(actor, { evolved }) {
+  const ranges = evolved ? CONFIG.ALIENRPG.evolved_ship_weapon_range_list : CONFIG.ALIENRPG.ship_weapon_range_list;
+  const rows = (type) =>
+    actor.items
+      .filter((item) => item.type === "spacecraftweapons" && item.system.header.type.value === type)
+      .sort((a, b) => (a.sort || 0) - (b.sort || 0))
+      .map((item) => {
+        const a = item.system.attributes;
+        return {
+          id: item.id,
+          name: item.name,
+          img: item.img,
+          bonus: signed(a.bonus.value || 0),
+          damage: a.damage.value,
+          range: ranges[a.range.value] ? loc(ranges[a.range.value].label) : "—",
+          hardpoint: a.hardpoint.value,
+        };
+      });
+  return { offensive: rows(SHIP_WEAPON_OFFENSIVE), defensive: rows(SHIP_WEAPON_DEFENSIVE) };
+}
+
+export function prepareShipModules(actor) {
+  return actor.items
+    .filter((item) => item.type === "spacecraftmods")
+    .sort((a, b) => (a.sort || 0) - (b.sort || 0))
+    .map((item) => {
+      const a = item.system.attributes;
+      return { id: item.id, name: item.name, img: item.img, quantity: a.quantity.value, size: a.size.value, capacity: a.capacity.value };
+    });
+}
+
+/** Component damage, minor and major, each with what it does and how it is repaired. */
+export function prepareShipDamage(actor) {
+  const lists = { minor: [], major: [] };
+  for (const item of actor.items) {
+    if (item.type !== "spacecraft-crit") continue;
+    const { header } = item.system;
+    lists[header.type.value === SHIP_CRIT_MAJOR ? "major" : "minor"].push({
+      id: item.id,
+      name: item.name,
+      img: item.img,
+      effects: (header.effects ?? "").replace(/<[^>]+>/g, " ").trim(),
+      repair: (header.repairroll ?? "").replace(/<[^>]+>/g, " ").trim(),
+    });
+  }
+  return [
+    { key: "minor", label: loc("ALIENRPG.MINOR-COMPONENT-DAMAGE"), list: lists.minor },
+    { key: "major", label: loc("ALIENRPG.MAJOR-COMPONENT-DAMAGE"), list: lists.major },
+  ];
 }
 
 /**
@@ -825,8 +931,9 @@ function makeBase(Base) {
       const { type } = target.dataset;
       const cls = getDocumentClass("Item");
       const data = { name: cls.defaultName({ type, parent: this.actor }), type };
-      // A weapon with no type can't be rolled, so start from the common case.
+      // A weapon with no type can't be rolled or listed, so start from the common case.
       if (type === "weapon") data.system = { header: { type: { value: WEAPON_RANGED } } };
+      if (type === "spacecraftweapons") data.system = { header: { type: { value: SHIP_WEAPON_OFFENSIVE } } };
       const item = await cls.create(data, { parent: this.actor });
       item?.sheet.render(true);
     }
@@ -1065,18 +1172,84 @@ function makeCreatureSheet(Base) {
 }
 
 /**
+ * What the sheets for crewed craft share: seating the crew, their rolls, and firing weapons the
+ * crew operate.
+ * @param {typeof foundry.applications.sheets.ActorSheetV2} Base  The system sheet for this actor type
+ */
+function makeCrewedBase(Base) {
+  return class AltCrewedBase extends makeBase(Base) {
+    static DEFAULT_OPTIONS = {
+      actions: {
+        openCrew: AltCrewedBase.#onOpenCrew,
+        removeCrew: AltCrewedBase.#onRemoveCrew,
+      },
+    };
+
+    async _onRender(context, options) {
+      await super._onRender(context, options);
+
+      // Seats aren't actor fields the form can submit; the system keeps them in its occupant list.
+      for (const select of this.element.querySelectorAll("select[data-crew-position]")) {
+        select.addEventListener("change", (event) => {
+          event.stopPropagation();
+          this.actor.addVehicleOccupant(this.#crewId(select), select.value);
+        });
+      }
+    }
+
+    #crewId(target) {
+      return target.closest("[data-crew-id]")?.dataset.crewId;
+    }
+
+    async _roll(target, withMods) {
+      const actor = this.actor;
+      const data = target.dataset;
+      switch (data.rollType) {
+        case "ability":
+          return withMods ? actor.rollAbilityMod(actor, data) : actor.abilityRoll(actor, data);
+        // The system asks who is firing, the range and any modifiers before every attack.
+        case "weapon": {
+          const item = this._item(target);
+          if (!item) return;
+          const { header, attributes } = item.system;
+          if (item.type === "weapon" && header.type.value === WEAPON_RANGED && attributes.rounds.value <= 0) {
+            return ui.notifications.warn(loc("ALIENRPG.noAmmo"));
+          }
+          if (game.settings.get(SYSTEM_ID, "evolved")) data.isEvolved = true;
+          return item.roll(false, data);
+        }
+        // A crew member's own stress response (Evolved) or panic roll, made as that character.
+        case "crewStress": {
+          const member = game.actors.get(this.#crewId(target));
+          if (!member) return;
+          if (game.settings.get(SYSTEM_ID, "evolved")) {
+            return withMods ? member.rollResolveMod(member, data) : member.rollResolve(member, data);
+          }
+          return withMods ? member.rollPanicMod(member, data) : member.rollPanic(member, data);
+        }
+      }
+    }
+
+    static #onOpenCrew(event, target) {
+      game.actors.get(this.#crewId(target))?.sheet.render(true);
+    }
+
+    static async #onRemoveCrew(event, target) {
+      const occupants = this.actor.removeVehicleOccupant(this.#crewId(target));
+      await this.actor.update({ "system.crew.occupants": occupants, "system.crew.passengerQty": occupants.length });
+    }
+  };
+}
+
+/**
  * The alternate sheet for vehicles: hull and handling in the header, the crew and their rolls, the
  * mounted weapons, and a cargo tab.
  * @param {typeof foundry.applications.sheets.ActorSheetV2} Base  The system's vehicle sheet
  */
 function makeVehicleSheet(Base) {
-  class AltVehicleSheet extends makeBase(Base) {
+  class AltVehicleSheet extends makeCrewedBase(Base) {
     static DEFAULT_OPTIONS = {
       position: { width: 800, height: 760 },
-      actions: {
-        openCrew: AltVehicleSheet.#onOpenCrew,
-        removeCrew: AltVehicleSheet.#onRemoveCrew,
-      },
     };
 
     static PARTS = {
@@ -1111,63 +1284,103 @@ function makeVehicleSheet(Base) {
         },
       });
     }
+  }
 
-    async _onRender(context, options) {
-      await super._onRender(context, options);
+  return AltVehicleSheet;
+}
 
-      // Seats aren't actor fields the form can submit; the system keeps them in its occupant list.
-      for (const select of this.element.querySelectorAll("select[data-crew-position]")) {
-        select.addEventListener("change", (event) => {
-          event.stopPropagation();
-          this.actor.addVehicleOccupant(this.#crewId(select), select.value);
-        });
-      }
-    }
+/**
+ * The alternate sheet for spacecraft: damage and handling in the header; the crew, armaments and
+ * component damage on the Ship tab; then combat phases, cargo and notes.
+ * @param {typeof foundry.applications.sheets.ActorSheetV2} Base  The system's spacecraft sheet
+ */
+function makeSpacecraftSheet(Base) {
+  class AltSpacecraftSheet extends makeCrewedBase(Base) {
+    static DEFAULT_OPTIONS = {
+      position: { width: 860, height: 800 },
+      actions: {
+        showImage: AltSpacecraftSheet.#onShowImage,
+      },
+    };
 
-    #crewId(target) {
-      return target.closest("[data-crew-id]")?.dataset.crewId;
+    static PARTS = {
+      header: { template: `${TEMPLATES}/spacecraft-header.hbs` },
+      tabs: { template: "templates/generic/tab-navigation.hbs" },
+      ship: { template: `${TEMPLATES}/spacecraft.hbs`, scrollable: [""] },
+      combat: { template: `${TEMPLATES}/spacecraft-combat.hbs`, scrollable: [""] },
+      cargo: { template: `${TEMPLATES}/spacecraft-cargo.hbs`, scrollable: [""] },
+      notes: { template: `${TEMPLATES}/notes.hbs`, scrollable: [""] },
+    };
+
+    static TABS = SPACECRAFT_TABS;
+
+    async _prepareContext(options) {
+      const context = await super._prepareContext(options);
+      const actor = this.actor;
+      const { attributes: a, crew } = actor.system;
+      const cfg = CONFIG.ALIENRPG;
+
+      // A blank ship opens unlocked, since the first thing to do is fill it in.
+      this._editMode ??= !a.hull.value && !a.thrusters.value && !a.model;
+
+      return Object.assign(context, {
+        editMode: this._editMode && this.isEditable,
+        vitals: prepareSpacecraftVitals(actor),
+        crewList: prepareCrew(actor, { evolved: context.isEvolved }),
+        // The system allows a ship its crew, its passengers and one more.
+        seats: { taken: crew.occupants.length, max: a.passengers.value + a.crew.value + 1 },
+        armaments: prepareArmaments(actor, { evolved: context.isEvolved }),
+        shipDamage: prepareShipDamage(actor),
+        modules: prepareShipModules(actor),
+        gear: prepareGear(actor),
+        phases: SHIP_PHASES.map((key) => ({
+          key: `${key}Phase`,
+          label: loc(`ALIENRPG.${key}Phase`),
+          options: Object.values(cfg[`${key}_list`]).map(({ label }) => loc(label)),
+        })),
+        notes: notesOf(actor),
+        enrichedNotes: await enrich(actor, notesOf(actor)),
+      });
     }
 
     async _roll(target, withMods) {
       const actor = this.actor;
       const data = target.dataset;
-      switch (data.rollType) {
-        case "ability":
-          return withMods ? actor.rollAbilityMod(actor, data) : actor.abilityRoll(actor, data);
-        // The system asks who is firing, the range and any modifiers before every vehicle attack.
-        case "weapon": {
-          const item = this._item(target);
-          if (!item) return;
-          const { header, attributes } = item.system;
-          if (header.type.value === WEAPON_RANGED && attributes.rounds.value <= 0) {
-            return ui.notifications.warn(loc("ALIENRPG.noAmmo"));
-          }
-          if (game.settings.get(SYSTEM_ID, "evolved")) data.isEvolved = true;
-          return item.roll(false, data);
-        }
-        // A crew member's own stress response (Evolved) or panic roll, made as that character.
-        case "crewStress": {
-          const member = game.actors.get(this.#crewId(target));
-          if (!member) return;
-          if (game.settings.get(SYSTEM_ID, "evolved")) {
-            return withMods ? member.rollResolveMod(member, data) : member.rollResolve(member, data);
-          }
-          return withMods ? member.rollPanicMod(member, data) : member.rollPanic(member, data);
-        }
+      if (data.rollType !== "shipCrit") return super._roll(target, withMods);
+      // With modifiers, component damage asks which result to use instead of rolling for it.
+      if (!withMods) return actor.rollCrit(actor, actor.type, data);
+      if (data.crbut !== "major") return actor.rollCritMan(actor, actor.type, data);
+      const pick = await this.#pickMajorDamage();
+      if (pick) return actor.rollCrit(actor, actor.type, data, pick);
+    }
+
+    /**
+     * Ask which major component damage result to use. The system's dialog for this points at a
+     * template that isn't where it says, so it fails; this asks the same question.
+     * @returns {Promise<string|null>}  The 2d6 result picked, or null if the dialog was dismissed
+     */
+    async #pickMajorDamage() {
+      const hint = loc("ALIENRPG.RollManShipMajorCrit");
+      const value = await foundry.applications.api.DialogV2.prompt({
+        window: { title: "ALIENRPG.RollManCrit" },
+        content: `<div class="form-group"><label>${hint}</label><input type="number" name="manCrit" min="2" max="12" step="1" value="2" autofocus></div>`,
+        ok: { label: "ALIENRPG.DialRoll", callback: (event, button) => button.form.elements.manCrit.valueAsNumber },
+        rejectClose: false,
+      });
+      if (value == null) return null;
+      if (!Number.isInteger(value) || value < 2 || value > 12) {
+        ui.notifications.warn(hint);
+        return null;
       }
+      return String(value);
     }
 
-    static #onOpenCrew(event, target) {
-      game.actors.get(this.#crewId(target))?.sheet.render(true);
-    }
-
-    static async #onRemoveCrew(event, target) {
-      const occupants = this.actor.removeVehicleOccupant(this.#crewId(target));
-      await this.actor.update({ "system.crew.occupants": occupants, "system.crew.passengerQty": occupants.length });
+    static #onShowImage() {
+      new foundry.applications.apps.ImagePopout({ src: this.actor.img, window: { title: this.actor.name } }).render(true);
     }
   }
 
-  return AltVehicleSheet;
+  return AltSpacecraftSheet;
 }
 
 /**
@@ -1290,7 +1503,7 @@ Hooks.once("init", () => {
 // queued during init, which happens just before "ready".
 Hooks.once("ready", () => {
   if (game.system.id !== SYSTEM_ID) return;
-  const sheets = { creature: makeCreatureSheet, vehicles: makeVehicleSheet };
+  const sheets = { creature: makeCreatureSheet, vehicles: makeVehicleSheet, spacecraft: makeSpacecraftSheet };
   for (const type of SHEET_TYPES) sheets[type] = (Base) => makeSheet(Base, type);
   for (const [type, make] of Object.entries(sheets)) {
     const Base = Object.values(CONFIG.Actor.sheetClasses[type] ?? {}).find((s) => s.id.startsWith(`${SYSTEM_ID}.`))?.cls;

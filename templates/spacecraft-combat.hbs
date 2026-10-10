@@ -1,0 +1,23 @@
+<section class="tab aas-tab aas-combat {{tab.cssClass}}" data-group="primary" data-tab="combat">
+  <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Spacecraft.PhasesHint'}}</p>
+
+  <section class="aas-panel">
+    <header class="aas-panel-head">
+      <h2>{{localize 'ALIENRPG.SpaceCombatPhases'}}</h2>
+    </header>
+    {{#each phases}}
+    {{!-- The system's handler reads the action from the select just before the button it is on. --}}
+    <div class="aas-phase">
+      <span class="aas-phase-name">{{label}}</span>
+      <select name="{{key}}" aria-label="{{label}}">
+        {{#each options}}
+        <option>{{this}}</option>
+        {{/each}}
+      </select>
+      <button type="button" class="aas-button" data-action="ShipPhaseSubmit">
+        <i class="fa-solid fa-bullhorn" inert></i> {{localize 'ALTSHEET.Spacecraft.Announce'}}
+      </button>
+    </div>
+    {{/each}}
+  </section>
+</section>

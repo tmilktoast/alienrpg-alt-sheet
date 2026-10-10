@@ -1,0 +1,40 @@
+<section class="tab aas-tab aas-cargo {{tab.cssClass}}" data-group="primary" data-tab="cargo">
+  <section class="aas-panel">
+    <header class="aas-panel-head">
+      <h2>{{localize 'ALIENRPG.MODULES-UPGRADES'}}</h2>
+      <button type="button" class="aas-button" data-action="addItem" data-type="spacecraftmods">
+        <i class="fa-solid fa-plus" inert></i> {{localize 'ALTSHEET.Add'}}
+      </button>
+    </header>
+    <ol class="aas-list">
+      {{#each modules}}
+      <li class="aas-item draggable" data-item-id="{{id}}">
+        <img src="{{img}}" alt="">
+        <div class="aas-item-name">
+          <span>{{name}}</span>
+          {{#if size}}<span class="aas-item-meta">{{size}}</span>{{/if}}
+        </div>
+        <div class="aas-item-controls">
+          <button type="button" class="aas-icon" data-action="editItem" data-tooltip="{{localize 'ALTSHEET.Edit'}}"
+            aria-label="{{localize 'ALTSHEET.Edit'}}"><i class="fa-solid fa-pen-to-square" inert></i></button>
+          <button type="button" class="aas-icon" data-action="deleteItem" data-tooltip="{{localize 'ALTSHEET.Delete'}}"
+            aria-label="{{localize 'ALTSHEET.Delete'}}"><i class="fa-solid fa-trash" inert></i></button>
+        </div>
+        <div class="aas-item-fields">
+          <label class="aas-field">
+            <span>{{localize 'ALTSHEET.Qty'}}</span>
+            <input type="number" min="0" step="1" value="{{quantity}}" data-item-field="system.attributes.quantity.value">
+          </label>
+          {{#if capacity}}
+          <label class="aas-field"><span>{{localize 'ALIENRPG.CapacityBarLabel'}}</span><b>{{capacity}}</b></label>
+          {{/if}}
+        </div>
+      </li>
+      {{else}}
+      <li class="aas-empty">{{localize 'ALTSHEET.NoItems'}}</li>
+      {{/each}}
+    </ol>
+  </section>
+
+  {{> "modules/alienrpg-alt-sheet/templates/gear-list.hbs"}}
+</section>

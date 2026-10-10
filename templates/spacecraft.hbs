@@ -1,0 +1,172 @@
+<section class="tab aas-tab aas-ship {{tab.cssClass}}" data-group="primary" data-tab="ship">
+  <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.RollHint'}}</p>
+
+  <div class="aas-columns">
+    <div class="aas-column">
+      <section class="aas-panel">
+        <header class="aas-panel-head">
+          <h2>{{localize 'ALTSHEET.Vehicle.Crew'}}</h2>
+          <span class="aas-panel-note">{{localize 'ALTSHEET.Vehicle.Seats' taken=seats.taken max=seats.max}}</span>
+        </header>
+        {{> "modules/alienrpg-alt-sheet/templates/crew-list.hbs"}}
+      </section>
+
+      <section class="aas-panel">
+        <header class="aas-panel-head">
+          <h2>{{localize 'ALTSHEET.Vehicle.Details'}}</h2>
+        </header>
+        {{#if editMode}}
+        <div class="aas-fields aas-fields-text">
+          <label class="aas-labelled"><span>{{localize 'ALIENRPG.MODEL'}}</span>
+            <input type="text" name="system.attributes.model" value="{{system.attributes.model}}"></label>
+          <label class="aas-labelled"><span>{{localize 'ALIENRPG.Manufacturer'}}</span>
+            <input type="text" name="system.attributes.manufacturer" value="{{system.attributes.manufacturer}}"></label>
+          <label class="aas-labelled"><span>{{localize 'ALIENRPG.AI'}}</span>
+            <input type="text" name="system.attributes.ai" value="{{system.attributes.ai}}"></label>
+          <label class="aas-labelled"><span>{{localize 'ALTSHEET.Spacecraft.LeaseCost'}}</span>
+            <input type="text" class="aas-cash" name="system.attributes.leasecost.value" value="{{system.attributes.leasecost.value}}"></label>
+          <label class="aas-labelled"><span>{{localize 'ALIENRPG.MODULES'}}</span>
+            <input type="text" name="system.attributes.modules" value="{{system.attributes.modules}}"></label>
+          <label class="aas-labelled"><span>{{localize 'ALTSHEET.Spacecraft.Armaments'}}</span>
+            <input type="text" name="system.attributes.armaments" value="{{system.attributes.armaments}}"></label>
+        </div>
+        <div class="aas-fields">
+          <label class="aas-labelled"><span>{{localize 'ALTSHEET.Vehicle.Crew'}}</span>
+            <input type="number" name="system.attributes.crew.value" value="{{system.attributes.crew.value}}" min="0" step="1"></label>
+          <label class="aas-labelled"><span>{{localize 'ALIENRPG.Passengers'}}</span>
+            <input type="number" name="system.attributes.passengers.value" value="{{system.attributes.passengers.value}}" min="0" step="1"></label>
+          <label class="aas-labelled"><span>{{localize 'ALTSHEET.Spacecraft.Length'}}</span>
+            <input type="number" name="system.attributes.length.value" value="{{system.attributes.length.value}}" min="0" step="1"></label>
+          <label class="aas-labelled"><span>{{localize 'ALTSHEET.Spacecraft.FtlRating'}}</span>
+            <input type="number" name="system.attributes.ftlrating.value" value="{{system.attributes.ftlrating.value}}" step="1"></label>
+        </div>
+        {{else}}
+        <dl class="aas-facts">
+          <dt>{{localize 'ALIENRPG.MODEL'}}</dt><dd>{{system.attributes.model}}</dd>
+          <dt>{{localize 'ALIENRPG.Manufacturer'}}</dt><dd>{{system.attributes.manufacturer}}</dd>
+          <dt>{{localize 'ALIENRPG.AI'}}</dt><dd>{{system.attributes.ai}}</dd>
+          <dt>{{localize 'ALTSHEET.Vehicle.Crew'}}</dt><dd>{{system.attributes.crew.value}}</dd>
+          <dt>{{localize 'ALIENRPG.Passengers'}}</dt><dd>{{system.attributes.passengers.value}}</dd>
+          <dt>{{localize 'ALTSHEET.Spacecraft.Length'}}</dt><dd>{{system.attributes.length.value}}</dd>
+          <dt>{{localize 'ALTSHEET.Spacecraft.FtlRating'}}</dt><dd>{{system.attributes.ftlrating.value}}</dd>
+          <dt>{{localize 'ALTSHEET.Spacecraft.LeaseCost'}}</dt><dd>{{system.attributes.leasecost.value}}</dd>
+          <dt>{{localize 'ALIENRPG.MODULES'}}</dt><dd>{{system.attributes.modules}}</dd>
+          <dt>{{localize 'ALTSHEET.Spacecraft.Armaments'}}</dt><dd>{{system.attributes.armaments}}</dd>
+        </dl>
+        {{/if}}
+      </section>
+    </div>
+
+    <div class="aas-column">
+      <section class="aas-panel">
+        <header class="aas-panel-head">
+          <h2>{{localize 'ALTSHEET.Spacecraft.Armaments'}}</h2>
+          <button type="button" class="aas-button" data-action="addItem" data-type="spacecraftweapons">
+            <i class="fa-solid fa-plus" inert></i> {{localize 'ALTSHEET.Add'}}
+          </button>
+        </header>
+
+        <h3>{{localize 'ALIENRPG.Offensive'}}</h3>
+        <ol class="aas-list">
+          {{#each armaments.offensive}}
+          <li class="aas-weapon draggable" data-item-id="{{id}}">
+            <img src="{{img}}" alt="">
+            <div class="aas-weapon-body">
+              <div class="aas-weapon-name">
+                <span>{{name}}</span>
+                <button type="button" class="aas-icon" data-action="editItem" data-tooltip="{{localize 'ALTSHEET.Edit'}}"
+                  aria-label="{{localize 'ALTSHEET.Edit'}}"><i class="fa-solid fa-pen-to-square" inert></i></button>
+              </div>
+              <div class="aas-weapon-supply">
+                <div class="aas-stats">
+                  <span>{{localize 'ALIENRPG.Bonus'}} <b>{{bonus}}</b></span>
+                  <span>{{localize 'ALIENRPG.Damage'}} <b>{{damage}}</b></span>
+                  <span>{{localize 'ALIENRPG.Range'}} <b>{{range}}</b></span>
+                </div>
+                <div class="aas-rollgroup aas-attack">
+                  <button type="button" class="aas-roll aas-roll-primary" data-action="roll" data-roll-type="weapon"
+                    data-item-id="{{id}}" data-label="{{name}}" data-item="{{name}}"
+                    data-tooltip="{{localize 'ALTSHEET.Vehicle.AttackTip'}}">
+                    <i class="fa-solid fa-dice-d6" inert></i>
+                    <span class="aas-roll-name">{{localize 'ALTSHEET.Spacecraft.Fire'}}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </li>
+          {{else}}
+          <li class="aas-empty">{{localize 'ALTSHEET.Spacecraft.NoWeapons'}}</li>
+          {{/each}}
+        </ol>
+
+        <h3>{{localize 'ALIENRPG.Defensive'}}</h3>
+        <ol class="aas-list">
+          {{#each armaments.defensive}}
+          <li class="aas-weapon draggable" data-item-id="{{id}}">
+            <img src="{{img}}" alt="">
+            <div class="aas-weapon-body">
+              <div class="aas-weapon-name">
+                <span>{{name}}</span>
+                <button type="button" class="aas-icon" data-action="editItem" data-tooltip="{{localize 'ALTSHEET.Edit'}}"
+                  aria-label="{{localize 'ALTSHEET.Edit'}}"><i class="fa-solid fa-pen-to-square" inert></i></button>
+              </div>
+              <div class="aas-weapon-supply">
+                <div class="aas-stats">
+                  <span>{{localize 'ALIENRPG.Bonus'}} <b>{{bonus}}</b></span>
+                  {{#if hardpoint}}<span>{{localize 'ALIENRPG.hardpoint'}} <b>{{hardpoint}}</b></span>{{/if}}
+                </div>
+                <div class="aas-rollgroup aas-attack">
+                  <button type="button" class="aas-roll aas-roll-primary" data-action="roll" data-roll-type="weapon"
+                    data-item-id="{{id}}" data-label="{{name}}" data-item="{{name}}"
+                    data-tooltip="{{localize 'ALTSHEET.Vehicle.AttackTip'}}">
+                    <i class="fa-solid fa-dice-d6" inert></i>
+                    <span class="aas-roll-name">{{localize 'ALTSHEET.Spacecraft.Launch'}}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </li>
+          {{else}}
+          <li class="aas-empty">{{localize 'ALTSHEET.Spacecraft.NoDefenses'}}</li>
+          {{/each}}
+        </ol>
+      </section>
+
+      {{#each shipDamage as |group|}}
+      <section class="aas-panel">
+        <header class="aas-panel-head">
+          <h2>{{group.label}}</h2>
+          <div class="aas-rollgroup">
+            <button type="button" class="aas-roll aas-roll-small" data-action="roll" data-roll-type="shipCrit"
+              data-crbut="{{group.key}}" data-label="{{group.label}}">
+              <i class="fa-solid fa-dice-d6" inert></i>
+              <span class="aas-roll-name">{{localize 'ALTSHEET.Spacecraft.RollDamage'}}</span>
+            </button>
+            <button type="button" class="aas-mods" data-action="rollMods"
+              data-tooltip="{{localize 'ALTSHEET.Spacecraft.ManualDamage'}}"
+              aria-label="{{localize 'ALTSHEET.Spacecraft.ManualDamage'}}"><i class="fa-solid fa-list" inert></i></button>
+          </div>
+        </header>
+        <ol class="aas-list">
+          {{#each group.list}}
+          <li class="aas-injury draggable" data-item-id="{{id}}">
+            <img src="{{img}}" alt="">
+            <div class="aas-injury-body">
+              <div class="aas-weapon-name"><span>{{name}}</span></div>
+              {{#if effects}}<div class="aas-stats">{{effects}}</div>{{/if}}
+              {{#if repair}}<div class="aas-stats"><span>{{localize 'ALIENRPG.REPAIRROLL'}} <b>{{repair}}</b></span></div>{{/if}}
+            </div>
+            <button type="button" class="aas-icon" data-action="editItem" data-tooltip="{{localize 'ALTSHEET.Edit'}}"
+              aria-label="{{localize 'ALTSHEET.Edit'}}"><i class="fa-solid fa-pen-to-square" inert></i></button>
+            <button type="button" class="aas-icon" data-action="deleteItem" data-tooltip="{{localize 'ALTSHEET.Delete'}}"
+              aria-label="{{localize 'ALTSHEET.Delete'}}"><i class="fa-solid fa-trash" inert></i></button>
+          </li>
+          {{else}}
+          <li class="aas-empty">{{localize 'ALTSHEET.Spacecraft.NoDamage'}}</li>
+          {{/each}}
+        </ol>
+      </section>
+      {{/each}}
+    </div>
+  </div>
+</section>
