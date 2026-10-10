@@ -8,7 +8,7 @@
         {{#if (eq kind "textarea")}}
         <textarea name="{{name}}" rows="2">{{value}}</textarea>
         {{else if (eq kind "select")}}
-        <select name="{{name}}" data-dtype="Number">
+        <select name="{{name}}" {{#unless text}}data-dtype="Number"{{/unless}}>
           {{#each options}}
           <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
           {{/each}}

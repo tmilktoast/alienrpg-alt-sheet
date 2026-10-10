@@ -125,9 +125,10 @@ const NAMED_ITEM_TYPES = {
   system: "planet-system",
   talent: "talent",
   module: "spacecraftmods",
+  shipWeapon: "spacecraftweapons",
 };
 /** The tabs after Details that each item type has; a type not listed has Notes and Modifiers. */
-const ITEM_EXTRA_TABS = { specialty: [], "planet-system": [], talent: ["notes"], spacecraftmods: ["notes"] };
+const ITEM_EXTRA_TABS = { specialty: [], "planet-system": [], talent: ["notes"], spacecraftmods: ["notes"], spacecraftweapons: ["notes"] };
 /** Item types whose image the system sets itself each time their sheet draws. */
 const ITEM_FIXED_IMAGE = ["specialty", "planet-system", "talent"];
 /** Which of the system's numbered item types (`item_types_list`) use each optional field. */
@@ -774,6 +775,9 @@ export function prepareItemDetails(item, { evolved }) {
   const field = (label, key, kind = "number", extra = {}) =>
     fields.push({ label: loc(label), name: `system.attributes.${key}.value`, value: a[key].value, kind, ...extra });
   const details = { types: null, fields, checks: [], computer: [], description: "system.attributes.comment.value" };
+  // Lists whose entries carry the value to store as `key` instead of being numbered by it.
+  const keyed = (list, selected) =>
+    Object.values(list).map(({ key, label }) => ({ value: String(key), label: loc(label), selected: String(key) === String(selected) }));
   // The select beside the name: which field it sets and what it offers.
   const typed = (name, list, selected) => (details.types = { name, options: options(list, selected) });
 
@@ -784,18 +788,23 @@ export function prepareItemDetails(item, { evolved }) {
       break;
     case "spacecraftmods":
       // A module's size class, or that it is an upgrade; the system stores the label itself.
-      details.types = {
-        name: "system.attributes.size.value",
-        options: Object.values(cfg.ship_attributes_list).map(({ key, label }) => ({
-          value: key,
-          label: loc(label),
-          selected: key === a.size.value,
-        })),
-      };
+      details.types = { name: "system.attributes.size.value", options: keyed(cfg.ship_attributes_list, a.size.value) };
       field("ALIENRPG.QuantityLabel", "quantity");
       field("ALIENRPG.CapacityBarLabel", "capacity", "text");
       field("ALIENRPG.Cost", "cost", "cash");
       break;
+    case "spacecraftweapons": {
+      typed("system.header.type.value", cfg.ship_weapon_type_list, type);
+      const ranges = evolved ? cfg.evolved_ship_weapon_range_list : cfg.ship_weapon_range_list;
+      // A defensive system has no attack of its own, so no damage or range.
+      if (type !== SHIP_WEAPON_DEFENSIVE) field("ALIENRPG.Damage", "damage");
+      field("ALIENRPG.Bonus", "bonus");
+      if (type !== SHIP_WEAPON_DEFENSIVE) field("ALIENRPG.Range", "range", "select", { options: keyed(ranges, a.range.value) });
+      field("ALIENRPG.hardpoint", "hardpoint", "select", { options: keyed(cfg.ship_hardpoint_list, a.hardpoint.value), text: true });
+      field("ALIENRPG.QuantityLabel", "quantity");
+      field("ALIENRPG.Cost", "cost", "cash");
+      break;
+    }
     // A career or specialty is its description and nothing else.
     case "specialty":
       details.description = "system.general.comment.value";

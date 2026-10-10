@@ -14,7 +14,8 @@
       "colony": "Alternate Colony Sheet",
       "planet": "Alternate Planet Sheet",
       "talent": "Alternate Talent Sheet",
-      "module": "Alternate Ship Module Sheet"
+      "module": "Alternate Ship Module Sheet",
+      "shipWeapon": "Alternate Ship Weapon Sheet"
     },
     "Tabs": {
       "Play": "Play",

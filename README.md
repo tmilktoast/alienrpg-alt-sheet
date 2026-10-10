@@ -40,8 +40,8 @@ system's sheet for `character`, `synthetic`, `creature`, `vehicles`, `spacecraft
 - **Career and system sheets** — the same item sheet for Career/Specialty items (the description
   on its own) and Planet/System items (the system's details as labelled fields, then its
   description).
-- **Other item sheets** — the same item sheet again, each under its own name, for talents and
-  ship modules.
+- **Other item sheets** — the same item sheet again, each under its own name, for talents, ship
+  modules and ship weapons.
 - **Journal sheet** — Foundry's journal sheet in the same look: the sidebar, title, headings and
   links are restyled, and what a page's own layout sets is left alone.
 
