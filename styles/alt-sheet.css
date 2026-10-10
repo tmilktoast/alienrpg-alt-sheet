@@ -1282,6 +1282,24 @@
   color: var(--aas-warn);
 }
 
+/* ---------- Planet sheet ---------- */
+
+.alien-alt-sheet .aas-region {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  background: var(--aas-bg);
+  border: 1px solid var(--aas-border);
+  border-radius: 4px;
+}
+
+.alien-alt-sheet .aas-region .aas-check {
+  margin-left: auto;
+  font-weight: normal;
+  font-size: 12px;
+}
+
 /* A header with no vitals row. */
 .alien-alt-sheet .aas-header-simple {
   grid-template-columns: 64px 1fr auto;

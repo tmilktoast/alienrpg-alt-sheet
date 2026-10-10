@@ -11,7 +11,8 @@
       "system": "Alternate System Sheet",
       "spacecraft": "Alternate Spacecraft Sheet",
       "territory": "Alternate Territory Sheet",
-      "colony": "Alternate Colony Sheet"
+      "colony": "Alternate Colony Sheet",
+      "planet": "Alternate Planet Sheet"
     },
     "Tabs": {
       "Play": "Play",
@@ -28,7 +29,8 @@
       "Combat": "Combat",
       "Systems": "Systems",
       "About": "About",
-      "Colony": "Colony"
+      "Colony": "Colony",
+      "Planet": "Planet"
     },
     "Rules": {
       "Actions": "Actions",
@@ -235,6 +237,43 @@
         "cycles": "Cycles",
         "sponsor": "Sponsor",
         "commander": "Commander"
+      }
+    },
+    "Planet": {
+      "EditModeOn": "Editing: name, the star system, the world and its surface are unlocked. Click to lock.",
+      "EditModeOff": "Locked for reading. Click to edit name, the star system, the world and its surface.",
+      "Limited": "You only have limited access to this planet.",
+      "System": "Star system",
+      "World": "World",
+      "Surface": "Surface",
+      "Resources": "Resource potential",
+      "Fields": {
+        "parentstar": "Parent star",
+        "radiation": "Radiation",
+        "planetposition": "Position",
+        "gasgiants": "Gas giants",
+        "rockyplanets": "Rocky planets",
+        "iceplanets": "Ice planets",
+        "asteroidbelts": "Asteroid belts",
+        "planetsize": "Size",
+        "atmosphere": "Atmosphere",
+        "hydrosphere": "Hydrosphere",
+        "gravity": "Gravity",
+        "climate": "Climate",
+        "daylength": "Day length",
+        "orbitalperiod": "Orbital period",
+        "axialtilt": "Axial tilt",
+        "globalfeature": "Global feature",
+        "personality": "Personality"
+      },
+      "Regions": {
+        "northpole": "North pole",
+        "nhwest": "Northern hemisphere, west",
+        "nheast": "Northern hemisphere, east",
+        "equator": "Equator",
+        "shwest": "Southern hemisphere, west",
+        "sheast": "Southern hemisphere, east",
+        "southpole": "South pole"
       }
     },
     "Item": {

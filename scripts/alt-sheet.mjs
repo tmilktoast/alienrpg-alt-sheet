@@ -70,6 +70,28 @@ const COLONY_STATS = {
 const COLONY_LEVELS = [5, 30, 40, 53, 68, 85];
 /** The system's numbered kinds of colony initiative (`colony_policy_list`). */
 const COLONY_INITIATIVES = { 1: "Policies", 2: "Installations", 3: "Projects" };
+const PLANET_TABS = {
+  planet: "fa-solid fa-globe",
+  notes: "fa-solid fa-pen",
+};
+/** A planet's fields as the sheet groups them. Those marked true are counts; the rest are text. */
+const PLANET_FIELDS = {
+  System: { parentstar: false, radiation: false, planetposition: true, gasgiants: true, rockyplanets: true, iceplanets: true, asteroidbelts: true },
+  World: {
+    planetsize: false,
+    atmosphere: false,
+    hydrosphere: false,
+    gravity: false,
+    climate: false,
+    daylength: false,
+    orbitalperiod: false,
+    axialtilt: false,
+    globalfeature: false,
+    personality: false,
+  },
+};
+/** The regions of a planet's surface, north to south. Each has a `rp…` flag for resource potential. */
+const PLANET_REGIONS = ["northpole", "nhwest", "nheast", "equator", "shwest", "sheast", "southpole"];
 
 /**
  * What each crew seat rolls, by the kind of actor crewed: the crew member's skill, plus one of the
@@ -1563,6 +1585,60 @@ function makeColonySheet(Base) {
 }
 
 /**
+ * The alternate sheet for planets: the star system it sits in, the world itself, and its surface
+ * region by region.
+ * @param {typeof foundry.applications.sheets.ActorSheetV2} Base  The system's planet sheet
+ */
+function makePlanetSheet(Base) {
+  return class AltPlanetSheet extends makeBase(Base) {
+    static DEFAULT_OPTIONS = {
+      position: { width: 800, height: 780 },
+    };
+
+    static PARTS = {
+      header: { template: `${TEMPLATES}/simple-header.hbs` },
+      tabs: { template: "templates/generic/tab-navigation.hbs" },
+      planet: { template: `${TEMPLATES}/planet.hbs`, scrollable: [""] },
+      notes: { template: `${TEMPLATES}/notes.hbs`, scrollable: [""] },
+    };
+
+    static TABS = PLANET_TABS;
+
+    async _prepareContext(options) {
+      const context = await super._prepareContext(options);
+      const actor = this.actor;
+      const a = actor.system.attributes;
+
+      // A blank planet opens unlocked, since the first thing to do is fill it in.
+      this._editMode ??= !a.parentstar && !a.planetsize && !a.climate;
+
+      return Object.assign(context, {
+        editMode: this._editMode && this.isEditable,
+        header: { key: "Planet", subtitle: a.parentstar },
+        sections: Object.entries(PLANET_FIELDS).map(([section, fields]) => ({
+          label: loc(`ALTSHEET.Planet.${section}`),
+          fields: Object.entries(fields).map(([key, count]) => ({
+            label: loc(`ALTSHEET.Planet.Fields.${key}`),
+            name: count ? `system.attributes.${key}.value` : `system.attributes.${key}`,
+            value: count ? a[key].value : a[key],
+            count,
+          })),
+        })),
+        regions: PLANET_REGIONS.map((key) => ({
+          label: loc(`ALTSHEET.Planet.Regions.${key}`),
+          name: `system.attributes.${key}`,
+          value: a[key],
+          flag: `system.attributes.rp${key}`,
+          resources: a[`rp${key}`],
+        })),
+        notes: notesOf(actor),
+        enrichedNotes: await enrich(actor, notesOf(actor)),
+      });
+    }
+  };
+}
+
+/**
  * The alternate sheet for items. One class lays out every item type it is registered for, as the
  * system's own item sheet does: gear (weapons, armor and items), careers and systems.
  * @param {typeof foundry.applications.sheets.ItemSheetV2} Base  The system's item sheet
@@ -1688,6 +1764,7 @@ Hooks.once("ready", () => {
     spacecraft: makeSpacecraftSheet,
     territory: makeTerritorySheet,
     colony: makeColonySheet,
+    planet: makePlanetSheet,
   };
   for (const type of SHEET_TYPES) sheets[type] = (Base) => makeSheet(Base, type);
   for (const [type, make] of Object.entries(sheets)) {

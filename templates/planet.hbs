@@ -1,0 +1,61 @@
+<section class="tab aas-tab aas-planet {{tab.cssClass}}" data-group="primary" data-tab="planet">
+  <div class="aas-columns">
+    <div class="aas-column">
+      {{#each sections}}
+      <section class="aas-panel">
+        <header class="aas-panel-head">
+          <h2>{{label}}</h2>
+        </header>
+        {{#if @root.editMode}}
+        <div class="aas-fields">
+          {{#each fields}}
+          <label class="aas-labelled">
+            <span>{{label}}</span>
+            {{#if count}}
+            <input type="number" name="{{name}}" value="{{value}}" min="0" step="1">
+            {{else}}
+            <input type="text" name="{{name}}" value="{{value}}">
+            {{/if}}
+          </label>
+          {{/each}}
+        </div>
+        {{else}}
+        <dl class="aas-facts">
+          {{#each fields}}
+          <dt>{{label}}</dt><dd>{{#if count}}{{value}}{{else}}{{#if value}}{{value}}{{else}}—{{/if}}{{/if}}</dd>
+          {{/each}}
+        </dl>
+        {{/if}}
+      </section>
+      {{/each}}
+    </div>
+
+    <div class="aas-column">
+      <section class="aas-panel">
+        <header class="aas-panel-head">
+          <h2>{{localize 'ALTSHEET.Planet.Surface'}}</h2>
+        </header>
+        {{#each regions}}
+        <div class="aas-region">
+          <div class="aas-weapon-name">
+            <span>{{label}}</span>
+            {{#if @root.editMode}}
+            <label class="aas-check">
+              <input type="checkbox" name="{{flag}}" {{checked resources}}>
+              <span>{{localize 'ALTSHEET.Planet.Resources'}}</span>
+            </label>
+            {{else}}
+            {{#if resources}}<span class="aas-tag">{{localize 'ALTSHEET.Planet.Resources'}}</span>{{/if}}
+            {{/if}}
+          </div>
+          {{#if @root.editMode}}
+          <textarea name="{{name}}" rows="2" aria-label="{{label}}">{{value}}</textarea>
+          {{else}}
+          {{#if value}}<div class="aas-prose aas-special">{{value}}</div>{{else}}<span class="aas-empty">—</span>{{/if}}
+          {{/if}}
+        </div>
+        {{/each}}
+      </section>
+    </div>
+  </div>
+</section>

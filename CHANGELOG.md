@@ -22,6 +22,7 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
   an About tab.
 - **Colony sheet** — an alternate sheet for `colony` actors: stats, development level, details and
   initiatives.
+- **Planet sheet** — an alternate sheet for `planet` actors: star system, world and surface regions.
 - **Gear sheets** — an alternate sheet for `weapon`, `armor` and `item` items, with Details, Notes
   and Modifiers tabs. Details shows only the fields that kind of gear uses; a computer's skill dice
   are roll buttons.
