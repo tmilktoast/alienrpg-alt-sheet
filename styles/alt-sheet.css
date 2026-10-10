@@ -1646,11 +1646,11 @@
 .alien-alt-chat {
   --aac-card: #0b110e;
   --aac-border: #24382b;
-  --aac-green: #8fe85a;
-  --aac-green-dim: #5aa63c;
-  --aac-text: #b4c8b8;
-  --aac-strong: #d9e6da;
-  --aac-muted: #7f9686;
+  --aac-green: #78c44e;
+  --aac-green-dim: #4d8a35;
+  --aac-text: #8fa394;
+  --aac-strong: #b3c5b7;
+  --aac-muted: #6b8072;
   --aac-font: "Signika", "Segoe UI", system-ui, -apple-system, sans-serif;
 }
 
@@ -1767,4 +1767,27 @@
 .alien-alt-chat .chat-message :is(a.inline-roll, a.content-link):hover {
   border-color: var(--aac-green);
   text-shadow: none;
+}
+
+/* The system's chat cards set pure white and a vivid green as inline styles, which only an
+   !important rule can outweigh. */
+.alien-alt-chat .chat-message [style*="#fff"] {
+  color: var(--aac-text) !important;
+}
+
+.alien-alt-chat .chat-message :is(h2, h3)[style*="#fff"] {
+  color: var(--aac-strong) !important;
+}
+
+.alien-alt-chat .chat-message [style*="#03cf03"] {
+  color: var(--aac-green) !important;
+}
+
+.alien-alt-chat .chat-message .whisper-to {
+  color: var(--aac-green-dim);
+}
+
+/* Injury and damage cards fix their line height at the size of the system's smaller type. */
+.alien-alt-chat .chat-message .critchat > div {
+  line-height: 1.4 !important;
 }
