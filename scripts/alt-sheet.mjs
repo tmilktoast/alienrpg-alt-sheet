@@ -22,6 +22,8 @@ const RANGES = {
   4: "ALIENRPG.Long",
   5: "ALIENRPG.Extreme",
 };
+/** The range a ranged attack's dialog starts on: Short. */
+const DEFAULT_RANGE = 2;
 
 /** World roll tables the system draws responses from; each result's description is the rule text. */
 const RESPONSE_TABLES = { stress: "Stress Response Table", panic: "Panic Response Table" };
@@ -546,7 +548,19 @@ function makeSheet(Base, type) {
           if (header.type.value === WEAPON_RANGED && attributes.rounds.value <= 0) {
             return ui.notifications.warn(loc("ALIENRPG.noAmmo"));
           }
-          return item.roll(withMods, data);
+          if (header.type.value !== WEAPON_RANGED) return item.roll(withMods, data);
+          // The system's range/cover dialog opens on the first range. Start it on Short, or on
+          // the weapon's own range if that is closer.
+          const range = String(Math.min(DEFAULT_RANGE, Number(attributes.range.value) || DEFAULT_RANGE));
+          const hook = Hooks.on("renderDialogV2", (_app, element) => {
+            const select = element.querySelector("select#rangeChoice");
+            if (select?.querySelector(`option[value="${range}"]`)) select.value = range;
+          });
+          try {
+            return await item.roll(withMods, data);
+          } finally {
+            Hooks.off("renderDialogV2", hook);
+          }
         }
         // The system's method names predate Evolved: there, rollResolve draws a stress
         // response and rollStress draws a panic response.

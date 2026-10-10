@@ -3,6 +3,13 @@
 Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` field in
 `module.json`.
 
+## Unreleased
+
+### Changed
+
+- The ranged attack dialog starts on Short range instead of Adjacent. A weapon that only reaches
+  Adjacent still starts there.
+
 ## 0.2.1 — 2026-10-09
 
 ### Added
