@@ -127,9 +127,10 @@ const NAMED_ITEM_TYPES = {
   module: "spacecraftmods",
   shipWeapon: "spacecraftweapons",
   stunts: "skill-stunts",
+  agenda: "agenda",
 };
 /** The tabs after Details that each item type has; a type not listed has Notes and Modifiers. */
-const ITEM_EXTRA_TABS = { specialty: [], "planet-system": [], talent: ["notes"], spacecraftmods: ["notes"], spacecraftweapons: ["notes"], "skill-stunts": [] };
+const ITEM_EXTRA_TABS = { specialty: [], "planet-system": [], talent: ["notes"], spacecraftmods: ["notes"], spacecraftweapons: ["notes"], "skill-stunts": [], agenda: [] };
 /** Item types whose image the system sets itself each time their sheet draws. */
 const ITEM_FIXED_IMAGE = ["specialty", "planet-system", "talent"];
 /** Which of the system's numbered item types (`item_types_list`) use each optional field. */
@@ -787,6 +788,9 @@ export function prepareItemDetails(item, { evolved }) {
     case "skill-stunts":
       details.names = keyed(cfg.skills_list, item.name);
       details.description = "system.description";
+      break;
+    case "agenda":
+      details.description = "system.general.comment.value";
       break;
     case "talent":
       typed("system.general.career.value", cfg.career_list, item.system.general.career.value);
