@@ -30,15 +30,40 @@
     },
     "Builder": {
       "Open": "Builder",
-      "OpenHint": "Create this character step by step: career, attributes, skills and a talent.",
+      "OpenHint": "Create this character step by step, by the book or with a life path: career, attributes, skills and a talent.",
       "Title": "Character Builder: {name}",
       "StepsLabel": "Steps",
       "Steps": {
+        "method": "Method",
+        "commander": "Command",
         "career": "Career",
         "attributes": "Attributes",
         "skills": "Skills",
         "talent": "Talent",
         "review": "Review"
+      },
+      "MethodHint": "Choose how to create this character. You can come back and change this before applying.",
+      "Methods": {
+        "book": {
+          "Label": "By the book",
+          "Hint": "Pick a career, spend your points on attributes and skills, and choose a talent."
+        },
+        "lifepath": {
+          "Label": "Life path",
+          "Hint": "Answer questions about your character's history first, then build as the book says."
+        }
+      },
+      "Commander": {
+        "Hint": "One marine in the unit is in command. Settle with your group who that is.",
+        "Question": "Are you the unit commander?",
+        "yes": {
+          "Label": "Yes",
+          "Hint": "You lead the unit. Your rank is {rank}."
+        },
+        "no": {
+          "Label": "No",
+          "Hint": "You follow the commander's orders. Your rank is left as it is."
+        }
       },
       "CareerHint": "Your career sets your key attribute, your key skills and the talents you can start with.",
       "NoCareers": "No careers found. Import the rulebook's Career items into the world's Items sidebar.",
@@ -141,6 +166,7 @@
     "SkillBreakdown": "Rank {rank} + {attribute} {attr} + modifiers {mod} = {total} dice",
     "AttributesSkills": "Attributes & Skills",
     "Rank": "Rank",
+    "MilitaryRank": "Rank",
     "Base": "Base",
     "Max": "Max",
     "Stunts": "Stunts",

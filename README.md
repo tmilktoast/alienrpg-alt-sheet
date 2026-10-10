@@ -49,7 +49,9 @@ system's sheet for `character`, `synthetic`, `creature`, `vehicles`, `spacecraft
 
 - **Character builder** — a Builder button on the character sheet (while Edit is on) walks through
   career, attributes, skills and a starting talent by the Evolved rules, then writes them to the
-  character in one go. It offers the Career/Specialty items in the world's Items sidebar.
+  character in one go. It offers the Career/Specialty items in the world's Items sidebar. It can
+  build by the book, or by a life path that asks about the character's history first (so far, only
+  whether they command the unit).
 - **Readable chat** — chat messages on a flat dark card in a plainer typeface, with the system's
   terminal green and display font kept for the sender, headings and labels. Each player can turn it
   off under Configure Settings → Alien RPG Alternate Sheet.
@@ -85,6 +87,10 @@ KEY ATTRIBUTE: Agility SKILLS: Piloting, Ranged Combat TALENTS: Banter, Overkill
 
 A career it can't work out either way isn't offered. The creation rules' numbers are the `RULES`
 table at the top of the file, and the steps are the `STEPS` list, which is where further steps go.
+A step with `method: "lifepath"` is only asked on the life path.
+
+The system has no rank field, so the Bio tab's Rank is stored on the actor as the module flag
+`flags.alienrpg-alt-sheet.rank`.
 
 ## Life path tables
 

@@ -1804,6 +1804,7 @@
 .alien-alt-sheet .aas-builder-steps {
   flex: none;
   display: flex;
+  flex-wrap: wrap;
   gap: 4px;
   padding: 10px 14px;
   background: var(--aas-panel);
@@ -1811,7 +1812,7 @@
 }
 
 .alien-alt-sheet .window-content .aas-builder-step {
-  flex: 1 1 0;
+  flex: 1 0 auto;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -1908,6 +1909,15 @@
   height: 32px;
   object-fit: cover;
   border-radius: 3px;
+}
+
+.alien-alt-sheet .aas-builder-choice > i {
+  flex: none;
+  width: 32px;
+  font-size: 18px;
+  line-height: 32px;
+  text-align: center;
+  color: var(--aas-accent);
 }
 
 .alien-alt-sheet .aas-builder-choice-body {

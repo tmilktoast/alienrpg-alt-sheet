@@ -32,17 +32,27 @@ const CORE_CAREERS = {
   scientist: ["wit", ["observation", "survival", "comtech"], ["Analysis", "Inquisitive", "Xenomorphology"]],
 };
 
+/** The rank a life path gives the unit's commander. */
+const COMMANDER_RANK = "Corporal";
+
 /**
- * The builder's steps, in order. Each says whether what has been chosen so far completes it; a
- * later kind of step (a life path, say) is another entry here and another block in the template.
+ * Every step the builder knows, in order. Each says whether what has been chosen so far completes
+ * it, and may name the one creation method it belongs to: "book" spends the rulebook's points and
+ * nothing more, "lifepath" asks its own questions as well. A new life path question is another
+ * entry here and another block in the template.
  */
 const STEPS = [
+  { id: "method", done: (state) => !!state.method },
+  { id: "commander", method: "lifepath", done: (state) => !!state.commander },
   { id: "career", done: (state) => !!state.career },
   { id: "attributes", done: (state) => spent(state.attributes) === RULES.attributePoints },
   { id: "skills", done: (state) => spent(state.skills) === RULES.skillPoints },
   { id: "talent", done: (state) => !!state.talent },
   { id: "review", done: () => true },
 ];
+
+/** The steps the chosen creation method walks through. */
+const stepsFor = (state) => STEPS.filter((step) => !step.method || step.method === state.method);
 
 const loc = (key) => game.i18n.localize(key);
 const fmt = (key, data) => game.i18n.format(key, data);
@@ -103,8 +113,8 @@ function findTalent(name) {
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 /**
- * Walks a player through creating a character: career, attributes, skills and a talent, then
- * writes the result to the actor in one go. Nothing on the actor changes until Apply.
+ * Walks a player through creating a character: career, attributes, skills and a talent, with a
+ * life path's questions first for those who choose one, then writes the result to the actor in one go. Nothing on the actor changes until Apply.
  */
 export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) {
   static DEFAULT_OPTIONS = {
@@ -116,6 +126,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       goTo: CharacterBuilder.#onGoTo,
       next: CharacterBuilder.#onNext,
       back: CharacterBuilder.#onBack,
+      pick: CharacterBuilder.#onPick,
       pickCareer: CharacterBuilder.#onPickCareer,
       pickTalent: CharacterBuilder.#onPickTalent,
       adjust: CharacterBuilder.#onAdjust,
@@ -135,8 +146,13 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     super({ ...options, id: `${MODULE_ID}-builder-${options.actor.id}` });
     this.actor = options.actor;
     this.step = STEPS[0].id;
-    /** What has been chosen so far. A career is the id of its Career item; a talent is its name. */
+    /**
+     * What has been chosen so far. The method is "book" or "lifepath"; commander is "yes" or "no";
+     * a career is the id of its Career item; a talent is its name.
+     */
     this.choices = {
+      method: null,
+      commander: null,
       career: null,
       attributes: Object.fromEntries(ATTRIBUTES.map((key) => [key, RULES.attributeMin])),
       skills: Object.fromEntries(Object.keys(CONFIG.ALIENRPG.skills).map((key) => [key, 0])),
@@ -174,15 +190,21 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
 
   /** How far through the steps the choices so far allow: the first one not yet complete. */
   get #reach() {
-    const index = STEPS.findIndex((step) => !step.done(this.choices));
-    return index < 0 ? STEPS.length - 1 : index;
+    const steps = this.#steps;
+    const index = steps.findIndex((step) => !step.done(this.choices));
+    return index < 0 ? steps.length - 1 : index;
+  }
+
+  get #steps() {
+    return stepsFor(this.choices);
   }
 
   async _prepareContext() {
     const cfg = CONFIG.ALIENRPG;
     const state = this.choices;
     const career = this.career;
-    const index = STEPS.findIndex((step) => step.id === this.step);
+    const steps = this.#steps;
+    const index = steps.findIndex((step) => step.id === this.step);
     const reach = this.#reach;
     const attributeLabel = (key) => loc(cfg.attributes[key]);
     const skillLabel = (key) => loc(cfg.skills[key].name);
@@ -234,7 +256,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
 
     return {
       step: this.step,
-      steps: STEPS.map((step, i) => ({
+      steps: steps.map((step, i) => ({
         id: step.id,
         number: i + 1,
         label: loc(`ALTSHEET.Builder.Steps.${step.id}`),
@@ -243,9 +265,23 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
         enabled: i <= reach,
       })),
       isFirst: index === 0,
-      isLast: index === STEPS.length - 1,
+      isLast: index === steps.length - 1,
       canNext: index < reach,
       rules: RULES,
+      methods: ["book", "lifepath"].map((id) => ({
+        id,
+        icon: id === "book" ? "fa-solid fa-book" : "fa-solid fa-route",
+        label: loc(`ALTSHEET.Builder.Methods.${id}.Label`),
+        hint: loc(`ALTSHEET.Builder.Methods.${id}.Hint`),
+        selected: state.method === id,
+      })),
+      commander: ["yes", "no"].map((id) => ({
+        id,
+        icon: id === "yes" ? "fa-solid fa-star" : "fa-solid fa-user",
+        label: loc(`ALTSHEET.Builder.Commander.${id}.Label`),
+        hint: fmt(`ALTSHEET.Builder.Commander.${id}.Hint`, { rank: COMMANDER_RANK }),
+        selected: state.commander === id,
+      })),
       groups,
       career: career && {
         ...career,
@@ -270,6 +306,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       },
       talents,
       review: {
+        rank: this.#rank,
         talent: state.talent,
         attributes: ATTRIBUTES.map((key) => ({ label: attributeLabel(key), value: state.attributes[key] })),
         skills: Object.entries(state.skills)
@@ -291,24 +328,41 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     if (!this.career?.talents.includes(this.choices.talent)) this.choices.talent = null;
   }
 
+  /** The rank the choices so far give the character, or null if they leave it alone. */
+  get #rank() {
+    const { method, commander } = this.choices;
+    return method === "lifepath" && commander === "yes" ? COMMANDER_RANK : null;
+  }
+
   static #onGoTo(event, target) {
-    const index = STEPS.findIndex((step) => step.id === target.dataset.step);
+    const steps = this.#steps;
+    const index = steps.findIndex((step) => step.id === target.dataset.step);
     if (index < 0 || index > this.#reach) return;
-    this.step = STEPS[index].id;
+    this.step = steps[index].id;
     return this.render();
   }
 
   static #onNext() {
-    const index = STEPS.findIndex((step) => step.id === this.step);
+    const steps = this.#steps;
+    const index = steps.findIndex((step) => step.id === this.step);
     if (index >= this.#reach) return;
-    this.step = STEPS[index + 1].id;
+    this.step = steps[index + 1].id;
     return this.render();
   }
 
   static #onBack() {
-    const index = STEPS.findIndex((step) => step.id === this.step);
+    const steps = this.#steps;
+    const index = steps.findIndex((step) => step.id === this.step);
     if (index <= 0) return;
-    this.step = STEPS[index - 1].id;
+    this.step = steps[index - 1].id;
+    return this.render();
+  }
+
+  /** Answer one of the simple questions: the creation method, or a life path's yes or no. */
+  static #onPick(event, target) {
+    const { choice, value } = target.dataset;
+    if (!["method", "commander"].includes(choice)) return;
+    this.choices[choice] = value;
     return this.render();
   }
 
@@ -338,7 +392,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
   static async #onApply() {
     const { actor } = this;
     const state = this.choices;
-    if (STEPS.some((step) => !step.done(state))) return;
+    if (this.#steps.some((step) => !step.done(state))) return;
     const careerItem = game.items.get(state.career);
     if (!careerItem) return ui.notifications.warn(loc("ALTSHEET.Builder.CareerGone"));
     if (ATTRIBUTES.some((key) => actor.system.attributes[key]?.value)) {
@@ -356,6 +410,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     // The system's older career field, for anything that still reads it.
     const legacy = Object.entries(CONFIG.ALIENRPG.career_list).find(([, entry]) => sameName(loc(entry.label), careerItem.name));
     if (legacy) update["system.general.career.value"] = legacy[0];
+    if (this.#rank) update[`flags.${MODULE_ID}.rank`] = this.#rank;
     await actor.update(update);
     // A new character starts unhurt; the system works out maximum Health from the scores just set.
     const { calculatedMax, max } = actor.system.header.health;

@@ -17,6 +17,18 @@
 </div>
 {{/inline}}
 
+{{!-- One answer to a simple question: the creation method, or a life path's yes or no. --}}
+{{#*inline "answer"}}
+<button type="button" class="aas-builder-choice {{#if selected}}active{{/if}}" data-action="pick"
+  data-choice="{{choice}}" data-value="{{id}}" aria-pressed="{{#if selected}}true{{else}}false{{/if}}">
+  <i class="{{icon}}" inert></i>
+  <span class="aas-builder-choice-body">
+    <b>{{label}}</b>
+    <span>{{hint}}</span>
+  </span>
+</button>
+{{/inline}}
+
 <div class="aas-builder-frame">
   <nav class="aas-builder-steps" aria-label="{{localize 'ALTSHEET.Builder.StepsLabel'}}">
     {{#each steps}}
@@ -29,6 +41,29 @@
   </nav>
 
   <div class="aas-builder-body">
+    {{#if (eq step "method")}}
+    <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.MethodHint'}}</p>
+    <section class="aas-panel">
+      <div class="aas-builder-choices aas-builder-choices-wide">
+        {{#each methods}}
+        {{> answer choice="method"}}
+        {{/each}}
+      </div>
+    </section>
+    {{/if}}
+
+    {{#if (eq step "commander")}}
+    <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.Commander.Hint'}}</p>
+    <section class="aas-panel">
+      <header class="aas-panel-head"><h2>{{localize 'ALTSHEET.Builder.Commander.Question'}}</h2></header>
+      <div class="aas-builder-choices">
+        {{#each commander}}
+        {{> answer choice="commander"}}
+        {{/each}}
+      </div>
+    </section>
+    {{/if}}
+
     {{#if (eq step "career")}}
     <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.CareerHint'}}</p>
     {{#each groups}}
@@ -119,6 +154,7 @@
     <section class="aas-panel">
       <dl class="aas-facts">
         <dt>{{localize 'ALIENRPG.Career'}}</dt><dd>{{career.name}}</dd>
+        {{#if review.rank}}<dt>{{localize 'ALTSHEET.MilitaryRank'}}</dt><dd>{{review.rank}}</dd>{{/if}}
         <dt>{{localize 'ALIENRPG.Attributes'}}</dt>
         <dd>{{#each review.attributes}}<span class="aas-builder-pair">{{label}} <b>{{value}}</b></span>{{/each}}</dd>
         <dt>{{localize 'ALIENRPG.Skills'}}</dt>
