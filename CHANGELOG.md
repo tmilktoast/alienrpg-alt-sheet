@@ -28,6 +28,8 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
   are roll buttons.
 - **Career and system sheets** — alternate sheets for `specialty` (Career/Specialty) and
   `planet-system` (Planet/System) items, built on the gear sheet.
+- **Talent sheet** — an alternate sheet for `talent` items: the career it belongs to, its
+  description and notes.
 - **Journal sheet** — an alternate sheet for journal entries: Foundry's journal sheet with the
   sidebar, title, headings and links restyled to match the other alternate sheets.
 - The pilot's Piloting roll adds the vehicle's manoeuvrability, which the system's sheet leaves out.

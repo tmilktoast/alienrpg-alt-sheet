@@ -17,8 +17,8 @@
   <div class="aas-item-type">
     <span class="aas-vital-label">{{typeLabel}}</span>
     {{#unless limited}}{{#if details.types}}
-    <select name="system.header.type.value" aria-label="{{localize 'ALIENRPG.Type'}}">
-      {{#each details.types}}
+    <select name="{{details.types.name}}" aria-label="{{localize 'ALIENRPG.Type'}}">
+      {{#each details.types.options}}
       <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
       {{/each}}
     </select>

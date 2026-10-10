@@ -12,7 +12,8 @@
       "spacecraft": "Alternate Spacecraft Sheet",
       "territory": "Alternate Territory Sheet",
       "colony": "Alternate Colony Sheet",
-      "planet": "Alternate Planet Sheet"
+      "planet": "Alternate Planet Sheet",
+      "talent": "Alternate Talent Sheet"
     },
     "Tabs": {
       "Play": "Play",

@@ -120,9 +120,11 @@ const ITEM_TABS = {
 /** The item types that are gear, which the alternate item sheet covers. */
 const GEAR_TYPES = ["weapon", "armor", "item"];
 /** Other item types with an alternate sheet of their own name, keyed by its ALTSHEET.SheetLabel. */
-const LORE_TYPES = { career: "specialty", system: "planet-system" };
-/** Item types whose sheet is the Details tab alone; the rest also get Notes and Modifiers. */
-const SINGLE_TAB_TYPES = Object.values(LORE_TYPES);
+const NAMED_ITEM_TYPES = { career: "specialty", system: "planet-system", talent: "talent" };
+/** The tabs after Details that each item type has; a type not listed has Notes and Modifiers. */
+const ITEM_EXTRA_TABS = { specialty: [], "planet-system": [], talent: ["notes"] };
+/** Item types whose image the system sets itself each time their sheet draws. */
+const ITEM_FIXED_IMAGE = ["specialty", "planet-system", "talent"];
 /** Which of the system's numbered item types (`item_types_list`) use each optional field. */
 const ITEM_FIELDS = {
   power: ["3", "4", "8", "10"],
@@ -754,7 +756,7 @@ async function prepareCreatureTable(actor, name, results = false) {
 
 /**
  * The fields of an item, as the Details tab lays them out, and where its description is kept.
- * @returns {{types: object[]|null, fields: object[], checks: object[], computer: object[], description: string,
+ * @returns {{types: {name: string, options: object[]}|null, fields: object[], checks: object[], computer: object[], description: string,
  *   text?: boolean}}  `text` when the fields hold phrases and want wider columns
  */
 export function prepareItemDetails(item, { evolved }) {
@@ -767,8 +769,14 @@ export function prepareItemDetails(item, { evolved }) {
   const field = (label, key, kind = "number", extra = {}) =>
     fields.push({ label: loc(label), name: `system.attributes.${key}.value`, value: a[key].value, kind, ...extra });
   const details = { types: null, fields, checks: [], computer: [], description: "system.attributes.comment.value" };
+  // The select beside the name: which field it sets and what it offers.
+  const typed = (name, list, selected) => (details.types = { name, options: options(list, selected) });
 
   switch (item.type) {
+    case "talent":
+      typed("system.general.career.value", cfg.career_list, item.system.general.career.value);
+      details.description = "system.general.comment.value";
+      break;
     // A career or specialty is its description and nothing else.
     case "specialty":
       details.description = "system.general.comment.value";
@@ -795,7 +803,7 @@ export function prepareItemDetails(item, { evolved }) {
     case "weapon": {
       const ranged = type === WEAPON_RANGED;
       const ranges = evolved ? cfg.evolved_weapon_range_list : cfg.weapon_range_list;
-      details.types = options(cfg.weapon_type_list, type);
+      typed("system.header.type.value", cfg.weapon_type_list, type);
       field("ALIENRPG.Damage", "damage");
       field("ALIENRPG.Bonus", "bonus");
       // Only Evolved gives ranged weapons a minimum range.
@@ -825,7 +833,7 @@ export function prepareItemDetails(item, { evolved }) {
       break;
     default: {
       const uses = (key) => ITEM_FIELDS[key].includes(type);
-      details.types = options(cfg.item_types_list, type);
+      typed("system.header.type.value", cfg.item_types_list, type);
       field("ALIENRPG.QuantityLabel", "quantity");
       if (uses("power")) field("ALIENRPG.Power", "power");
       if (uses("food")) field("ALIENRPG.Food", "food");
@@ -851,7 +859,7 @@ export function prepareItemModifiers(item) {
   const cfg = CONFIG.ALIENRPG;
   const { modifiers, header } = item.system;
   // A computer's own dice sit on the Details tab; what is left here are bonuses to its user.
-  const computer = item.type === "item" && header.type?.value === ITEM_COMPUTER;
+  const computer = item.type === "item" && header?.type?.value === ITEM_COMPUTER;
   const row = (group, key, label) => ({
     label,
     name: `system.modifiers.${group}.${key}.value`,
@@ -1671,8 +1679,11 @@ function makeItemSheet(Base) {
     _configureRenderOptions(options) {
       Core._configureRenderOptions.call(this, options);
       if (this.document.limited) options.parts = ["header"];
-      // A lone tab needs no tab bar.
-      else if (SINGLE_TAB_TYPES.includes(this.document.type)) options.parts = ["header", "details"];
+      else {
+        const extra = ITEM_EXTRA_TABS[this.document.type] ?? ["notes", "modifiers"];
+        // A lone tab needs no tab bar.
+        options.parts = extra.length ? ["header", "tabs", "details", ...extra] : ["header", "details"];
+      }
     }
 
     _getTabs(parts) {
@@ -1702,7 +1713,7 @@ function makeItemSheet(Base) {
         modifierGroups: prepareItemModifiers(item),
         typeLabel: loc(`TYPES.Item.${item.type}`),
         // The system sets a career's and a system's image itself each time their sheet draws.
-        imageEditable: context.editable && !SINGLE_TAB_TYPES.includes(item.type),
+        imageEditable: context.editable && !ITEM_FIXED_IMAGE.includes(item.type),
         notes: notesOf(item),
         enrichedNotes: await enrich(item, notesOf(item)),
       });
@@ -1790,7 +1801,7 @@ Hooks.once("ready", () => {
       label: "ALTSHEET.SheetLabel.item",
     });
     // Sheets are registered by class name, so each differently named sheet needs its own class.
-    for (const [key, type] of Object.entries(LORE_TYPES)) {
+    for (const [key, type] of Object.entries(NAMED_ITEM_TYPES)) {
       const Sheet = class extends AltItemSheet {};
       Object.defineProperty(Sheet, "name", { value: `Alt${key.capitalize()}Sheet` });
       foundry.applications.apps.DocumentSheetConfig.registerSheet(Item, MODULE_ID, Sheet, {
