@@ -1648,8 +1648,9 @@
   --aac-border: #24382b;
   --aac-green: #8fe85a;
   --aac-green-dim: #5aa63c;
-  --aac-text: #dfeadf;
-  --aac-muted: #8fa596;
+  --aac-text: #b4c8b8;
+  --aac-strong: #d9e6da;
+  --aac-muted: #7f9686;
   --aac-font: "Signika", "Segoe UI", system-ui, -apple-system, sans-serif;
 }
 
@@ -1730,7 +1731,7 @@
 
 .alien-alt-chat .chat-message :is(strong, b) {
   font-weight: 600;
-  color: #fff;
+  color: var(--aac-strong);
 }
 
 .alien-alt-chat .chat-message :is(.flavor-text, .table-draw .table-description, .table-draw .table-results .table-result, .critchat) {
