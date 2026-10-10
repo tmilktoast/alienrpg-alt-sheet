@@ -1,0 +1,91 @@
+<header class="aas-header">
+  {{#if editMode}}
+  <img class="aas-portrait editable" src="{{actor.img}}" alt="{{actor.name}}" data-action="editImage" data-edit="img"
+    data-tooltip="{{localize 'ALTSHEET.EditPortrait'}}">
+  {{else}}
+  <img class="aas-portrait" src="{{actor.img}}" alt="{{actor.name}}">
+  {{/if}}
+
+  <div class="aas-identity">
+    {{#if editMode}}
+    <input class="aas-name" type="text" name="name" value="{{actor.name}}" placeholder="{{localize 'ALIENRPG.Name'}}">
+    {{else}}
+    <h1 class="aas-name">{{actor.name}}</h1>
+    {{/if}}
+  </div>
+
+  {{#if editable}}
+  <button type="button" class="aas-edit-toggle {{#if editMode}}active{{/if}}" data-action="toggleEdit"
+    aria-pressed="{{#if editMode}}true{{else}}false{{/if}}"
+    data-tooltip="{{#if editMode}}{{localize 'ALTSHEET.Creature.EditModeOn'}}{{else}}{{localize 'ALTSHEET.Creature.EditModeOff'}}{{/if}}">
+    <i class="fa-solid {{#if editMode}}fa-lock-open{{else}}fa-lock{{/if}}" inert></i>
+    <span>{{localize 'ALTSHEET.EditMode'}}</span>
+  </button>
+  {{/if}}
+
+  {{#if limited}}
+  <p class="aas-limited">{{localize 'ALTSHEET.Creature.Limited'}}</p>
+  {{else}}
+  <div class="aas-vitals">
+    <div class="aas-vital {{vitals.health.cls}}">
+      <span class="aas-vital-label">{{localize 'ALIENRPG.Health'}}</span>
+      <div class="aas-stepper">
+        <button type="button" data-action="stepField" data-path="system.header.health.value" data-step="-1" data-min="0"
+          aria-label="{{localize 'ALTSHEET.Decrease' name=(localize 'ALIENRPG.Health')}}">
+          <i class="fa-solid fa-minus" inert></i>
+        </button>
+        <span class="aas-vital-value"><b>{{vitals.health.value}}</b> / {{vitals.health.max}}</span>
+        {{#if editMode}}
+        <label class="aas-inline-edit">
+          <span>{{localize 'ALTSHEET.Creature.Max'}}</span>
+          <input type="number" name="system.header.health.max" value="{{vitals.health.max}}" min="0" step="1">
+        </label>
+        {{/if}}
+        {{!-- A creature with no maximum set yet has nothing to stop at. --}}
+        <button type="button" data-action="stepField" data-path="system.header.health.value" data-step="1" data-min="0"
+          {{#if vitals.health.max}}data-max="{{vitals.health.max}}"{{/if}}
+          aria-label="{{localize 'ALTSHEET.Increase' name=(localize 'ALIENRPG.Health')}}">
+          <i class="fa-solid fa-plus" inert></i>
+        </button>
+      </div>
+      <div class="aas-meter"><span style="width: {{vitals.health.pct}}%"></span></div>
+    </div>
+
+    <div class="aas-vital aas-vital-compact" data-tooltip="{{localize 'ALTSHEET.Creature.SpeedHint'}}">
+      <span class="aas-vital-label">{{localize 'ALIENRPG.Speed'}}</span>
+      {{#if editMode}}
+      <label class="aas-inline-edit">
+        <input type="number" name="system.attributes.speed.value" value="{{vitals.speed}}" min="0" step="1"
+          aria-label="{{localize 'ALIENRPG.Speed'}}">
+      </label>
+      {{else}}
+      <span class="aas-vital-value aas-vital-big"><b>{{vitals.speed}}</b></span>
+      {{/if}}
+    </div>
+
+    {{#each vitals.armor}}
+    <div class="aas-vital aas-vital-compact">
+      <span class="aas-vital-label">{{label}}</span>
+      {{#if @root.editMode}}
+      <label class="aas-inline-edit">
+        <input type="number" name="system.attributes.{{key}}.value" value="{{value}}" min="0" step="1"
+          aria-label="{{label}}">
+      </label>
+      {{else}}
+      <div class="aas-rollgroup">
+        <button type="button" class="aas-roll" data-action="roll" data-roll-type="ability" data-spbutt="{{spbutt}}"
+          data-roll="{{value}}" data-label="{{label}}" data-tooltip="{{localize 'ALTSHEET.RollFor' name=label}}"
+          {{#unless rollable}}disabled{{/unless}}>
+          <span class="aas-die">{{value}}</span>
+        </button>
+        <button type="button" class="aas-mods" data-action="rollMods" data-tooltip="{{localize 'ALTSHEET.RollWithMods'}}"
+          aria-label="{{localize 'ALTSHEET.RollWithMods'}}" {{#unless rollable}}disabled{{/unless}}>
+          <i class="fa-solid fa-sliders" inert></i>
+        </button>
+      </div>
+      {{/if}}
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
+</header>

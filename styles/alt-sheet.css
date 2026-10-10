@@ -249,6 +249,7 @@
   border-radius: 6px;
 }
 
+.alien-alt-sheet .aas-vital-compact,
 .alien-alt-sheet .aas-vital:nth-last-child(-n + 2) {
   flex: 0 0 auto;
   min-width: 84px;
@@ -1155,4 +1156,26 @@
 
 .alien-alt-sheet .aas-notes prose-mirror {
   flex: 1 1 auto;
+}
+
+/* ---------- Creature sheet ---------- */
+
+.alien-alt-sheet .aas-special {
+  white-space: pre-line;
+}
+
+.alien-alt-sheet .window-content .aas-attacks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.alien-alt-sheet .window-content .aas-attacks > li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.alien-alt-sheet .window-content .aas-attacks .aas-prose > :last-child {
+  margin-bottom: 0;
 }

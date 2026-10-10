@@ -6,7 +6,8 @@
       "Gear": "Gear",
       "Bio": "Bio",
       "Notes": "Notes",
-      "Rules": "Rules"
+      "Rules": "Rules",
+      "Creature": "Creature"
     },
     "Rules": {
       "Actions": "Actions",
@@ -114,6 +115,26 @@
     "NoItems": "Nothing here. Drag items in from a compendium or the Items sidebar.",
     "Rating": "Rating",
     "Qty": "Qty",
-    "SynthStress": "This synthetic uses stress"
+    "SynthStress": "This synthetic uses stress",
+    "Creature": {
+      "EditModeOn": "Editing: name, health, stats, skills, tables and special abilities are unlocked. Click to lock.",
+      "EditModeOff": "Locked for play. Click to edit name, health, stats, skills, tables and special abilities.",
+      "Limited": "You only have limited access to this creature.",
+      "RollHint": "Click a button to roll. Shift-click, right-click or the button beside it to add modifiers or pick a result first.",
+      "Max": "Max",
+      "Dice": "Dice",
+      "SpeedHint": "How many initiative cards the creature draws each round. It isn't rolled.",
+      "Attack": "Signature Attack",
+      "AttackTip": "Roll on the creature's attack table and post the result to chat",
+      "ManualAttack": "Pick an attack manually…",
+      "Attacks": "What each roll does",
+      "PickAttackTable": "No attack table set. Turn Edit on to pick one.",
+      "NoAttackTable": "This creature's attack table isn't in the world.",
+      "Skills": "Skills & Defenses",
+      "AcidTip": "Asks for the damage dealt to the creature, then rolls the splash",
+      "NoSpecial": "No special abilities.",
+      "CritTable": "Critical injury table",
+      "PickCritTable": "No critical injury table set. Turn Edit on to pick one."
+    }
   }
 }

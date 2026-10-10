@@ -1,0 +1,170 @@
+<section class="tab aas-tab aas-creature {{tab.cssClass}}" data-group="primary" data-tab="creature">
+  <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Creature.RollHint'}}</p>
+
+  <div class="aas-columns">
+    <div class="aas-column">
+      <section class="aas-panel">
+        <header class="aas-panel-head">
+          <h2>{{localize 'ALTSHEET.Creature.Attack'}}</h2>
+          {{#unless editMode}}{{#if attack.name}}<span class="aas-panel-note">{{attack.name}}</span>{{/if}}{{/unless}}
+        </header>
+
+        {{#if editMode}}
+        <label class="aas-labelled">
+          <span>{{localize 'ALIENRPG.AttackTable'}}</span>
+          <select name="system.rTables">
+            {{selectOptions rTables selected=system.rTables valueAttr='key' labelAttr='label'}}
+          </select>
+        </label>
+        {{/if}}
+
+        {{#if attack.name}}
+        <div class="aas-rollgroup">
+          <button type="button" class="aas-roll aas-roll-primary" data-action="roll" data-roll-type="attack"
+            data-atttype="{{attack.name}}" data-tooltip="{{localize 'ALTSHEET.Creature.AttackTip'}}">
+            <i class="fa-solid fa-dice-d6" inert></i>
+            <span class="aas-roll-name">{{localize 'ALIENRPG.AttackRoll'}}</span>
+          </button>
+          <button type="button" class="aas-mods" data-action="rollMods"
+            data-tooltip="{{localize 'ALTSHEET.Creature.ManualAttack'}}"
+            aria-label="{{localize 'ALTSHEET.Creature.ManualAttack'}}"><i class="fa-solid fa-list" inert></i></button>
+        </div>
+
+        <details class="aas-details" data-section="attacks">
+          <summary>{{localize 'ALTSHEET.Creature.Attacks'}}</summary>
+          <ol class="aas-attacks">
+            {{#each attack.results}}
+            <li>
+              <span class="aas-die">{{range}}</span>
+              <div class="aas-prose">{{{text}}}</div>
+            </li>
+            {{/each}}
+          </ol>
+        </details>
+        {{else}}
+        <p class="aas-empty">
+          {{#if attack.missing}}{{localize 'ALTSHEET.Creature.NoAttackTable'}}{{else}}{{localize 'ALTSHEET.Creature.PickAttackTable'}}{{/if}}
+        </p>
+        {{/if}}
+      </section>
+
+      <section class="aas-panel">
+        <header class="aas-panel-head">
+          <h2>{{localize 'ALTSHEET.Creature.Skills'}}</h2>
+        </header>
+
+        {{#each skills}}
+        <div class="aas-skill-row aas-attribute-row">
+          {{#if @root.editMode}}
+          <label class="aas-inline-edit">
+            <span>{{localize 'ALTSHEET.Creature.Dice'}}</span>
+            <input type="text" name="system.general.{{key}}.value" value="{{value}}">
+          </label>
+          {{/if}}
+          <div class="aas-rollgroup">
+            <button type="button" class="aas-roll" data-action="roll" data-roll-type="ability" data-roll="{{value}}"
+              data-label="{{label}}" {{#unless rollable}}disabled data-tooltip="{{localize 'ALIENRPG.CreatureSkill'}}"{{/unless}}>
+              <span class="aas-roll-name">{{label}}</span>
+              <span class="aas-die">{{#if rollable}}{{dice}}{{else}}—{{/if}}</span>
+            </button>
+            <button type="button" class="aas-mods" data-action="rollMods"
+              data-tooltip="{{localize 'ALTSHEET.RollWithMods'}}" aria-label="{{localize 'ALTSHEET.RollWithMods'}}"
+              {{#unless rollable}}disabled{{/unless}}>
+              <i class="fa-solid fa-sliders" inert></i>
+            </button>
+          </div>
+        </div>
+        {{/each}}
+
+        <div class="aas-skill-row aas-attribute-row">
+          {{#if editMode}}
+          <label class="aas-inline-edit">
+            <span>{{localize 'ALTSHEET.Creature.Dice'}}</span>
+            <input type="text" name="system.general.acidSplash.value" value="{{acid.value}}">
+          </label>
+          {{/if}}
+          <div class="aas-rollgroup">
+            <button type="button" class="aas-roll" data-action="roll" data-roll-type="acid" data-roll="{{acid.value}}"
+              data-label="{{acid.label}}"
+              {{#if acid.rollable}}data-tooltip="{{localize 'ALTSHEET.Creature.AcidTip'}}"{{else}}disabled data-tooltip="{{localize 'ALIENRPG.AcidBlood'}}"{{/if}}>
+              <span class="aas-roll-name">{{acid.label}}</span>
+              <span class="aas-die">{{#if acid.rollable}}{{acid.dice}}{{else}}—{{/if}}</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="aas-column">
+      <section class="aas-panel">
+        <header class="aas-panel-head">
+          <h2>{{localize 'ALIENRPG.SpecialAbilities'}}</h2>
+        </header>
+        {{#if editMode}}
+        <textarea name="system.general.special.value" rows="12"
+          aria-label="{{localize 'ALIENRPG.SpecialAbilities'}}">{{special}}</textarea>
+        {{else}}
+        {{#if special}}
+        <div class="aas-prose aas-special">{{special}}</div>
+        {{else}}
+        <p class="aas-empty">{{localize 'ALTSHEET.Creature.NoSpecial'}}</p>
+        {{/if}}
+        {{/if}}
+      </section>
+
+      <section class="aas-panel">
+        <header class="aas-panel-head">
+          <h2>{{localize 'ALIENRPG.CriticalInjuries'}}</h2>
+          {{#if crit.name}}
+          <div class="aas-rollgroup">
+            <button type="button" class="aas-roll aas-roll-small" data-action="roll" data-roll-type="crit"
+              data-atttype="{{crit.name}}" data-label="{{localize 'ALIENRPG.CriticalInjuries'}}"
+              data-tooltip="{{crit.name}}">
+              <i class="fa-solid fa-dice-d6" inert></i>
+              <span class="aas-roll-name">{{localize 'ALIENRPG.RollCrit'}}</span>
+            </button>
+            <button type="button" class="aas-mods" data-action="rollMods" data-tooltip="{{localize 'ALTSHEET.ManualCrit'}}"
+              aria-label="{{localize 'ALTSHEET.ManualCrit'}}"><i class="fa-solid fa-list" inert></i></button>
+          </div>
+          {{/if}}
+        </header>
+
+        {{#if editMode}}
+        <label class="aas-labelled">
+          <span>{{localize 'ALTSHEET.Creature.CritTable'}}</span>
+          <select name="system.cTables">
+            {{selectOptions cTables selected=system.cTables valueAttr='key' labelAttr='label'}}
+          </select>
+        </label>
+        {{/if}}
+
+        {{#unless crit.name}}
+        <p class="aas-empty">
+          {{#if crit.missing}}{{localize 'ALIENRPG.NoCharCrit'}}{{else}}{{localize 'ALTSHEET.Creature.PickCritTable'}}{{/if}}
+        </p>
+        {{/unless}}
+
+        <ol class="aas-list">
+          {{#each injuries}}
+          <li class="aas-injury draggable" data-item-id="{{id}}">
+            <img src="{{img}}" alt="">
+            <div class="aas-injury-body">
+              <div class="aas-weapon-name">
+                <span>{{name}}</span>
+                {{#if fatal}}<span class="aas-tag aas-tag-danger">{{localize 'ALTSHEET.Fatal'}}</span>{{/if}}
+              </div>
+              {{#if effects}}<div class="aas-stats">{{effects}}</div>{{/if}}
+            </div>
+            <button type="button" class="aas-icon" data-action="editItem" data-tooltip="{{localize 'ALTSHEET.Edit'}}"
+              aria-label="{{localize 'ALTSHEET.Edit'}}"><i class="fa-solid fa-pen-to-square" inert></i></button>
+            <button type="button" class="aas-icon" data-action="deleteItem" data-tooltip="{{localize 'ALTSHEET.Delete'}}"
+              aria-label="{{localize 'ALTSHEET.Delete'}}"><i class="fa-solid fa-trash" inert></i></button>
+          </li>
+          {{else}}
+          {{#if crit.name}}<li class="aas-empty">{{localize 'ALTSHEET.NoCrits'}}</li>{{/if}}
+          {{/each}}
+        </ol>
+      </section>
+    </div>
+  </div>
+</section>

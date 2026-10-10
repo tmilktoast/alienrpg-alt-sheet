@@ -5,6 +5,13 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
 
 ## Unreleased
 
+### Added
+
+- **Creature sheet** — an alternate sheet for `creature` actors. Health, speed and armor sit in the
+  header; the Creature tab has the signature attack with a list of what each roll on its table
+  does, mobility, observation and acid splash as roll buttons, special abilities and critical
+  injuries. Stats, tables and special abilities only change while Edit is on.
+
 ### Changed
 
 - The ranged attack dialog starts on Short range instead of Adjacent. A weapon that only reaches

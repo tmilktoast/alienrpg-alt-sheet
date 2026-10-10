@@ -35,6 +35,13 @@ const TABS = {
   notes: "fa-solid fa-pen",
   rules: "fa-solid fa-book",
 };
+const CREATURE_TABS = {
+  creature: "fa-solid fa-dice-d6",
+  notes: "fa-solid fa-pen",
+};
+
+/** What the system stores for a creature with no attack or critical injury table picked. */
+const NO_TABLE = "None";
 
 /**
  * Reference lists for the Rules tab: a string key under ALTSHEET.Rules, then the skill the action
@@ -355,50 +362,116 @@ function prepareBio(actor) {
   };
 }
 
+function prepareInjuries(items) {
+  return items.map((item) => ({
+    id: item.id,
+    name: item.name,
+    img: item.img,
+    fatal: item.system.attributes?.fatal,
+    effects: (item.system.attributes?.effects ?? "").replace(/<[^>]+>/g, " ").trim(),
+  }));
+}
+
+function enrich(actor, html, relativeTo = actor) {
+  return foundry.applications.ux.TextEditor.enrichHTML(html ?? "", {
+    secrets: actor.isOwner,
+    rollData: actor.getRollData(),
+    relativeTo,
+  });
+}
+
+/** A value the system rolls as that many dice. Creatures store "-" for a skill they lack. */
+function dicePool(value) {
+  const dice = Number(value);
+  return String(value ?? "").trim() !== "" && Number.isInteger(dice) && dice >= 0 ? dice : null;
+}
+
+export function prepareCreatureVitals(actor) {
+  const { header, attributes } = actor.system;
+  const { value, max } = header.health;
+  const armor = (key, label, spbutt) => ({
+    key,
+    label: loc(label),
+    spbutt,
+    value: attributes[key].value,
+    // The system makes no roll for an armor rating of zero.
+    rollable: attributes[key].value > 0,
+  });
+  return {
+    health: {
+      value,
+      max,
+      pct: max > 0 ? Math.min(Math.max(value / max, 0), 1) * 100 : 0,
+      cls: value <= 0 ? "danger" : value < max ? "warn" : "",
+    },
+    speed: attributes.speed.value,
+    armor: [
+      armor("armorrating", "ALIENRPG.InventoryArmorHeader", "armor"),
+      armor("armorvfire", "ALIENRPG.ArmorVsFire", "armorVfire"),
+    ],
+  };
+}
+
+export function prepareCreatureSkills(actor) {
+  const { general } = actor.system;
+  const skill = (key) => {
+    const dice = dicePool(general[key].value);
+    return { key, label: general[key].label, value: general[key].value, dice, rollable: dice !== null };
+  };
+  return { skills: [skill("mobility"), skill("observation")], acid: skill("acidSplash") };
+}
+
+/**
+ * One of a creature's roll tables, by the name the system stores for it.
+ * @param {string} name       The table's name, or "None"
+ * @param {boolean} [results] List what each roll does, as the table's results describe it
+ */
+async function prepareCreatureTable(actor, name, results = false) {
+  const table = name && name !== NO_TABLE ? game.tables.getName(name) : null;
+  if (!table) return { name: "", missing: !!name && name !== NO_TABLE, results: [] };
+  const rows = results ? [...table.results].sort((a, b) => a.range[0] - b.range[0]) : [];
+  return {
+    name: table.name,
+    results: await Promise.all(
+      rows.map(async (result) => {
+        const [low, high] = result.range;
+        return { range: low === high ? `${low}` : `${low}–${high}`, text: await enrich(actor, result.description) };
+      }),
+    ),
+  };
+}
+
 /* -------------------------------------------- */
 /*  Sheet                                       */
 /* -------------------------------------------- */
 
 /**
- * Build the alternate sheet on top of one of the system's own sheet classes. Subclassing keeps the
- * system's item preparation, encumbrance, status effects and drag-and-drop; only the layout, the
- * templates and the click handling are replaced.
+ * What every alternate sheet shares: the look, the edit lock, tabs, roll buttons and item buttons.
+ * Subclassing the system's sheet keeps its data preparation, status effects and drag-and-drop;
+ * only the layout, the templates and the click handling are replaced.
  * @param {typeof foundry.applications.sheets.ActorSheetV2} Base  The system sheet for this actor type
- * @param {string} type                                           The actor type it is registered for
  */
-function makeSheet(Base, type) {
+function makeBase(Base) {
   // The system sheet's render hooks assume its own templates, so a few overrides skip past it.
   const Core = Object.getPrototypeOf(Base.prototype);
 
-  class AltSheet extends Base {
+  return class AltBase extends Base {
     static DEFAULT_OPTIONS = {
       classes: ["alien-alt-sheet"],
-      position: { width: 800, height: 880 },
       actions: {
-        toggleEdit: AltSheet.#onToggleEdit,
-        roll: { handler: AltSheet.#onRoll, buttons: [0, 2] },
-        rollMods: AltSheet.#onRollMods,
-        stepField: AltSheet.#onStepField,
-        setField: AltSheet.#onSetField,
-        radiation: AltSheet.#onRadiation,
-        setItemState: AltSheet.#onSetItemState,
-        addItem: AltSheet.#onAddItem,
-        editItem: AltSheet.#onEditItem,
-        deleteItem: AltSheet.#onDeleteItem,
+        toggleEdit: AltBase.#onToggleEdit,
+        roll: { handler: AltBase.#onRoll, buttons: [0, 2] },
+        rollMods: AltBase.#onRollMods,
+        stepField: AltBase.#onStepField,
+        editItem: AltBase.#onEditItem,
+        deleteItem: AltBase.#onDeleteItem,
       },
     };
 
-    static PARTS = {
-      header: { template: `${TEMPLATES}/header.hbs` },
-      tabs: { template: "templates/generic/tab-navigation.hbs" },
-      play: { template: `${TEMPLATES}/play.hbs`, scrollable: [""] },
-      gear: { template: `${TEMPLATES}/gear.hbs`, scrollable: [""] },
-      bio: { template: `${TEMPLATES}/bio.hbs`, scrollable: [""] },
-      notes: { template: `${TEMPLATES}/notes.hbs`, scrollable: [""] },
-      rules: { template: `${TEMPLATES}/rules.hbs`, scrollable: [""] },
-    };
+    /** Tab ids and their icons, in order; the first is the one a sheet opens on. */
+    static TABS = {};
 
-    /** Whether attributes, skill ranks, name and career are unlocked. Decided on first render. */
+    /** Whether the sheet's locked fields are open for editing. Decided on first render. */
     _editMode = null;
 
     /** Keys of the <details> elements the user has opened, so they survive re-renders. */
@@ -416,20 +489,133 @@ function makeSheet(Base, type) {
     }
 
     _getTabs(parts) {
-      this.tabGroups.primary ??= "play";
+      const icons = this.constructor.TABS;
+      this.tabGroups.primary ??= Object.keys(icons)[0];
       const tabs = {};
       for (const id of parts) {
-        if (!(id in TABS)) continue;
+        if (!(id in icons)) continue;
         tabs[id] = {
           id,
           group: "primary",
-          icon: TABS[id],
+          icon: icons[id],
           label: `ALTSHEET.Tabs.${id.capitalize()}`,
           cssClass: this.tabGroups.primary === id ? "active" : "",
         };
       }
       return tabs;
     }
+
+    async _preparePartContext(partId, context, options) {
+      context = await Core._preparePartContext.call(this, partId, context, options);
+      if (partId in this.constructor.TABS) context.tab = context.tabs[partId];
+      return context;
+    }
+
+    async _onRender(context, options) {
+      await Core._onRender.call(this, context, options);
+      const html = this.element;
+
+      // Fields driven by an active effect can't be edited by hand.
+      for (const key of Object.keys(foundry.utils.flattenObject(this.actor.overrides ?? {}))) {
+        const input = html.querySelector(`[name="${key}"]`);
+        if (input) input.disabled = true;
+      }
+
+      for (const details of html.querySelectorAll("details[data-section]")) {
+        const key = details.dataset.section;
+        details.open = this._openSections.has(key);
+        details.addEventListener("toggle", () => {
+          if (details.open) this._openSections.add(key);
+          else this._openSections.delete(key);
+        });
+      }
+    }
+
+    _item(target) {
+      return this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    }
+
+    /**
+     * Make one of the system's rolls. Every roll reads its inputs from the clicked element's
+     * dataset, exactly as the system's own sheet passes them.
+     * @param {HTMLElement} target  The element carrying data-roll-type and the roll's data
+     * @param {boolean} withMods    Ask for modifiers first
+     * @abstract
+     */
+    async _roll(target, withMods) {}
+
+    static async #onRoll(event, target) {
+      event.preventDefault();
+      if (event.detail > 1) return; // Ignore repeated clicks
+      await this._roll(target, event.button === 2 || event.shiftKey);
+    }
+
+    /** The slider button beside a roll: the same roll, asking for modifiers first. */
+    static async #onRollMods(event, target) {
+      const roll = target.closest(".aas-rollgroup")?.querySelector("[data-roll-type]");
+      if (roll) await this._roll(roll, true);
+    }
+
+    static async #onToggleEdit() {
+      this._editMode = !this._editMode;
+      await this.render();
+    }
+
+    /** Step a numeric field on the actor, or on an item when the button sits inside an item row. */
+    static async #onStepField(event, target) {
+      const { path, step, min, max } = target.dataset;
+      const doc = target.closest("[data-item-id]") ? this._item(target) : this.actor;
+      if (!doc) return;
+      const current = Number(foundry.utils.getProperty(doc, path)) || 0;
+      let next = current + Number(step);
+      if (min !== undefined) next = Math.max(next, Number(min));
+      if (max !== undefined) next = Math.min(next, Number(max));
+      if (next !== current) await doc.update({ [path]: next });
+    }
+
+    static #onEditItem(event, target) {
+      this._item(target)?.sheet.render(true);
+    }
+
+    static async #onDeleteItem(event, target) {
+      const item = this._item(target);
+      if (!item) return;
+      const lastInjury = item.type === "critical-injury" && this.actor.system.general.critInj.value <= 1;
+      const deleted = await item.deleteDialog();
+      // The system marks an injured character with an effect; clear it with the last injury.
+      if (deleted && lastInjury) await this.actor.effects.find((e) => e.statuses.has("criticalinj"))?.delete();
+    }
+  };
+}
+
+/**
+ * The alternate sheet for characters and synthetics.
+ * @param {typeof foundry.applications.sheets.ActorSheetV2} Base  The system sheet for this actor type
+ * @param {string} type                                           The actor type it is registered for
+ */
+function makeSheet(Base, type) {
+  class AltSheet extends makeBase(Base) {
+    static DEFAULT_OPTIONS = {
+      position: { width: 800, height: 880 },
+      actions: {
+        setField: AltSheet.#onSetField,
+        radiation: AltSheet.#onRadiation,
+        setItemState: AltSheet.#onSetItemState,
+        addItem: AltSheet.#onAddItem,
+      },
+    };
+
+    static PARTS = {
+      header: { template: `${TEMPLATES}/header.hbs` },
+      tabs: { template: "templates/generic/tab-navigation.hbs" },
+      play: { template: `${TEMPLATES}/play.hbs`, scrollable: [""] },
+      gear: { template: `${TEMPLATES}/gear.hbs`, scrollable: [""] },
+      bio: { template: `${TEMPLATES}/bio.hbs`, scrollable: [""] },
+      notes: { template: `${TEMPLATES}/notes.hbs`, scrollable: [""] },
+      rules: { template: `${TEMPLATES}/rules.hbs`, scrollable: [""] },
+    };
+
+    static TABS = TABS;
 
     async _prepareContext(options) {
       const context = await super._prepareContext(options);
@@ -441,19 +627,13 @@ function makeSheet(Base, type) {
       // A blank character opens unlocked, since the first thing to do is fill it in.
       this._editMode ??= ATTRIBUTES.every((key) => !sys.attributes[key]?.value);
 
-      const enrich = (html, relativeTo) =>
-        foundry.applications.ux.TextEditor.enrichHTML(html ?? "", {
-          secrets: actor.isOwner,
-          rollData: actor.getRollData(),
-          relativeTo,
-        });
       const described = (items) =>
         Promise.all(
           items.map(async (item) => ({
             id: item.id,
             name: item.name,
             img: item.img,
-            description: await enrich(item.system.general?.comment?.value, item),
+            description: await enrich(actor, item.system.general?.comment?.value, item),
           })),
         );
 
@@ -473,68 +653,31 @@ function makeSheet(Base, type) {
         rules: { ...prepareRules(), actionsLink: await prepareActionsLink() },
         talentList: await described(context.talents),
         agendaList: await described(context.agendas),
-        injuries: context.critInj.map((item) => ({
-          id: item.id,
-          name: item.name,
-          img: item.img,
-          fatal: item.system.attributes.fatal,
-          effects: (item.system.attributes.effects ?? "").replace(/<[^>]+>/g, " ").trim(),
-        })),
+        injuries: prepareInjuries(context.critInj),
         encumbrance: { ...sys.general.encumbrance, value: Math.round(sys.general.encumbrance.value * 100) / 100 },
-        enrichedNotes: await enrich(sys.notes, actor),
-        enrichedAdhocitems: await enrich(sys.adhocitems, actor),
+        enrichedNotes: await enrich(actor, sys.notes),
+        enrichedAdhocitems: await enrich(actor, sys.adhocitems),
       });
     }
 
-    async _preparePartContext(partId, context, options) {
-      context = await Core._preparePartContext.call(this, partId, context, options);
-      if (partId in TABS) context.tab = context.tabs[partId];
-      return context;
-    }
-
     async _onRender(context, options) {
-      await Core._onRender.call(this, context, options);
+      await super._onRender(context, options);
       const html = this.element;
-
-      // Fields driven by an active effect can't be edited by hand.
-      for (const key of Object.keys(foundry.utils.flattenObject(this.actor.overrides ?? {}))) {
-        const input = html.querySelector(`[name="${key}"]`);
-        if (input) input.disabled = true;
-      }
 
       // Item values edited in place. They aren't actor fields, so keep them out of the form submit.
       for (const input of html.querySelectorAll("[data-item-field]")) {
         input.addEventListener("change", (event) => {
           event.stopPropagation();
           const value = Math.max(0, Math.round(Number(input.value) || 0));
-          this.#item(input)?.update({ [input.dataset.itemField]: value });
+          this._item(input)?.update({ [input.dataset.itemField]: value });
         });
       }
 
       html.querySelector(".aas-cash")?.addEventListener("change", (event) => {
         event.target.value = formatCash(event.target.value);
       });
-
-      for (const details of html.querySelectorAll("details[data-section]")) {
-        const key = details.dataset.section;
-        details.open = this._openSections.has(key);
-        details.addEventListener("toggle", () => {
-          if (details.open) this._openSections.add(key);
-          else this._openSections.delete(key);
-        });
-      }
     }
 
-    #item(target) {
-      return this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
-    }
-
-    /**
-     * Make one of the system's rolls. Every roll reads its inputs from the clicked element's
-     * dataset, exactly as the system's own sheet passes them.
-     * @param {HTMLElement} target  The element carrying data-roll-type and the roll's data
-     * @param {boolean} withMods    Ask for modifiers first
-     */
     async _roll(target, withMods) {
       const actor = this.actor;
       const data = target.dataset;
@@ -542,7 +685,7 @@ function makeSheet(Base, type) {
         case "ability":
           return withMods ? actor.rollAbilityMod(actor, data) : actor.abilityRoll(actor, data);
         case "weapon": {
-          const item = this.#item(target);
+          const item = this._item(target);
           if (!item) return;
           const { header, attributes } = item.system;
           if (header.type.value === WEAPON_RANGED && attributes.rounds.value <= 0) {
@@ -581,35 +724,6 @@ function makeSheet(Base, type) {
       }
     }
 
-    static async #onRoll(event, target) {
-      event.preventDefault();
-      if (event.detail > 1) return; // Ignore repeated clicks
-      await this._roll(target, event.button === 2 || event.shiftKey);
-    }
-
-    /** The slider button beside a roll: the same roll, asking for modifiers first. */
-    static async #onRollMods(event, target) {
-      const roll = target.closest(".aas-rollgroup")?.querySelector("[data-roll-type]");
-      if (roll) await this._roll(roll, true);
-    }
-
-    static async #onToggleEdit() {
-      this._editMode = !this._editMode;
-      await this.render();
-    }
-
-    /** Step a numeric field on the actor, or on an item when the button sits inside an item row. */
-    static async #onStepField(event, target) {
-      const { path, step, min, max } = target.dataset;
-      const doc = target.closest("[data-item-id]") ? this.#item(target) : this.actor;
-      if (!doc) return;
-      const current = Number(foundry.utils.getProperty(doc, path)) || 0;
-      let next = current + Number(step);
-      if (min !== undefined) next = Math.max(next, Number(min));
-      if (max !== undefined) next = Math.min(next, Number(max));
-      if (next !== current) await doc.update({ [path]: next });
-    }
-
     /** Click a pip to fill the track up to it; click the last filled pip to clear it. */
     static async #onSetField(event, target) {
       const { path } = target.dataset;
@@ -635,7 +749,7 @@ function makeSheet(Base, type) {
     }
 
     static async #onSetItemState(event, target) {
-      await this.#item(target)?.update({ "system.header.active": target.dataset.state });
+      await this._item(target)?.update({ "system.header.active": target.dataset.state });
     }
 
     static async #onAddItem(event, target) {
@@ -647,24 +761,74 @@ function makeSheet(Base, type) {
       const item = await cls.create(data, { parent: this.actor });
       item?.sheet.render(true);
     }
-
-    static #onEditItem(event, target) {
-      this.#item(target)?.sheet.render(true);
-    }
-
-    static async #onDeleteItem(event, target) {
-      const item = this.#item(target);
-      if (!item) return;
-      const lastInjury = item.type === "critical-injury" && this.actor.system.general.critInj.value <= 1;
-      const deleted = await item.deleteDialog();
-      // The system marks an injured character with an effect; clear it with the last injury.
-      if (deleted && lastInjury) await this.actor.effects.find((e) => e.statuses.has("criticalinj"))?.delete();
-    }
   }
 
   // Sheets are registered by class name, so the two actor types need distinct ones.
   Object.defineProperty(AltSheet, "name", { value: `AltSheet${type.capitalize()}` });
   return AltSheet;
+}
+
+/**
+ * The alternate sheet for creatures: the stat block, the signature attack and its table, and
+ * critical injuries on one tab.
+ * @param {typeof foundry.applications.sheets.ActorSheetV2} Base  The system's creature sheet
+ */
+function makeCreatureSheet(Base) {
+  class AltCreatureSheet extends makeBase(Base) {
+    static DEFAULT_OPTIONS = {
+      position: { width: 800, height: 760 },
+    };
+
+    static PARTS = {
+      header: { template: `${TEMPLATES}/creature-header.hbs` },
+      tabs: { template: "templates/generic/tab-navigation.hbs" },
+      creature: { template: `${TEMPLATES}/creature.hbs`, scrollable: [""] },
+      notes: { template: `${TEMPLATES}/notes.hbs`, scrollable: [""] },
+    };
+
+    static TABS = CREATURE_TABS;
+
+    async _prepareContext(options) {
+      const context = await super._prepareContext(options);
+      const actor = this.actor;
+      const sys = actor.system;
+
+      // A blank creature opens unlocked, since the first thing to do is fill it in.
+      this._editMode ??= !sys.header.health.max && (!sys.rTables || sys.rTables === NO_TABLE);
+
+      return Object.assign(context, {
+        editMode: this._editMode && this.isEditable,
+        vitals: prepareCreatureVitals(actor),
+        ...prepareCreatureSkills(actor),
+        attack: await prepareCreatureTable(actor, sys.rTables, true),
+        crit: await prepareCreatureTable(actor, sys.cTables),
+        // The system's creature sheet lists every item a creature owns as an injury.
+        injuries: prepareInjuries(context.critInj),
+        special: sys.general.special.value,
+        enrichedNotes: await enrich(actor, sys.notes),
+      });
+    }
+
+    async _roll(target, withMods) {
+      const actor = this.actor;
+      const data = target.dataset;
+      switch (data.rollType) {
+        case "ability":
+          return withMods ? actor.rollAbilityMod(actor, data) : actor.abilityRoll(actor, data);
+        // With modifiers, an attack or injury asks which result to use instead of rolling for it.
+        case "attack":
+          if (!game.tables.getName(data.atttype)) return ui.notifications.warn(loc("ALTSHEET.Creature.NoAttackTable"));
+          return withMods ? actor.creatureManAttackRoll(actor, data) : actor.creatureAutoAttackRoll(actor, data);
+        case "crit":
+          return withMods ? actor.rollCritMan(actor, actor.type, data) : actor.rollCrit(actor, actor.type, data);
+        // The system reads this roll's inputs from the element rather than its dataset.
+        case "acid":
+          return actor.creatureAcidRoll(actor, target);
+      }
+    }
+  }
+
+  return AltCreatureSheet;
 }
 
 /** Format cash the way the system's sheet does, following its dollar-sign setting. */
@@ -684,13 +848,15 @@ function formatCash(text) {
 // queued during init, which happens just before "ready".
 Hooks.once("ready", () => {
   if (game.system.id !== SYSTEM_ID) return;
-  for (const type of SHEET_TYPES) {
+  const sheets = { creature: makeCreatureSheet };
+  for (const type of SHEET_TYPES) sheets[type] = (Base) => makeSheet(Base, type);
+  for (const [type, make] of Object.entries(sheets)) {
     const Base = Object.values(CONFIG.Actor.sheetClasses[type] ?? {}).find((s) => s.id.startsWith(`${SYSTEM_ID}.`))?.cls;
     if (!Base) {
       console.warn(`${MODULE_ID} | No ${SYSTEM_ID} sheet found for "${type}" actors; skipping.`);
       continue;
     }
-    foundry.applications.apps.DocumentSheetConfig.registerSheet(Actor, MODULE_ID, makeSheet(Base, type), {
+    foundry.applications.apps.DocumentSheetConfig.registerSheet(Actor, MODULE_ID, make(Base), {
       types: [type],
       makeDefault: false,
       label: "ALTSHEET.SheetLabel",

@@ -2,7 +2,7 @@
 
 An alternate character sheet for the [Alien RPG system](https://github.com/pwatson100/alienrpg)
 (`alienrpg` 4.x, Foundry v13–v14), built for the **Evolved** rules. It registers alongside the
-system's sheet for `character` and `synthetic` actors, so either can be used per character.
+system's sheet for `character`, `synthetic` and `creature` actors, so either can be used per actor.
 
 <p>
   <img src="docs/preview-play.png" alt="Play tab: attributes, skills, weapons and conditions with roll buttons" width="49%">
@@ -18,6 +18,9 @@ system's sheet for `character` and `synthetic` actors, so either can be used per
 - **Rules tab** — a quick reference; for now the full and quick actions you can take in a round.
 - **Edit lock** — attributes, skill ranks, name, career and portrait only change when the Edit
   button in the header is on. A blank character opens unlocked.
+- **Creature sheet** — health, speed and armor in the header; the signature attack with a list of
+  what each roll on its table does; mobility, observation and acid splash as roll buttons; special
+  abilities and critical injuries. Stats and tables are behind the same Edit lock.
 
 The sheet subclasses the system's own sheet class and calls the system's roll methods, so dice,
 pushes, panic and supply rolls behave exactly as they do on the original sheet.
@@ -32,9 +35,9 @@ https://github.com/tmilktoast/alienrpg-alt-sheet/releases/latest/download/module
 
 ## Using it
 
-Open a character, click the ⋮ menu in the window header → **Configure Sheet**, and pick
+Open a character or creature, click the ⋮ menu in the window header → **Configure Sheet**, and pick
 **Alternate Sheet**. To make it the default for every character, set it under *Default Sheet* in the
-same dialog (GM only).
+same dialog (GM only). Characters, synthetics and creatures each have their own default.
 
 ## Local development
 
@@ -57,5 +60,7 @@ system:
   `specialities`), its `toggleStatus` action and its static `_onRadPointClick`
 - actor methods `abilityRoll`, `rollStress`, `rollResolve`, `rollCrit`, `consumablesCheck` and their
   `…Mod` / `rollCritMan` variants, and `item.roll`
+- for creatures, the sheet's `rTables` / `cTables` lists and `critInj`, and actor methods
+  `creatureAutoAttackRoll`, `creatureManAttackRoll` and `creatureAcidRoll`
 
 If a system update renames any of those, that is where to look.
