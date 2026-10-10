@@ -24,6 +24,11 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
   sidebar, title, headings and links restyled to match the other alternate sheets.
 - The pilot's Piloting roll adds the vehicle's manoeuvrability, which the system's sheet leaves out.
 
+### Fixed
+
+- A Notes tab no longer shows "[object Object]" for the many items and actors whose notes a past
+  system migration left holding that text. They show as empty, and saving a note replaces it.
+
 ### Changed
 
 - Each sheet is listed under its own name in Configure Sheet — Alternate Character Sheet,

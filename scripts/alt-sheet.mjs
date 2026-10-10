@@ -409,6 +409,15 @@ function prepareInjuries(items) {
   }));
 }
 
+/**
+ * A document's notes. A past system migration turned notes that were stored as an object into
+ * the text "[object Object]", which many compendium items and actors still carry; show those as empty.
+ */
+function notesOf(doc) {
+  const notes = doc.system.notes;
+  return typeof notes === "string" && notes !== "[object Object]" ? notes : "";
+}
+
 function enrich(actor, html, relativeTo = actor) {
   return foundry.applications.ux.TextEditor.enrichHTML(html ?? "", {
     secrets: actor.isOwner,
@@ -905,7 +914,8 @@ function makeSheet(Base, type) {
         agendaList: await described(context.agendas),
         injuries: prepareInjuries(context.critInj),
         encumbrance: { ...sys.general.encumbrance, value: Math.round(sys.general.encumbrance.value * 100) / 100 },
-        enrichedNotes: await enrich(actor, sys.notes),
+        notes: notesOf(actor),
+        enrichedNotes: await enrich(actor, notesOf(actor)),
         enrichedAdhocitems: await enrich(actor, sys.adhocitems),
       });
     }
@@ -1027,7 +1037,8 @@ function makeCreatureSheet(Base) {
         // The system's creature sheet lists every item a creature owns as an injury.
         injuries: prepareInjuries(context.critInj),
         special: sys.general.special.value,
-        enrichedNotes: await enrich(actor, sys.notes),
+        notes: notesOf(actor),
+        enrichedNotes: await enrich(actor, notesOf(actor)),
       });
     }
 
@@ -1224,7 +1235,8 @@ function makeItemSheet(Base) {
         typeLabel: loc(`TYPES.Item.${item.type}`),
         // The system sets a career's and a system's image itself each time their sheet draws.
         imageEditable: context.editable && !SINGLE_TAB_TYPES.includes(item.type),
-        enrichedNotes: await enrich(item, item.system.notes),
+        notes: notesOf(item),
+        enrichedNotes: await enrich(item, notesOf(item)),
       });
     }
 
