@@ -94,8 +94,8 @@ the Marines, and the Enlisted and NCO event tables. They are tables only; the ch
 doesn't use them.
 
 The tables stand on their own: talents and gear are named in the text rather than linked, and
-the Origin table gives the supernation only. Add your own sub-affiliation and home tables to it if
-you have them.
+the Origin table names the sub-affiliation and home tables to roll on next (`EV - UA HOME` and so
+on) without linking to them, since they aren't in the pack.
 
 The sources are the JSON files in `src/packs/life-path/`, one per table.
 

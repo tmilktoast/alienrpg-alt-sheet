@@ -37,6 +37,60 @@
       "type": "text",
       "weight": 1,
       "range": [
+        2,
+        2
+      ],
+      "name": "EV - ICSC SUB-AFFILIATION",
+      "img": "icons/svg/d20-grey.svg",
+      "documentUuid": null,
+      "_id": "75izvuvCVHsxXanU",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1772951736300,
+        "createdTime": null
+      },
+      "_key": "!tables.results!rUShcSALyedw5IHm.75izvuvCVHsxXanU"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "name": "EV - ICSC HOME",
+      "img": "icons/svg/d20-grey.svg",
+      "documentUuid": null,
+      "_id": "Mpx8BGsTWt8uIQk4",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1772951736300,
+        "createdTime": null
+      },
+      "_key": "!tables.results!rUShcSALyedw5IHm.Mpx8BGsTWt8uIQk4"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
         3,
         3
       ],
@@ -64,6 +118,60 @@
       "type": "text",
       "weight": 1,
       "range": [
+        3,
+        3
+      ],
+      "name": "EV - TWE SUB-AFFILIATION",
+      "img": "icons/svg/d20-grey.svg",
+      "documentUuid": null,
+      "_id": "vhSCYXq6m4W5PahN",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1772951736300,
+        "createdTime": null
+      },
+      "_key": "!tables.results!rUShcSALyedw5IHm.vhSCYXq6m4W5PahN"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "name": "EV - TWE HOME",
+      "img": "icons/svg/d20-grey.svg",
+      "documentUuid": null,
+      "_id": "sT4E8EvVhIIosxsS",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1772951736300,
+        "createdTime": null
+      },
+      "_key": "!tables.results!rUShcSALyedw5IHm.sT4E8EvVhIIosxsS"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
         4,
         12
       ],
@@ -86,6 +194,60 @@
       },
       "documentUuid": null,
       "_key": "!tables.results!rUShcSALyedw5IHm.kQ7Z1Tk6s6I8tbFn"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        4,
+        12
+      ],
+      "name": "EV - UA SUB-AFFILIATION",
+      "img": "icons/svg/d20-grey.svg",
+      "documentUuid": null,
+      "_id": "97MD0iztklSmIMdC",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1772951736300,
+        "createdTime": null
+      },
+      "_key": "!tables.results!rUShcSALyedw5IHm.97MD0iztklSmIMdC"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        4,
+        12
+      ],
+      "name": "EV - UA HOME",
+      "img": "icons/svg/d20-grey.svg",
+      "documentUuid": null,
+      "_id": "4xViK2adzJAGBurk",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1772951736300,
+        "createdTime": null
+      },
+      "_key": "!tables.results!rUShcSALyedw5IHm.4xViK2adzJAGBurk"
     }
   ],
   "replacement": true,
