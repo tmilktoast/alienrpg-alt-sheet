@@ -18,7 +18,8 @@
       "shipWeapon": "Alternate Ship Weapon Sheet",
       "stunts": "Alternate Skill Stunts Sheet",
       "agenda": "Alternate Agenda Sheet",
-      "injury": "Alternate Critical Injury Sheet"
+      "injury": "Alternate Critical Injury Sheet",
+      "shipDamage": "Alternate Ship Damage Sheet"
     },
     "Tabs": {
       "Play": "Play",

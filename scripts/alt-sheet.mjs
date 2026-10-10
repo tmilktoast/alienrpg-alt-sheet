@@ -129,6 +129,7 @@ const NAMED_ITEM_TYPES = {
   stunts: "skill-stunts",
   agenda: "agenda",
   injury: "critical-injury",
+  shipDamage: "spacecraft-crit",
 };
 /** The tabs after Details that each item type has; a type not listed has Notes and Modifiers. */
 const ITEM_EXTRA_TABS = {
@@ -140,9 +141,10 @@ const ITEM_EXTRA_TABS = {
   "skill-stunts": [],
   agenda: [],
   "critical-injury": ["modifiers"],
+  "spacecraft-crit": [],
 };
 /** Item types whose image the system sets itself each time their sheet draws. */
-const ITEM_FIXED_IMAGE = ["specialty", "planet-system", "talent"];
+const ITEM_FIXED_IMAGE = ["specialty", "planet-system", "talent", "spacecraft-crit"];
 /** Which of the system's numbered item types (`item_types_list`) use each optional field. */
 const ITEM_FIELDS = {
   power: ["3", "4", "8", "10"],
@@ -801,6 +803,18 @@ export function prepareItemDetails(item, { evolved }) {
       break;
     case "agenda":
       details.description = "system.general.comment.value";
+      break;
+    case "spacecraft-crit":
+      typed("system.header.type.value", cfg.crit_list, type);
+      fields.push({
+        label: loc("ALIENRPG.REPAIRROLL"),
+        name: "system.header.repairroll",
+        value: (header.repairroll ?? "").replace(/<[^>]+>/g, " ").trim(),
+        kind: "text",
+      });
+      details.description = "system.header.effects";
+      details.descriptionLabel = "ALIENRPG.Effect";
+      details.text = true;
       break;
     case "critical-injury":
       field("ALIENRPG.TimeLimit", "timelimit", "select", { options: options(cfg.crit_timelimit_list, a.timelimit.value) });

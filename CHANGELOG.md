@@ -39,6 +39,8 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
 - **Agenda sheet** — an alternate sheet for `agenda` items: the name and the agenda itself.
 - **Critical injury sheet** — an alternate sheet for `critical-injury` items: time limit, healing
   time, whether it is fatal, its effect and its modifiers.
+- **Ship damage sheet** — an alternate sheet for `spacecraft-crit` items: minor or major, the
+  repair roll and the effect.
 - **Journal sheet** — an alternate sheet for journal entries: Foundry's journal sheet with the
   sidebar, title, headings and links restyled to match the other alternate sheets.
 - The pilot's Piloting roll adds the vehicle's manoeuvrability, which the system's sheet leaves out.
