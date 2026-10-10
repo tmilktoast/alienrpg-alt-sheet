@@ -34,7 +34,7 @@
       "_key": "!tables.results!rUShcSALyedw5IHm.lvykprrz6yqKOXZb"
     },
     {
-      "type": "text",
+      "type": "document",
       "weight": 1,
       "range": [
         2,
@@ -42,7 +42,7 @@
       ],
       "name": "EV - ICSC SUB-AFFILIATION",
       "img": "icons/svg/d20-grey.svg",
-      "documentUuid": null,
+      "documentUuid": "Compendium.alienrpg-alt-sheet.life-path.RollTable.ocxXdJIFOYVKfUs4",
       "_id": "75izvuvCVHsxXanU",
       "description": "",
       "drawn": false,
@@ -61,7 +61,7 @@
       "_key": "!tables.results!rUShcSALyedw5IHm.75izvuvCVHsxXanU"
     },
     {
-      "type": "text",
+      "type": "document",
       "weight": 1,
       "range": [
         2,
@@ -69,7 +69,7 @@
       ],
       "name": "EV - ICSC HOME",
       "img": "icons/svg/d20-grey.svg",
-      "documentUuid": null,
+      "documentUuid": "Compendium.alienrpg-alt-sheet.life-path.RollTable.eyoNQisyAvGVLsTR",
       "_id": "Mpx8BGsTWt8uIQk4",
       "description": "",
       "drawn": false,
@@ -115,7 +115,7 @@
       "_key": "!tables.results!rUShcSALyedw5IHm.Dly80qwsfoOvaDFN"
     },
     {
-      "type": "text",
+      "type": "document",
       "weight": 1,
       "range": [
         3,
@@ -123,7 +123,7 @@
       ],
       "name": "EV - TWE SUB-AFFILIATION",
       "img": "icons/svg/d20-grey.svg",
-      "documentUuid": null,
+      "documentUuid": "Compendium.alienrpg-alt-sheet.life-path.RollTable.aB3zYmJCX71UFGC1",
       "_id": "vhSCYXq6m4W5PahN",
       "description": "",
       "drawn": false,
@@ -142,7 +142,7 @@
       "_key": "!tables.results!rUShcSALyedw5IHm.vhSCYXq6m4W5PahN"
     },
     {
-      "type": "text",
+      "type": "document",
       "weight": 1,
       "range": [
         3,
@@ -150,7 +150,7 @@
       ],
       "name": "EV - TWE HOME",
       "img": "icons/svg/d20-grey.svg",
-      "documentUuid": null,
+      "documentUuid": "Compendium.alienrpg-alt-sheet.life-path.RollTable.rraLVWciyXCDNwmN",
       "_id": "sT4E8EvVhIIosxsS",
       "description": "",
       "drawn": false,
@@ -196,7 +196,7 @@
       "_key": "!tables.results!rUShcSALyedw5IHm.kQ7Z1Tk6s6I8tbFn"
     },
     {
-      "type": "text",
+      "type": "document",
       "weight": 1,
       "range": [
         4,
@@ -204,7 +204,7 @@
       ],
       "name": "EV - UA SUB-AFFILIATION",
       "img": "icons/svg/d20-grey.svg",
-      "documentUuid": null,
+      "documentUuid": "Compendium.alienrpg-alt-sheet.life-path.RollTable.MKtENBfVhbLikncj",
       "_id": "97MD0iztklSmIMdC",
       "description": "",
       "drawn": false,
@@ -223,7 +223,7 @@
       "_key": "!tables.results!rUShcSALyedw5IHm.97MD0iztklSmIMdC"
     },
     {
-      "type": "text",
+      "type": "document",
       "weight": 1,
       "range": [
         4,
@@ -231,7 +231,7 @@
       ],
       "name": "EV - UA HOME",
       "img": "icons/svg/d20-grey.svg",
-      "documentUuid": null,
+      "documentUuid": "Compendium.alienrpg-alt-sheet.life-path.RollTable.GLJz28UOaucKz02y",
       "_id": "4xViK2adzJAGBurk",
       "description": "",
       "drawn": false,

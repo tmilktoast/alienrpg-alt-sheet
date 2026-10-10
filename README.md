@@ -89,13 +89,13 @@ table at the top of the file, and the steps are the `STEPS` list, which is where
 ## Life path tables
 
 The module ships a compendium pack, **Life Path Tables**, with the roll tables for a Colonial
-Marines life path: Life Path - Origin, Early Life (which draws from the three EL tables), Joining
-the Marines, and the Enlisted and NCO event tables. They are tables only; the character builder
+Marines life path: Life Path - Origin (which draws a sub-affiliation and a home from the six `EV`
+tables), Early Life (which draws from the three EL tables), Joining the Marines, and the Enlisted
+and NCO event tables. They are tables only; the character builder
 doesn't use them.
 
-The tables stand on their own: talents and gear are named in the text rather than linked, and
-the Origin table names the sub-affiliation and home tables to roll on next (`EV - UA HOME` and so
-on) without linking to them, since they aren't in the pack.
+The tables stand on their own: they only draw from each other, and talents and gear are named in
+the text rather than linked.
 
 The sources are the JSON files in `src/packs/life-path/`, one per table.
 

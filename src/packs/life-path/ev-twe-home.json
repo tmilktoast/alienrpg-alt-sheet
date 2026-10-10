@@ -1,0 +1,137 @@
+{
+  "folder": null,
+  "name": "EV - TWE HOME",
+  "img": "icons/svg/d20-grey.svg",
+  "description": "",
+  "results": [
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "_id": "mlEGHQyt596gQEDH",
+      "name": "HOME",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Sol Sector</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "14.368",
+        "systemId": "alienrpg",
+        "systemVersion": "4.1.17",
+        "lastModifiedBy": null,
+        "createdTime": 1790430181069,
+        "modifiedTime": 1790430181069
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!rraLVWciyXCDNwmN.mlEGHQyt596gQEDH"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        2,
+        3
+      ],
+      "_id": "Slg2VerO74coACPU",
+      "name": "HOME",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Core Systems</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "14.368",
+        "systemId": "alienrpg",
+        "systemVersion": "4.1.17",
+        "lastModifiedBy": null,
+        "createdTime": 1790430181069,
+        "modifiedTime": 1790430181069
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!rraLVWciyXCDNwmN.Slg2VerO74coACPU"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        4,
+        5
+      ],
+      "_id": "POx6jvl2tnSm7t4R",
+      "name": "HOME",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Frontier</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "14.368",
+        "systemId": "alienrpg",
+        "systemVersion": "4.1.17",
+        "lastModifiedBy": null,
+        "createdTime": 1790430181069,
+        "modifiedTime": 1790430181069
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!rraLVWciyXCDNwmN.POx6jvl2tnSm7t4R"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "_id": "annmdMCCbCtXiNAk",
+      "name": "HOME",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Far Spinward Colonies</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "14.368",
+        "systemId": "alienrpg",
+        "systemVersion": "4.1.17",
+        "lastModifiedBy": null,
+        "createdTime": 1790430181069,
+        "modifiedTime": 1790430181069
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!rraLVWciyXCDNwmN.annmdMCCbCtXiNAk"
+    }
+  ],
+  "replacement": true,
+  "displayRoll": false,
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": "RollTable.eyoNQisyAvGVLsTR",
+    "exportSource": null,
+    "coreVersion": "14.368",
+    "systemId": "alienrpg",
+    "systemVersion": "4.1.17",
+    "createdTime": 1790430181069,
+    "modifiedTime": 1790430181227,
+    "lastModifiedBy": null
+  },
+  "formula": "1d6",
+  "_id": "rraLVWciyXCDNwmN",
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!tables!rraLVWciyXCDNwmN"
+}

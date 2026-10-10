@@ -1,0 +1,191 @@
+{
+  "folder": null,
+  "name": "EV - ICSC SUB-AFFILIATION",
+  "_id": "ocxXdJIFOYVKfUs4",
+  "img": "icons/svg/d20-grey.svg",
+  "description": "",
+  "results": [
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "_id": "reF1uRf4OFBMY2Gt",
+      "name": "SUB-AFFILIATION",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Central Space Consortium</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "14.368",
+        "systemId": "alienrpg",
+        "systemVersion": "4.1.17",
+        "lastModifiedBy": null,
+        "createdTime": 1790430181055,
+        "modifiedTime": 1790430181055
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!ocxXdJIFOYVKfUs4.reF1uRf4OFBMY2Gt"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "_id": "7DyKgiw69rGuiSmd",
+      "name": "SUB-AFFILIATION",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Weyland-Yutani</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "14.368",
+        "systemId": "alienrpg",
+        "systemVersion": "4.1.17",
+        "lastModifiedBy": null,
+        "createdTime": 1790430181055,
+        "modifiedTime": 1790430181055
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!ocxXdJIFOYVKfUs4.7DyKgiw69rGuiSmd"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "_id": "9PdxUEhf9VmLDetD",
+      "name": "SUB-AFFILIATION",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Hyperdyne Systems</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "14.368",
+        "systemId": "alienrpg",
+        "systemVersion": "4.1.17",
+        "lastModifiedBy": null,
+        "createdTime": 1790430181055,
+        "modifiedTime": 1790430181055
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!ocxXdJIFOYVKfUs4.9PdxUEhf9VmLDetD"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "_id": "PhIQxp5VEhzExjE5",
+      "name": "SUB-AFFILIATION",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Jĭngtì Lóng Corporation</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "14.368",
+        "systemId": "alienrpg",
+        "systemVersion": "4.1.17",
+        "lastModifiedBy": null,
+        "createdTime": 1790430181055,
+        "modifiedTime": 1790430181055
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!ocxXdJIFOYVKfUs4.PhIQxp5VEhzExjE5"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "_id": "aSuP4PCfxxVzqeSc",
+      "name": "SUB-AFFILIATION",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Lockmart</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "14.368",
+        "systemId": "alienrpg",
+        "systemVersion": "4.1.17",
+        "lastModifiedBy": null,
+        "createdTime": 1790430181055,
+        "modifiedTime": 1790430181055
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!ocxXdJIFOYVKfUs4.aSuP4PCfxxVzqeSc"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "_id": "mteC8P7zVHq4cqHf",
+      "name": "SUB-AFFILIATION",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Minor Corporation</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "14.368",
+        "systemId": "alienrpg",
+        "systemVersion": "4.1.17",
+        "lastModifiedBy": null,
+        "createdTime": 1790430181055,
+        "modifiedTime": 1790430181055
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!ocxXdJIFOYVKfUs4.mteC8P7zVHq4cqHf"
+    }
+  ],
+  "replacement": true,
+  "displayRoll": false,
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "14.368",
+    "systemId": "alienrpg",
+    "systemVersion": "4.1.17",
+    "createdTime": 1790430181055,
+    "modifiedTime": 1790430181225,
+    "lastModifiedBy": null
+  },
+  "formula": "1d6",
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!tables!ocxXdJIFOYVKfUs4"
+}
