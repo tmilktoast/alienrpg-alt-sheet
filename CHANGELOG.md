@@ -22,6 +22,9 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
 
 ### Changed
 
+- Each sheet is listed under its own name in Configure Sheet — Alternate Character Sheet,
+  Alternate Synthetic Sheet, Alternate Creature Sheet, Alternate Vehicle Sheet and Alternate Item
+  Sheet — in place of "Alternate Sheet" for all of them.
 - The ranged attack dialog starts on Short range instead of Adjacent. A weapon that only reaches
   Adjacent still starts there.
 
