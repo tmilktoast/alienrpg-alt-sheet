@@ -126,9 +126,10 @@ const NAMED_ITEM_TYPES = {
   talent: "talent",
   module: "spacecraftmods",
   shipWeapon: "spacecraftweapons",
+  stunts: "skill-stunts",
 };
 /** The tabs after Details that each item type has; a type not listed has Notes and Modifiers. */
-const ITEM_EXTRA_TABS = { specialty: [], "planet-system": [], talent: ["notes"], spacecraftmods: ["notes"], spacecraftweapons: ["notes"] };
+const ITEM_EXTRA_TABS = { specialty: [], "planet-system": [], talent: ["notes"], spacecraftmods: ["notes"], spacecraftweapons: ["notes"], "skill-stunts": [] };
 /** Item types whose image the system sets itself each time their sheet draws. */
 const ITEM_FIXED_IMAGE = ["specialty", "planet-system", "talent"];
 /** Which of the system's numbered item types (`item_types_list`) use each optional field. */
@@ -762,7 +763,7 @@ async function prepareCreatureTable(actor, name, results = false) {
 
 /**
  * The fields of an item, as the Details tab lays them out, and where its description is kept.
- * @returns {{types: {name: string, options: object[]}|null, fields: object[], checks: object[], computer: object[], description: string,
+ * @returns {{types: {name: string, options: object[]}|null, names?: object[], fields: object[], checks: object[], computer: object[], description: string,
  *   text?: boolean}}  `text` when the fields hold phrases and want wider columns
  */
 export function prepareItemDetails(item, { evolved }) {
@@ -782,6 +783,11 @@ export function prepareItemDetails(item, { evolved }) {
   const typed = (name, list, selected) => (details.types = { name, options: options(list, selected) });
 
   switch (item.type) {
+    // A skill's stunts are named for the skill, so the name is picked from the list of skills.
+    case "skill-stunts":
+      details.names = keyed(cfg.skills_list, item.name);
+      details.description = "system.description";
+      break;
     case "talent":
       typed("system.general.career.value", cfg.career_list, item.system.general.career.value);
       details.description = "system.general.comment.value";

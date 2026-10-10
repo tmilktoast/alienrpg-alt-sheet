@@ -8,7 +8,15 @@
 
   <div class="aas-identity">
     {{#if editable}}
+    {{#if details.names}}
+    <select class="aas-name" name="name" aria-label="{{localize 'ALIENRPG.Name'}}">
+      {{#each details.names}}
+      <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+      {{/each}}
+    </select>
+    {{else}}
     <input class="aas-name" type="text" name="name" value="{{item.name}}" placeholder="{{localize 'ALIENRPG.Name'}}">
+    {{/if}}
     {{else}}
     <h1 class="aas-name">{{item.name}}</h1>
     {{/if}}
