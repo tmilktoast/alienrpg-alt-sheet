@@ -1,6 +1,8 @@
-/* Alien RPG Alternate Sheet. Everything is scoped under .alien-alt-sheet and prefixed aas-. */
+/* Alien RPG Alternate Sheet. Everything is scoped under .alien-alt-sheet and prefixed aas-, apart
+   from the journal sheet at the end, which restyles Foundry's own markup under .alien-alt-journal. */
 
-.alien-alt-sheet {
+.alien-alt-sheet,
+.alien-alt-journal {
   --aas-bg: #121618;
   --aas-panel: #1a2023;
   --aas-raised: #242c30;
@@ -1262,4 +1264,182 @@
 
 .alien-alt-sheet .window-content .aas-modifier.set input {
   border-color: var(--aas-accent);
+}
+
+/* ---------- Journal sheet ---------- */
+
+/* Foundry's journal markup, which the system's stylesheet turns green-on-black with a CRT font.
+   These rules outweigh the system's by carrying the extra class. */
+
+.alien-alt-journal.sheet.journal-entry:not(.minimized, .minimizing, .maximizing) {
+  border: 1px solid var(--aas-border);
+}
+
+.alien-alt-journal.sheet.journal-entry .window-content {
+  background: var(--aas-bg);
+  color: var(--aas-text);
+  font-family: var(--aas-font);
+}
+
+.alien-alt-journal.journal-sheet .window-content :is(input, select, button) {
+  color: var(--aas-text);
+  background: var(--aas-raised);
+  border: 1px solid var(--aas-border);
+  border-radius: 4px;
+}
+
+/* Icon buttons draw their glyph with the icon font, so they keep it. */
+.alien-alt-journal.journal-sheet .window-content :is(input, select, button:not(.icon)) {
+  font-family: var(--aas-font);
+}
+
+.alien-alt-journal.journal-sheet .window-header button {
+  color: var(--aas-text);
+  background: none;
+  border-color: transparent;
+}
+
+.alien-alt-journal.journal-sheet button:hover:not(:disabled) {
+  background: var(--aas-raised-hover);
+  border-color: var(--aas-accent);
+}
+
+.alien-alt-journal.journal-sheet :is(input, select, button, a):focus-visible {
+  outline: 2px solid var(--aas-accent);
+  outline-offset: 1px;
+}
+
+.alien-alt-journal.journal-sheet ::-webkit-scrollbar-thumb {
+  background: var(--aas-border);
+  border: none;
+}
+
+/* Sidebar: search, table of contents, page buttons */
+
+.alien-alt-journal.sheet.journal-entry .journal-sidebar {
+  background: var(--aas-panel);
+  border-right: 1px solid var(--aas-border);
+  color: var(--aas-text);
+}
+
+.alien-alt-journal.sheet.journal-entry .journal-sidebar search input {
+  color: var(--aas-text);
+  background: var(--aas-bg);
+}
+
+.alien-alt-journal.sheet.journal-entry .journal-sidebar search input::placeholder {
+  color: var(--aas-muted);
+}
+
+.alien-alt-journal.sheet.journal-entry.application .journal-sidebar .toc {
+  font-size: 14px;
+  border-color: var(--aas-border);
+}
+
+.alien-alt-journal.sheet.journal-entry.application .journal-sidebar .toc li.page {
+  border-color: var(--aas-border);
+}
+
+.alien-alt-journal.sheet.journal-entry.application .journal-sidebar .toc .page-heading :is(.page-number, .page-index) {
+  color: var(--aas-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.alien-alt-journal.sheet.journal-entry.application .journal-sidebar .toc li.page.active {
+  background: var(--aas-bg);
+}
+
+.alien-alt-journal.sheet.journal-entry.application .journal-sidebar .toc li.page.active .page-title {
+  color: var(--aas-accent);
+  font-weight: 600;
+}
+
+.alien-alt-journal.sheet.journal-entry.application .journal-sidebar .toc .heading-link {
+  color: var(--aas-muted);
+}
+
+.alien-alt-journal.sheet.journal-entry.application .journal-sidebar .toc :is(.page-title, .heading-link):hover {
+  color: var(--aas-accent);
+  text-shadow: none;
+}
+
+.alien-alt-journal.sheet.journal-entry.application .journal-sidebar .toc li.category strong {
+  color: var(--aas-accent);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Content: the entry's title and its pages */
+
+.alien-alt-journal.sheet.journal-entry .journal-entry-content {
+  background: var(--aas-bg);
+  border: none;
+  border-radius: 0;
+  color: var(--aas-text);
+}
+
+.alien-alt-journal.sheet.journal-entry .journal-header .title {
+  height: auto;
+  padding: 4px 8px;
+  font-family: var(--aas-font);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--aas-text);
+  background: none;
+  border: 1px solid transparent;
+  text-align: left;
+  text-shadow: none;
+}
+
+.alien-alt-journal.sheet.journal-entry .journal-header .title:is(:hover, :focus) {
+  background: var(--aas-panel);
+  border-color: var(--aas-border);
+}
+
+.alien-alt-journal.sheet.journal-entry .journal-entry-page {
+  font-family: var(--aas-font);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.alien-alt-journal.sheet.journal-entry .journal-entry-page :is(h1, h2, h3, h4) {
+  font-family: var(--aas-font);
+  text-shadow: none;
+}
+
+.alien-alt-journal.sheet.journal-entry .journal-entry-page :is(h1, h2) {
+  color: var(--aas-accent);
+  border-bottom: 1px solid var(--aas-border);
+}
+
+.alien-alt-journal.sheet.journal-entry .journal-entry-page :is(h3, h4) {
+  color: var(--aas-text);
+  border-bottom: none;
+}
+
+.alien-alt-journal.sheet.journal-entry .journal-entry-page :is(a.content-link, a.inline-roll) {
+  color: var(--aas-text);
+  background: var(--aas-raised);
+  border: 1px solid var(--aas-border);
+  border-radius: 3px;
+}
+
+.alien-alt-journal.sheet.journal-entry .journal-entry-page :is(a.content-link, a.inline-roll):hover {
+  border-color: var(--aas-accent);
+  text-shadow: none;
+}
+
+.alien-alt-journal.sheet.journal-entry .journal-entry-page :is(a.content-link, a.inline-roll) > i {
+  color: var(--aas-accent);
+}
+
+.alien-alt-journal.sheet.journal-entry .journal-entry-page blockquote {
+  border-left: 3px solid var(--aas-accent-dim);
+  color: var(--aas-muted);
+}
+
+.alien-alt-journal.sheet.journal-entry .journal-entry-page hr {
+  border-color: var(--aas-border);
 }

@@ -5,7 +5,8 @@
       "synthetic": "Alternate Synthetic Sheet",
       "creature": "Alternate Creature Sheet",
       "vehicles": "Alternate Vehicle Sheet",
-      "item": "Alternate Item Sheet"
+      "item": "Alternate Item Sheet",
+      "journal": "Alternate Journal Sheet"
     },
     "Tabs": {
       "Play": "Play",

@@ -1209,6 +1209,20 @@ function makeItemSheet(Base) {
   };
 }
 
+/**
+ * The alternate journal sheet. The system has no journal sheet of its own, only a stylesheet that
+ * gives Foundry's a CRT look; this is Foundry's sheet too, with a class the module's stylesheet
+ * uses to give it the look of the other alternate sheets.
+ * @param {typeof foundry.applications.sheets.journal.JournalEntrySheet} Base  Foundry's journal sheet
+ */
+function makeJournalSheet(Base) {
+  return class AltJournalSheet extends Base {
+    static DEFAULT_OPTIONS = {
+      classes: ["alien-alt-journal"],
+    };
+  };
+}
+
 /** Format cash the way the system's sheet does, following its dollar-sign setting. */
 function formatCash(text) {
   const value = Number(String(text).replace(/[^0-9.-]+/g, "")) || 0;
@@ -1247,10 +1261,17 @@ Hooks.once("ready", () => {
 
   // The system uses one sheet class for every item type; so does this, for the gear types.
   const ItemBase = Object.values(CONFIG.Item.sheetClasses[GEAR_TYPES[0]] ?? {}).find((s) => s.id.startsWith(`${SYSTEM_ID}.`))?.cls;
-  if (!ItemBase) return console.warn(`${MODULE_ID} | No ${SYSTEM_ID} item sheet found; skipping.`);
-  foundry.applications.apps.DocumentSheetConfig.registerSheet(Item, MODULE_ID, makeItemSheet(ItemBase), {
-    types: GEAR_TYPES,
+  if (ItemBase) {
+    foundry.applications.apps.DocumentSheetConfig.registerSheet(Item, MODULE_ID, makeItemSheet(ItemBase), {
+      types: GEAR_TYPES,
+      makeDefault: false,
+      label: "ALTSHEET.SheetLabel.item",
+    });
+  } else console.warn(`${MODULE_ID} | No ${SYSTEM_ID} item sheet found; skipping.`);
+
+  const JournalBase = foundry.applications.sheets.journal.JournalEntrySheet;
+  foundry.applications.apps.DocumentSheetConfig.registerSheet(JournalEntry, MODULE_ID, makeJournalSheet(JournalBase), {
     makeDefault: false,
-    label: "ALTSHEET.SheetLabel.item",
+    label: "ALTSHEET.SheetLabel.journal",
   });
 });

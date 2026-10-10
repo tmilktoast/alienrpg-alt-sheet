@@ -27,6 +27,8 @@ system's sheet for `character`, `synthetic`, `creature` and `vehicles` actors, s
 - **Gear sheets** — one sheet for weapons, armor and items: the fields that apply to that kind of
   gear on a Details tab with its description, a Notes tab, and a Modifiers tab for the bonuses it
   gives whoever has it equipped. A computer's own dice are roll buttons.
+- **Journal sheet** — Foundry's journal sheet in the same look: the sidebar, title, headings and
+  links are restyled, and what a page's own layout sets is left alone.
 
 The sheet subclasses the system's own sheet class and calls the system's roll methods, so dice,
 pushes, panic and supply rolls behave exactly as they do on the original sheet.
@@ -44,7 +46,7 @@ https://github.com/tmilktoast/alienrpg-alt-sheet/releases/latest/download/module
 Open a character, creature or vehicle, click the ⋮ menu in the window header → **Configure Sheet**, and pick
 the one named for it — **Alternate Character Sheet**, **Alternate Creature Sheet** and so on. To make it the default for every character, set it under *Default Sheet* in the
 same dialog (GM only). Each actor type has its own default. Weapons, armor and items work the same way from an item's
-own ⋮ menu.
+own ⋮ menu, and journals from a journal's.
 
 ## Local development
 
@@ -73,5 +75,8 @@ system:
   `addVehicleOccupant` and `removeVehicleOccupant`, and `CONFIG.ALIENRPG.vehicle` for the seats
 - for gear, the item sheet's `RollComputer` action and the numbered types in
   `CONFIG.ALIENRPG.item_types_list`, which decide the fields an item shows
+
+The journal sheet is Foundry's own `JournalEntrySheet` with an extra class. The system has no
+journal sheet, only CSS for Foundry's, which the module's stylesheet overrides under that class.
 
 If a system update renames any of those, that is where to look.

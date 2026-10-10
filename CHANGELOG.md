@@ -18,13 +18,15 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
 - **Gear sheets** — an alternate sheet for `weapon`, `armor` and `item` items, with Details, Notes
   and Modifiers tabs. Details shows only the fields that kind of gear uses; a computer's skill dice
   are roll buttons.
+- **Journal sheet** — an alternate sheet for journal entries: Foundry's journal sheet with the
+  sidebar, title, headings and links restyled to match the other alternate sheets.
 - The pilot's Piloting roll adds the vehicle's manoeuvrability, which the system's sheet leaves out.
 
 ### Changed
 
 - Each sheet is listed under its own name in Configure Sheet — Alternate Character Sheet,
-  Alternate Synthetic Sheet, Alternate Creature Sheet, Alternate Vehicle Sheet and Alternate Item
-  Sheet — in place of "Alternate Sheet" for all of them.
+  Alternate Synthetic Sheet, Alternate Creature Sheet, Alternate Vehicle Sheet, Alternate Item Sheet
+  and Alternate Journal Sheet — in place of "Alternate Sheet" for all of them.
 - The ranged attack dialog starts on Short range instead of Adjacent. A weapon that only reaches
   Adjacent still starts there.
 
