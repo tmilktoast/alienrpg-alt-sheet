@@ -27,7 +27,7 @@
         "modifiedTime": 1776824925844,
         "createdTime": null
       },
-      "description": "<p>You picked up a @UUID[Item.fpVKlZEUPEQQt344]{Maintenance Jack} during a colony siege. It got your squad into the heart of the complex where the fight was won. You kept hold of this useful tool, which works so well it gives an additional bonus +1 to <strong>HEAVY MACHINERY</strong> when using it.</p>",
+      "description": "<p>You picked up a <strong>Maintenance Jack</strong> during a colony siege. It got your squad into the heart of the complex where the fight was won. You kept hold of this useful tool, which works so well it gives an additional bonus +1 to <strong>HEAVY MACHINERY</strong> when using it.</p>",
       "name": "",
       "documentUuid": null,
       "_key": "!tables.results!1WzZ6kEaydH5wmLD.NXwUPF8qEk5s9hSD"
@@ -54,7 +54,7 @@
         "modifiedTime": 1776824925844,
         "createdTime": null
       },
-      "description": "<p>During a colony virus outbreak everyone ran out of ammo and your squad retreated to the Marshal’s office where you fought off the infected colonists. You still have the 12-gauge shotgun you used that day. @UUID[Item.F5WlHrEw1FuGJyXr]{Armat Model 37A2 12 Gauge Pump Action}</p>",
+      "description": "<p>During a colony virus outbreak everyone ran out of ammo and your squad retreated to the Marshal’s office where you fought off the infected colonists. You still have the 12-gauge shotgun you used that day. <strong>Armat Model 37A2 12 Gauge Pump Action</strong></p>",
       "name": "",
       "documentUuid": null,
       "_key": "!tables.results!1WzZ6kEaydH5wmLD.TTsE6xjgji9752RP"
@@ -81,7 +81,7 @@
         "modifiedTime": 1776825173251,
         "createdTime": null
       },
-      "description": "<p>You threw yourself in front of a colonist and saved them from an insurgent attack. Your M3 armor saved you and you saved the colonist. You gained a Marine Commendation Medal and the @UUID[Item.vD9HtUwctZDgBF6r]{Bodyguard} talent.</p>",
+      "description": "<p>You threw yourself in front of a colonist and saved them from an insurgent attack. Your M3 armor saved you and you saved the colonist. You gained a Marine Commendation Medal and the <strong>Bodyguard</strong> talent.</p>",
       "name": "",
       "documentUuid": null,
       "_key": "!tables.results!1WzZ6kEaydH5wmLD.GwDbAG27nYExkkmv"
@@ -108,7 +108,7 @@
         "modifiedTime": 1776825198334,
         "createdTime": null
       },
-      "description": "<p>A headshot knocked you down, the bullet embedding into your helmet. You picked it out and still wear it today—the bullet that should’ve killed you. Gain the bullet as a signature item and the @UUID[Item.bFRpeDr3MgCNGQkR]{Survivor} talent.</p>",
+      "description": "<p>A headshot knocked you down, the bullet embedding into your helmet. You picked it out and still wear it today—the bullet that should’ve killed you. Gain the bullet as a signature item and the <strong>Survivor</strong> talent.</p>",
       "name": "",
       "documentUuid": null,
       "_key": "!tables.results!1WzZ6kEaydH5wmLD.2djShpmqcdc5ZgjX"
@@ -161,7 +161,7 @@
         "modifiedTime": 1776825163799,
         "createdTime": null
       },
-      "description": "<p>The MAU trained for Operation Crossbow, a secret attempt to seize a UPP space station. Gain the @UUID[Item.FgY4nDoLz6gTDN5w]{Zero-G Training}talent. The op never took place or, if it did, your platoon did not participate in it.</p>",
+      "description": "<p>The MAU trained for Operation Crossbow, a secret attempt to seize a UPP space station. Gain the <strong>Zero-G Training</strong> talent. The op never took place or, if it did, your platoon did not participate in it.</p>",
       "name": "",
       "documentUuid": null,
       "_key": "!tables.results!1WzZ6kEaydH5wmLD.wc0CYGDHKFtZ4vHb"
@@ -188,7 +188,7 @@
         "modifiedTime": 1776825153155,
         "createdTime": null
       },
-      "description": "<p>Your training days at Camp Pendleton were hell. A vindictive drill sergeant singled you out for merciless punishments. Gain the @UUID[Item.HbTFhYtgnh8fDSKY]{Tough} talent.</p>",
+      "description": "<p>Your training days at Camp Pendleton were hell. A vindictive drill sergeant singled you out for merciless punishments. Gain the <strong>Tough</strong> talent.</p>",
       "name": "",
       "documentUuid": null,
       "_key": "!tables.results!1WzZ6kEaydH5wmLD.ZXYImoWGcEMJs1VJ"
@@ -267,7 +267,7 @@
         "modifiedTime": 1776825141402,
         "createdTime": null
       },
-      "description": "<p>You’ve got a good rapport with the company logistics sergeant and he’s always supplying you with unexpected or unconventional bits of equipment. Gain the @UUID[Item.j5NtyDAj3RdsDX62]{Hidden Stash} talent.</p>",
+      "description": "<p>You’ve got a good rapport with the company logistics sergeant and he’s always supplying you with unexpected or unconventional bits of equipment. Gain the <strong>Hidden Stash</strong> talent.</p>",
       "name": "",
       "documentUuid": null,
       "_key": "!tables.results!1WzZ6kEaydH5wmLD.tiUrvRICSJcA5U59"
@@ -363,7 +363,7 @@
       "_id": "J7TIPlCCeL5NXJi6",
       "name": "",
       "img": "icons/svg/d20-black.svg",
-      "description": "<p>MP Guard Duty - You were tasked with guarding a USCMC CID officer during a criminal investigation. Seeing you had a keen eye, they allowed you to assist them in the investigation. Gain the @UUID[Item.oqJy0QyS0kp5YcXe]{Investigator} talent.</p>",
+      "description": "<p>MP Guard Duty - You were tasked with guarding a USCMC CID officer during a criminal investigation. Seeing you had a keen eye, they allowed you to assist them in the investigation. Gain the <strong>Investigator</strong> talent.</p>",
       "drawn": false,
       "flags": {},
       "_stats": {
@@ -435,7 +435,7 @@
       "_key": "!tables.results!1WzZ6kEaydH5wmLD.zeOThOdZgylZhHRU"
     }
   ],
-  "formula": "1d14",
+  "formula": "1d16",
   "replacement": true,
   "displayRoll": false,
   "folder": null,

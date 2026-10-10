@@ -34,61 +34,7 @@
       "_key": "!tables.results!rUShcSALyedw5IHm.lvykprrz6yqKOXZb"
     },
     {
-      "type": "document",
-      "weight": 1,
-      "range": [
-        2,
-        2
-      ],
-      "name": "EV - ICSC SUB-AFFILIATION",
-      "img": "icons/svg/d20-grey.svg",
-      "documentUuid": "RollTable.ocxXdJIFOYVKfUs4",
-      "_id": "75izvuvCVHsxXanU",
-      "description": "",
-      "drawn": false,
-      "flags": {},
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null,
-        "coreVersion": "13.351",
-        "systemId": "alienrpg",
-        "systemVersion": "4.0.11",
-        "lastModifiedBy": null,
-        "modifiedTime": 1772951736300,
-        "createdTime": null
-      },
-      "_key": "!tables.results!rUShcSALyedw5IHm.75izvuvCVHsxXanU"
-    },
-    {
-      "type": "document",
-      "weight": 1,
-      "range": [
-        2,
-        2
-      ],
-      "name": "EV - ICSC HOME",
-      "img": "icons/svg/d20-grey.svg",
-      "documentUuid": "RollTable.eyoNQisyAvGVLsTR",
-      "_id": "Mpx8BGsTWt8uIQk4",
-      "description": "",
-      "drawn": false,
-      "flags": {},
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null,
-        "coreVersion": "13.351",
-        "systemId": "alienrpg",
-        "systemVersion": "4.0.11",
-        "lastModifiedBy": null,
-        "modifiedTime": 1772951736300,
-        "createdTime": null
-      },
-      "_key": "!tables.results!rUShcSALyedw5IHm.Mpx8BGsTWt8uIQk4"
-    },
-    {
-      "type": "document",
+      "type": "text",
       "weight": 1,
       "range": [
         3,
@@ -97,7 +43,7 @@
       "_id": "Dly80qwsfoOvaDFN",
       "name": "SUPERNATION",
       "img": "icons/svg/d20-black.svg",
-      "description": "<p>Three World Empire</p><p></p><p>You were born within the 3WE</p>",
+      "description": "<p>Three World Empire</p><p>You were born within the 3WE</p>",
       "drawn": false,
       "flags": {},
       "_stats": {
@@ -115,61 +61,7 @@
       "_key": "!tables.results!rUShcSALyedw5IHm.Dly80qwsfoOvaDFN"
     },
     {
-      "type": "document",
-      "weight": 1,
-      "range": [
-        3,
-        3
-      ],
-      "name": "EV - TWE SUB-AFFILIATION",
-      "img": "icons/svg/d20-grey.svg",
-      "documentUuid": "RollTable.aB3zYmJCX71UFGC1",
-      "_id": "vhSCYXq6m4W5PahN",
-      "description": "",
-      "drawn": false,
-      "flags": {},
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null,
-        "coreVersion": "13.351",
-        "systemId": "alienrpg",
-        "systemVersion": "4.0.11",
-        "lastModifiedBy": null,
-        "modifiedTime": 1772951736300,
-        "createdTime": null
-      },
-      "_key": "!tables.results!rUShcSALyedw5IHm.vhSCYXq6m4W5PahN"
-    },
-    {
-      "type": "document",
-      "weight": 1,
-      "range": [
-        3,
-        3
-      ],
-      "name": "EV - TWE HOME",
-      "img": "icons/svg/d20-grey.svg",
-      "documentUuid": "RollTable.rraLVWciyXCDNwmN",
-      "_id": "sT4E8EvVhIIosxsS",
-      "description": "",
-      "drawn": false,
-      "flags": {},
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null,
-        "coreVersion": "13.351",
-        "systemId": "alienrpg",
-        "systemVersion": "4.0.11",
-        "lastModifiedBy": null,
-        "modifiedTime": 1772951736300,
-        "createdTime": null
-      },
-      "_key": "!tables.results!rUShcSALyedw5IHm.sT4E8EvVhIIosxsS"
-    },
-    {
-      "type": "document",
+      "type": "text",
       "weight": 1,
       "range": [
         4,
@@ -178,7 +70,7 @@
       "_id": "kQ7Z1Tk6s6I8tbFn",
       "name": "SUPERNATION",
       "img": "modules/game-icons-net/whitetransparent/usa-flag.svg",
-      "description": "<p><strong>United Americas</strong></p><p></p><p>You were born within the greatest nation in the history of the World. Congratulations.</p>",
+      "description": "<p><strong>United Americas</strong></p><p>You were born within the greatest nation in the history of the World. Congratulations.</p>",
       "drawn": false,
       "flags": {},
       "_stats": {
@@ -194,60 +86,6 @@
       },
       "documentUuid": null,
       "_key": "!tables.results!rUShcSALyedw5IHm.kQ7Z1Tk6s6I8tbFn"
-    },
-    {
-      "type": "document",
-      "weight": 1,
-      "range": [
-        4,
-        12
-      ],
-      "name": "EV - UA SUB-AFFILIATION",
-      "img": "icons/svg/d20-grey.svg",
-      "documentUuid": "RollTable.MKtENBfVhbLikncj",
-      "_id": "97MD0iztklSmIMdC",
-      "description": "",
-      "drawn": false,
-      "flags": {},
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null,
-        "coreVersion": "13.351",
-        "systemId": "alienrpg",
-        "systemVersion": "4.0.11",
-        "lastModifiedBy": null,
-        "modifiedTime": 1772951736300,
-        "createdTime": null
-      },
-      "_key": "!tables.results!rUShcSALyedw5IHm.97MD0iztklSmIMdC"
-    },
-    {
-      "type": "document",
-      "weight": 1,
-      "range": [
-        4,
-        12
-      ],
-      "name": "EV - UA HOME",
-      "img": "icons/svg/d20-grey.svg",
-      "documentUuid": "RollTable.GLJz28UOaucKz02y",
-      "_id": "4xViK2adzJAGBurk",
-      "description": "",
-      "drawn": false,
-      "flags": {},
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null,
-        "coreVersion": "13.351",
-        "systemId": "alienrpg",
-        "systemVersion": "4.0.11",
-        "lastModifiedBy": null,
-        "modifiedTime": 1772951736300,
-        "createdTime": null
-      },
-      "_key": "!tables.results!rUShcSALyedw5IHm.4xViK2adzJAGBurk"
     }
   ],
   "replacement": true,

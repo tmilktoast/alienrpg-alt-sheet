@@ -16,7 +16,7 @@
       "_id": "ekw6A3TFont3HxNO",
       "name": "AND EXPERIENCED",
       "img": "icons/svg/d20-black.svg",
-      "description": "<p>A stroke of luck that made your life easy or boosted your prospects.</p><ul><li class=\"nostyle\">+1 MOBILITY</li><li class=\"nostyle\"><p></p></li></ul>",
+      "description": "<p>A stroke of luck that made your life easy or boosted your prospects.</p><ul><li class=\"nostyle\">+1 MOBILITY</li></ul>",
       "drawn": false,
       "flags": {},
       "_stats": {
@@ -286,7 +286,7 @@
       "_id": "mXF3bvPoiLiioAjj",
       "name": "AND EXPERIENCED",
       "img": "icons/svg/d20-black.svg",
-      "description": "<p>A no-win situation where you killed someone or through inaction let them die.</p><ul><li class=\"nostyle\">+1 RANGED COMBAT or +1 MANIPULATION</li><li class=\"nostyle\"><p></p></li></ul>",
+      "description": "<p>A no-win situation where you killed someone or through inaction let them die.</p><ul><li class=\"nostyle\">+1 RANGED COMBAT or +1 MANIPULATION</li></ul>",
       "drawn": false,
       "flags": {},
       "_stats": {
@@ -313,7 +313,7 @@
       "_id": "yC3SwnjcWh0ZUjqG",
       "name": "AND EXPERIENCED",
       "img": "icons/svg/d20-black.svg",
-      "description": "<p>Time on an isolated research station that malfunctioned, releasing test subjects that wreaked havoc.</p><ul><li class=\"nostyle\">+1 OBSERVATION or +1 MEDICAL AID</li><li class=\"nostyle\"><p></p></li></ul>",
+      "description": "<p>Time on an isolated research station that malfunctioned, releasing test subjects that wreaked havoc.</p><ul><li class=\"nostyle\">+1 OBSERVATION or +1 MEDICAL AID</li></ul>",
       "drawn": false,
       "flags": {},
       "_stats": {
@@ -340,7 +340,7 @@
       "_id": "unHjnrHzKvYh8MS9",
       "name": "AND EXPERIENCED",
       "img": "icons/svg/d20-black.svg",
-      "description": "<p>An attack by a UPP commando force, killing someone close to you.</p><p></p><p>+1 OBSERVATION</p>",
+      "description": "<p>An attack by a UPP commando force, killing someone close to you.</p><p>+1 OBSERVATION</p>",
       "drawn": false,
       "flags": {},
       "_stats": {
@@ -367,7 +367,7 @@
       "_id": "GL0QBSsYqrveR5Q2",
       "name": "AND EXPERIENCED",
       "img": "icons/svg/d20-black.svg",
-      "description": "<p>Witnessing a synthetic malfunction and seriously injure, or kill, someone.</p><p></p><p>+1 COMTECH</p>",
+      "description": "<p>Witnessing a synthetic malfunction and seriously injure, or kill, someone.</p><p>+1 COMTECH</p>",
       "drawn": false,
       "flags": {},
       "_stats": {
@@ -421,7 +421,7 @@
       "_id": "UZsdplnN1SKINP5b",
       "name": "AND EXPERIENCED",
       "img": "icons/svg/d20-black.svg",
-      "description": "<p><span style=\"box-sizing:border-box;margin:0.5rem 0px;scrollbar-width:thin;scrollbar-color:rgb(93, 20, 43) rgba(0, 0, 0, 0);color:rgb(239, 230, 216);font-family:Signika, 'Palatino Linotype', sans-serif;font-size:14px;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:left;text-indent:0px;text-transform:none;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;white-space:normal;background-color:rgba(255, 255, 255, 0.1);text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\">Waking from hypersleep to find everyone else has died. It was nothing to do with you, but no one believes it.</span></p><p>+1 MANIPULATION</p><p></p><p></p>",
+      "description": "<p>Waking from hypersleep to find everyone else has died. It was nothing to do with you, but no one believes it.</p><p>+1 MANIPULATION</p>",
       "drawn": false,
       "flags": {},
       "_stats": {
@@ -533,7 +533,7 @@
     "modifiedTime": 1773891033805,
     "lastModifiedBy": null
   },
-  "formula": "1d15",
+  "formula": "1d19",
   "ownership": {
     "default": 0
   }

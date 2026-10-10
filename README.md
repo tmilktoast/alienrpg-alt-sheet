@@ -93,9 +93,9 @@ Marines life path: Life Path - Origin, Early Life (which draws from the three EL
 the Marines, and the Enlisted and NCO event tables. They are tables only; the character builder
 doesn't use them.
 
-Some results link to documents that aren't in the pack: the Origin table draws from the
-`EV - … SUB-AFFILIATION` and `EV - … HOME` tables, and the event tables link to talents and gear.
-Those links point at world documents by ID, so they only resolve in a world that has them.
+The tables stand on their own: talents and gear are named in the text rather than linked, and
+the Origin table gives the supernation only. Add your own sub-affiliation and home tables to it if
+you have them.
 
 The sources are the JSON files in `src/packs/life-path/`, one per table.
 

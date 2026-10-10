@@ -80,7 +80,7 @@
         "modifiedTime": 1776826843805,
         "createdTime": null
       },
-      "description": "<p>You spent time training with Force Recon and gained a special ops @UUID[Item.nLAWbpHwm01svvYv]{M4A3 Service Pistol} with custom @UUID[Item.cuXKEZN70XbVjQKU]{Muzzle Suppressor}.</p>",
+      "description": "<p>You spent time training with Force Recon and gained a special ops <strong>M4A3 Service Pistol</strong> with custom <strong>Muzzle Suppressor</strong>.</p>",
       "name": "",
       "documentUuid": null,
       "_key": "!tables.results!KgY8RjTMBTGLbYd3.sPWLmSgTRwjo6OYJ"
@@ -185,7 +185,7 @@
         "createdTime": null,
         "modifiedTime": null
       },
-      "description": "Your squad was relentlessly hit by booby traps and sniper fire from an invisible and unreachable enemy. Frustration and anger boiled over. Gain the Merciless talent.",
+      "description": "Your squad was relentlessly hit by booby traps and sniper fire from an invisible and unreachable enemy. Frustration and anger boiled over. Gain the <strong>Merciless</strong> talent.",
       "name": "",
       "_key": "!tables.results!KgY8RjTMBTGLbYd3.wc0CYGDHKFtZ4vHb"
     },
@@ -321,7 +321,7 @@
       "_key": "!tables.results!KgY8RjTMBTGLbYd3.6kUc1tifes5SsXpB"
     }
   ],
-  "formula": "1d11",
+  "formula": "1d12",
   "replacement": true,
   "displayRoll": false,
   "folder": null,

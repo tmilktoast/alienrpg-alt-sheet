@@ -124,7 +124,7 @@
       "_id": "fQl4QtkJaMBOt3gW",
       "name": "Boredom",
       "img": "icons/svg/d20-black.svg",
-      "description": "<p>You were bored and had no direction in life. Maybe someone convinced you the military would give you a purpose. Regardless, boredom is a really stupid. reason to get yourself killed.</p>",
+      "description": "<p>You were bored and had no direction in life. Maybe someone convinced you the military would give you a purpose. Regardless, boredom is a really stupid reason to get yourself killed.</p>",
       "drawn": false,
       "flags": {},
       "_stats": {
@@ -151,7 +151,7 @@
       "_id": "LWGQNAmMMVOSePlX",
       "name": "No Choice",
       "img": "icons/svg/d20-black.svg",
-      "description": "<p>A magristrate gave you a choice: jail time or join the military. You made a poor life choice and picked the military.</p>",
+      "description": "<p>A magistrate gave you a choice: jail time or join the military. You made a poor life choice and picked the military.</p>",
       "drawn": false,
       "flags": {},
       "_stats": {
