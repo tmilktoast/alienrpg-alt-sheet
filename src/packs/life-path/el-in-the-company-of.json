@@ -1,0 +1,324 @@
+{
+  "_id": "dxwJNHOm1c4sDU5h",
+  "_key": "!tables!dxwJNHOm1c4sDU5h",
+  "name": "EL - In the Company Of",
+  "folder": null,
+  "img": "icons/svg/d20-grey.svg",
+  "description": "",
+  "results": [
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "_id": "ekw6A3TFont3HxNO",
+      "name": "IN THE COMPANY OF",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Your parents or siblings</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "createdTime": null,
+        "modifiedTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!dxwJNHOm1c4sDU5h.ekw6A3TFont3HxNO"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "_id": "CcmDWl4yEYHeHylM",
+      "name": "IN THE COMPANY OF",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Your closest friend or friends</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "createdTime": null,
+        "modifiedTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!dxwJNHOm1c4sDU5h.CcmDWl4yEYHeHylM"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "_id": "RXk08fM9srwEMFco",
+      "name": "IN THE COMPANY OF",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Dangerous convicts</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "createdTime": null,
+        "modifiedTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!dxwJNHOm1c4sDU5h.RXk08fM9srwEMFco"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "_id": "CpOVYsAZuXzINg0I",
+      "name": "IN THE COMPANY OF",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Strangers</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "createdTime": null,
+        "modifiedTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!dxwJNHOm1c4sDU5h.CpOVYsAZuXzINg0I"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "_id": "W7g0Nle7ftqqmsT5",
+      "name": "IN THE COMPANY OF",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>A bitter rival or enemy</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "createdTime": null,
+        "modifiedTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!dxwJNHOm1c4sDU5h.W7g0Nle7ftqqmsT5"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "_id": "6xnpNfcieafiTLN6",
+      "name": "IN THE COMPANY OF",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Bitter indentured workers</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "createdTime": null,
+        "modifiedTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!dxwJNHOm1c4sDU5h.6xnpNfcieafiTLN6"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        7,
+        7
+      ],
+      "_id": "4TfblK72YFsztZu2",
+      "name": "IN THE COMPANY OF",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Soldiers or paramilitaries</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "createdTime": null,
+        "modifiedTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!dxwJNHOm1c4sDU5h.4TfblK72YFsztZu2"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        8,
+        8
+      ],
+      "_id": "EUYG3O469NwUqW4t",
+      "name": "IN THE COMPANY OF",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Androids</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "createdTime": null,
+        "modifiedTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!dxwJNHOm1c4sDU5h.EUYG3O469NwUqW4t"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        9,
+        9
+      ],
+      "_id": "jU1xhhs7fnQJ4XKe",
+      "name": "IN THE COMPANY OF",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>A super wealthy benefactor</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "createdTime": null,
+        "modifiedTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!dxwJNHOm1c4sDU5h.jU1xhhs7fnQJ4XKe"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        10,
+        10
+      ],
+      "_id": "mXF3bvPoiLiioAjj",
+      "name": "IN THE COMPANY OF",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Desperate or ill people</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "createdTime": null,
+        "modifiedTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!dxwJNHOm1c4sDU5h.mXF3bvPoiLiioAjj"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        11,
+        11
+      ],
+      "_id": "yC3SwnjcWh0ZUjqG",
+      "name": "IN THE COMPANY OF",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>No one</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "createdTime": null,
+        "modifiedTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!dxwJNHOm1c4sDU5h.yC3SwnjcWh0ZUjqG"
+    }
+  ],
+  "replacement": true,
+  "displayRoll": false,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": "RollTable.ipDd4opGZIfaommM",
+    "coreVersion": "13.351",
+    "systemId": "alienrpg",
+    "systemVersion": "4.0.11",
+    "createdTime": 1773619754824,
+    "modifiedTime": 1773887788396,
+    "lastModifiedBy": null
+  },
+  "formula": "1d11",
+  "ownership": {
+    "default": 0
+  }
+}

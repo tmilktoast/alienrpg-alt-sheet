@@ -1,0 +1,108 @@
+{
+  "_id": "YVxunYvk3TlCqSbI",
+  "_key": "!tables!YVxunYvk3TlCqSbI",
+  "name": "Early Life",
+  "folder": null,
+  "img": "icons/svg/d20-grey.svg",
+  "description": "<h2><strong>LIFE PATH - EARLY LIFE</strong></h2>",
+  "results": [
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "name": "EL - You Were",
+      "img": "icons/svg/d20-grey.svg",
+      "documentUuid": "Compendium.alienrpg-alt-sheet.life-path.RollTable.GTP88HC4RVPtQeWo",
+      "_id": "ImvWsSJATg3R7zGl",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "createdTime": 1773886875864,
+        "modifiedTime": 1773886875864,
+        "lastModifiedBy": null
+      },
+      "_key": "!tables.results!YVxunYvk3TlCqSbI.ImvWsSJATg3R7zGl"
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "name": "EL - In the Company Of",
+      "img": "icons/svg/d20-grey.svg",
+      "documentUuid": "Compendium.alienrpg-alt-sheet.life-path.RollTable.dxwJNHOm1c4sDU5h",
+      "_id": "RHG9gDCFIMUEMJuz",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "createdTime": 1773886898410,
+        "modifiedTime": 1773886898410,
+        "lastModifiedBy": null
+      },
+      "_key": "!tables.results!YVxunYvk3TlCqSbI.RHG9gDCFIMUEMJuz"
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "name": "EL - And Experienced",
+      "img": "icons/svg/d20-grey.svg",
+      "documentUuid": "Compendium.alienrpg-alt-sheet.life-path.RollTable.nZyNma34XgNvPDt1",
+      "_id": "W6dO5jEmM3ZXmYfC",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "createdTime": 1773886901551,
+        "modifiedTime": 1773886901551,
+        "lastModifiedBy": null
+      },
+      "_key": "!tables.results!YVxunYvk3TlCqSbI.W6dO5jEmM3ZXmYfC"
+    }
+  ],
+  "replacement": true,
+  "displayRoll": false,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": "RollTable.SCl1BZa4oHjMeZ4Q",
+    "coreVersion": "13.351",
+    "systemId": "alienrpg",
+    "systemVersion": "4.0.11",
+    "createdTime": 1773619565923,
+    "modifiedTime": 1773886919287,
+    "lastModifiedBy": null
+  },
+  "formula": "1d1",
+  "ownership": {
+    "default": 0
+  }
+}

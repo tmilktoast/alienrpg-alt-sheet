@@ -7,6 +7,9 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
 
 ### Added
 
+- **Life Path Tables** — a compendium pack of eight roll tables for a Colonial Marines life path:
+  Life Path - Origin, Early Life and its three EL tables, Joining the Marines, and the Enlisted and
+  NCO event tables. Tables only; nothing rolls on them automatically.
 - **Creature sheet** — an alternate sheet for `creature` actors. Health, speed and armor sit in the
   header; the Creature tab has the signature attack with a list of what each roll on its table
   does, mobility, observation and acid splash as roll buttons, special abilities and critical

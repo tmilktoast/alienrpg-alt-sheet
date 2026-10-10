@@ -1,0 +1,540 @@
+{
+  "_id": "nZyNma34XgNvPDt1",
+  "_key": "!tables!nZyNma34XgNvPDt1",
+  "name": "EL - And Experienced",
+  "folder": null,
+  "img": "icons/svg/d20-grey.svg",
+  "description": "",
+  "results": [
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "_id": "ekw6A3TFont3HxNO",
+      "name": "AND EXPERIENCED",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>A stroke of luck that made your life easy or boosted your prospects.</p><ul><li class=\"nostyle\">+1 MOBILITY</li><li class=\"nostyle\"><p></p></li></ul>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1773888044840,
+        "createdTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!nZyNma34XgNvPDt1.ekw6A3TFont3HxNO"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "_id": "CcmDWl4yEYHeHylM",
+      "name": "AND EXPERIENCED",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Being kidnapped by a wealthy oligarch, paraded around as their child, and thrown to the street when they were done with you.</p><p>+1 MANIPULATION</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1773888162754,
+        "createdTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!nZyNma34XgNvPDt1.CcmDWl4yEYHeHylM"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "_id": "RXk08fM9srwEMFco",
+      "name": "AND EXPERIENCED",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Forced into a life of child labor working in mines or other manual labor.</p><ul><li class=\"nostyle\">+1 STAMINA or +1 SURVIVAL</li></ul>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1773888217024,
+        "createdTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!nZyNma34XgNvPDt1.RXk08fM9srwEMFco"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "_id": "CpOVYsAZuXzINg0I",
+      "name": "AND EXPERIENCED",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Putting yourself in harm's way to rescue another kid, or perhaps a cat.</p><ul><li class=\"nostyle\">+1 MEDICAL AID</li></ul>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1773888538178,
+        "createdTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!nZyNma34XgNvPDt1.CpOVYsAZuXzINg0I"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "_id": "YHkvP7dBUnUtw4sW",
+      "name": "AND EXPERIENCED",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Time in a high-security juvenile prison for a crime you may (or may not) have committed</p><ul><li class=\"nostyle\">+1 CLOSE COMBAT or +1 SURVIVAL</li></ul>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1773888594617,
+        "createdTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!nZyNma34XgNvPDt1.YHkvP7dBUnUtw4sW"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "_id": "W7g0Nle7ftqqmsT5",
+      "name": "AND EXPERIENCED",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>A period of slave labor, under the lash of a brutal chain gang boss.</p><ul><li class=\"nostyle\">+1 STAMINA</li></ul>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1773889038023,
+        "createdTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!nZyNma34XgNvPDt1.W7g0Nle7ftqqmsT5"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        7,
+        7
+      ],
+      "_id": "6xnpNfcieafiTLN6",
+      "name": "AND EXPERIENCED",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Wasting away your teenage years in space, forever suffering hypersleep sickness or soul-sucking loneliness.</p><ul><li class=\"nostyle\">+1 PILOTING or +1 HEAVY MACHINERY</li></ul>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1773888663453,
+        "createdTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!nZyNma34XgNvPDt1.6xnpNfcieafiTLN6"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        8,
+        8
+      ],
+      "_id": "4TfblK72YFsztZu2",
+      "name": "AND EXPERIENCED",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Isolation on an abandoned colony, having to do unspeakable things just to survive.</p><ul><li class=\"nostyle\">+1 CLOSE COMBAT or +1 COMTECH or +1 SURVIVAL</li></ul>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1776823870091,
+        "createdTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!nZyNma34XgNvPDt1.4TfblK72YFsztZu2"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        9,
+        9
+      ],
+      "_id": "EUYG3O469NwUqW4t",
+      "name": "AND EXPERIENCED",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Surviving a plague that wiped out nearly everyone else.</p><ul><li class=\"nostyle\">+1 SURVIVAL</li></ul>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1773889168388,
+        "createdTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!nZyNma34XgNvPDt1.EUYG3O469NwUqW4t"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        10,
+        10
+      ],
+      "_id": "jU1xhhs7fnQJ4XKe",
+      "name": "AND EXPERIENCED",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Being a test subject at a science facility, where you suffered painful and dangerous procedures.</p><ul><li class=\"nostyle\">+1 OBSERVATION or +1 COMTECH</li></ul>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1773888779097,
+        "createdTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!nZyNma34XgNvPDt1.jU1xhhs7fnQJ4XKe"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        11,
+        11
+      ],
+      "_id": "mXF3bvPoiLiioAjj",
+      "name": "AND EXPERIENCED",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>A no-win situation where you killed someone or through inaction let them die.</p><ul><li class=\"nostyle\">+1 RANGED COMBAT or +1 MANIPULATION</li><li class=\"nostyle\"><p></p></li></ul>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1773888886872,
+        "createdTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!nZyNma34XgNvPDt1.mXF3bvPoiLiioAjj"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        12,
+        12
+      ],
+      "_id": "yC3SwnjcWh0ZUjqG",
+      "name": "AND EXPERIENCED",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Time on an isolated research station that malfunctioned, releasing test subjects that wreaked havoc.</p><ul><li class=\"nostyle\">+1 OBSERVATION or +1 MEDICAL AID</li><li class=\"nostyle\"><p></p></li></ul>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1773889597862,
+        "createdTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!nZyNma34XgNvPDt1.yC3SwnjcWh0ZUjqG"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        13,
+        13
+      ],
+      "_id": "unHjnrHzKvYh8MS9",
+      "name": "AND EXPERIENCED",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>An attack by a UPP commando force, killing someone close to you.</p><p></p><p>+1 OBSERVATION</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "createdTime": 1773889197304,
+        "modifiedTime": 1773889280973,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!nZyNma34XgNvPDt1.unHjnrHzKvYh8MS9"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        14,
+        14
+      ],
+      "_id": "GL0QBSsYqrveR5Q2",
+      "name": "AND EXPERIENCED",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Witnessing a synthetic malfunction and seriously injure, or kill, someone.</p><p></p><p>+1 COMTECH</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "createdTime": 1773889287135,
+        "modifiedTime": 1773889348619,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!nZyNma34XgNvPDt1.GL0QBSsYqrveR5Q2"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        15,
+        15
+      ],
+      "_id": "WZdpttkEslpZuqkV",
+      "name": "AND EXPERIENCED",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Being taken under the wing of a leader, such as a colonial admin, a retired officer, or another person formerly or currently in power. <br /><br />+1 COMMAND</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "createdTime": 1773889353567,
+        "modifiedTime": 1773889526326,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!nZyNma34XgNvPDt1.WZdpttkEslpZuqkV"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        16,
+        16
+      ],
+      "_id": "UZsdplnN1SKINP5b",
+      "name": "AND EXPERIENCED",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p><span style=\"box-sizing:border-box;margin:0.5rem 0px;scrollbar-width:thin;scrollbar-color:rgb(93, 20, 43) rgba(0, 0, 0, 0);color:rgb(239, 230, 216);font-family:Signika, 'Palatino Linotype', sans-serif;font-size:14px;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:left;text-indent:0px;text-transform:none;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;white-space:normal;background-color:rgba(255, 255, 255, 0.1);text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\">Waking from hypersleep to find everyone else has died. It was nothing to do with you, but no one believes it.</span></p><p>+1 MANIPULATION</p><p></p><p></p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "createdTime": 1773890424139,
+        "modifiedTime": 1773890599056,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!nZyNma34XgNvPDt1.UZsdplnN1SKINP5b"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        17,
+        17
+      ],
+      "_id": "Li7GhNiWFKr2rrqz",
+      "name": "AND EXPERIENCE",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Over-hearing a dire secret, you either:<br /></p><ul><li><p>Blackmail someone and gain +1 MANIPULATION</p></li></ul><p>OR</p><ul><li><p>Keep the secret, good or bad, and gain +1 COMMAND</p></li></ul>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "createdTime": 1773890618739,
+        "modifiedTime": 1773890777130,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!nZyNma34XgNvPDt1.Li7GhNiWFKr2rrqz"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        18,
+        18
+      ],
+      "_id": "tExAexPJcvXCpzFj",
+      "name": "AND EXPERIENCE",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Surviving a terrible crash. Now, you can't help but distrust cocky pilots.</p><p>+1 SURVIVAL or +1 PILOTING</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "createdTime": 1773890835137,
+        "modifiedTime": 1773891133804,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!nZyNma34XgNvPDt1.tExAexPJcvXCpzFj"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        19,
+        19
+      ],
+      "_id": "qSHJZhWJLERZIETs",
+      "name": "AND EXPERIENCE",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Being abandoned and left to die. This betrayal has wounded you deeply. Perhaps you want revenge on those who betrayed you.</p><p>+1 SURVIVAL or +1 MOBILITY</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "createdTime": 1773891030248,
+        "modifiedTime": 1773891119338,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!nZyNma34XgNvPDt1.qSHJZhWJLERZIETs"
+    }
+  ],
+  "replacement": true,
+  "displayRoll": false,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": "RollTable.NU2LETLUu8surLKe",
+    "coreVersion": "13.351",
+    "systemId": "alienrpg",
+    "systemVersion": "4.0.11",
+    "createdTime": 1773619791413,
+    "modifiedTime": 1773891033805,
+    "lastModifiedBy": null
+  },
+  "formula": "1d15",
+  "ownership": {
+    "default": 0
+  }
+}

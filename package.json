@@ -1,0 +1,11 @@
+{
+  "name": "alienrpg-alt-sheet",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "packs": "node tools/build-packs.mjs"
+  },
+  "devDependencies": {
+    "@foundryvtt/foundryvtt-cli": "^3.0.5"
+  }
+}

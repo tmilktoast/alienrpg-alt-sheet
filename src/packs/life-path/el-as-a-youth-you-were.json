@@ -1,0 +1,351 @@
+{
+  "_id": "GTP88HC4RVPtQeWo",
+  "_key": "!tables!GTP88HC4RVPtQeWo",
+  "name": "EL - As a Youth, You Were",
+  "folder": null,
+  "img": "icons/svg/d20-grey.svg",
+  "description": "",
+  "results": [
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "_id": "ekw6A3TFont3HxNO",
+      "name": "AS A YOUTH, YOU WERE A",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Detainee living in a juvenile detention center for much of your youth</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1773887882142,
+        "createdTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!GTP88HC4RVPtQeWo.ekw6A3TFont3HxNO"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "_id": "CcmDWl4yEYHeHylM",
+      "name": "AS A YOUTH, YOU WERE",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Among space truckers living life in hypersleep</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1773887891749,
+        "createdTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!GTP88HC4RVPtQeWo.CcmDWl4yEYHeHylM"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "_id": "RXk08fM9srwEMFco",
+      "name": "AS A YOUTH, YOU WERE A",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Troublemaker following no rules but your own</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1773887898754,
+        "createdTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!GTP88HC4RVPtQeWo.RXk08fM9srwEMFco"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "_id": "CpOVYsAZuXzINg0I",
+      "name": "AS A YOUTH, YOU WERE",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Homeless, surviving from hand to mouth</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1773887905756,
+        "createdTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!GTP88HC4RVPtQeWo.CpOVYsAZuXzINg0I"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "_id": "YHkvP7dBUnUtw4sW",
+      "name": "AS A YOUTH, YOU WERE AN",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Indentured worker, enslaved to your masters</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1773887913996,
+        "createdTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!GTP88HC4RVPtQeWo.YHkvP7dBUnUtw4sW"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "_id": "W7g0Nle7ftqqmsT5",
+      "name": "AS A YOUTH, YOU WERE A",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Warzone refugee, fleeing destruction</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1773887919530,
+        "createdTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!GTP88HC4RVPtQeWo.W7g0Nle7ftqqmsT5"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        7,
+        7
+      ],
+      "_id": "6xnpNfcieafiTLN6",
+      "name": "AS A YOUTH, YOU WERE",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Living amongst zealots in a brutal cult</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1773887925968,
+        "createdTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!GTP88HC4RVPtQeWo.6xnpNfcieafiTLN6"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        8,
+        8
+      ],
+      "_id": "4TfblK72YFsztZu2",
+      "name": "AS A YOUTH, YOU WERE A",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Colonist on a back­water planet</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1773887935554,
+        "createdTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!GTP88HC4RVPtQeWo.4TfblK72YFsztZu2"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        9,
+        9
+      ],
+      "_id": "EUYG3O469NwUqW4t",
+      "name": "AS A YOUTH, YOU WERE AN",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Abandoned colonist or ship passenger that needed rescuing</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1773887946674,
+        "createdTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!GTP88HC4RVPtQeWo.EUYG3O469NwUqW4t"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        10,
+        10
+      ],
+      "_id": "jU1xhhs7fnQJ4XKe",
+      "name": "AS A YOUTH, YOU WERE A",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Wildcatter child, living in a Daihotai tractor</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1773887953118,
+        "createdTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!GTP88HC4RVPtQeWo.jU1xhhs7fnQJ4XKe"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        11,
+        11
+      ],
+      "_id": "mXF3bvPoiLiioAjj",
+      "name": "AS A YOUTH, YOU WERE A",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Child of a low-paid minion working at research facilities <br /></p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1773887962416,
+        "createdTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!GTP88HC4RVPtQeWo.mXF3bvPoiLiioAjj"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        12,
+        12
+      ],
+      "_id": "yC3SwnjcWh0ZUjqG",
+      "name": "AS A YOUTH, YOU WERE A",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Ward of a wealthy person or group of people</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1773887967294,
+        "createdTime": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!GTP88HC4RVPtQeWo.yC3SwnjcWh0ZUjqG"
+    }
+  ],
+  "replacement": true,
+  "displayRoll": false,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": "RollTable.tP5rGsu5sfredy3l",
+    "coreVersion": "13.351",
+    "systemId": "alienrpg",
+    "systemVersion": "4.0.11",
+    "createdTime": 1773619683733,
+    "modifiedTime": 1773887673964,
+    "lastModifiedBy": null
+  },
+  "formula": "1d12",
+  "ownership": {
+    "default": 0
+  }
+}

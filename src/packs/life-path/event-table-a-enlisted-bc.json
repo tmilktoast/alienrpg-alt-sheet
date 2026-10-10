@@ -1,0 +1,456 @@
+{
+  "_id": "1WzZ6kEaydH5wmLD",
+  "_key": "!tables!1WzZ6kEaydH5wmLD",
+  "name": "EVENT TABLE A – ENLISTED (BC)",
+  "img": "icons/svg/d20-grey.svg",
+  "description": "<p><span style=\"color:deepskyblue;font-weight:bolder;font-size:large\"><strong>EVENT TABLE A – ENLISTED</strong></span></p>",
+  "results": [
+    {
+      "_id": "NXwUPF8qEk5s9hSD",
+      "type": "text",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false,
+      "flags": {},
+      "img": "icons/svg/d20-black.svg",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1776824925844,
+        "createdTime": null
+      },
+      "description": "<p>You picked up a @UUID[Item.fpVKlZEUPEQQt344]{Maintenance Jack} during a colony siege. It got your squad into the heart of the complex where the fight was won. You kept hold of this useful tool, which works so well it gives an additional bonus +1 to <strong>HEAVY MACHINERY</strong> when using it.</p>",
+      "name": "",
+      "documentUuid": null,
+      "_key": "!tables.results!1WzZ6kEaydH5wmLD.NXwUPF8qEk5s9hSD"
+    },
+    {
+      "_id": "TTsE6xjgji9752RP",
+      "type": "text",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "drawn": false,
+      "flags": {},
+      "img": "icons/svg/d20-black.svg",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1776824925844,
+        "createdTime": null
+      },
+      "description": "<p>During a colony virus outbreak everyone ran out of ammo and your squad retreated to the Marshal’s office where you fought off the infected colonists. You still have the 12-gauge shotgun you used that day. @UUID[Item.F5WlHrEw1FuGJyXr]{Armat Model 37A2 12 Gauge Pump Action}</p>",
+      "name": "",
+      "documentUuid": null,
+      "_key": "!tables.results!1WzZ6kEaydH5wmLD.TTsE6xjgji9752RP"
+    },
+    {
+      "_id": "GwDbAG27nYExkkmv",
+      "type": "text",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "drawn": false,
+      "flags": {},
+      "img": "icons/svg/d20-black.svg",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1776825173251,
+        "createdTime": null
+      },
+      "description": "<p>You threw yourself in front of a colonist and saved them from an insurgent attack. Your M3 armor saved you and you saved the colonist. You gained a Marine Commendation Medal and the @UUID[Item.vD9HtUwctZDgBF6r]{Bodyguard} talent.</p>",
+      "name": "",
+      "documentUuid": null,
+      "_key": "!tables.results!1WzZ6kEaydH5wmLD.GwDbAG27nYExkkmv"
+    },
+    {
+      "_id": "2djShpmqcdc5ZgjX",
+      "type": "text",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "drawn": false,
+      "flags": {},
+      "img": "icons/svg/d20-black.svg",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1776825198334,
+        "createdTime": null
+      },
+      "description": "<p>A headshot knocked you down, the bullet embedding into your helmet. You picked it out and still wear it today—the bullet that should’ve killed you. Gain the bullet as a signature item and the @UUID[Item.bFRpeDr3MgCNGQkR]{Survivor} talent.</p>",
+      "name": "",
+      "documentUuid": null,
+      "_key": "!tables.results!1WzZ6kEaydH5wmLD.2djShpmqcdc5ZgjX"
+    },
+    {
+      "_id": "qgA99nvKzqE3DRW5",
+      "type": "text",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "drawn": false,
+      "flags": {},
+      "img": "icons/svg/d20-black.svg",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1776824925844,
+        "createdTime": null
+      },
+      "description": "Local alien wildlife ate the lieutenant and friendly fire took out the sergeant. You were the eldest of the young marines and they turned to you for their orders. You didn’t let them down. Gain +1 <b>COMMAND</b> skill.",
+      "name": "",
+      "_key": "!tables.results!1WzZ6kEaydH5wmLD.qgA99nvKzqE3DRW5"
+    },
+    {
+      "_id": "wc0CYGDHKFtZ4vHb",
+      "type": "text",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "drawn": false,
+      "flags": {},
+      "img": "icons/svg/d20-black.svg",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1776825163799,
+        "createdTime": null
+      },
+      "description": "<p>The MAU trained for Operation Crossbow, a secret attempt to seize a UPP space station. Gain the @UUID[Item.FgY4nDoLz6gTDN5w]{Zero-G Training}talent. The op never took place or, if it did, your platoon did not participate in it.</p>",
+      "name": "",
+      "documentUuid": null,
+      "_key": "!tables.results!1WzZ6kEaydH5wmLD.wc0CYGDHKFtZ4vHb"
+    },
+    {
+      "_id": "ZXYImoWGcEMJs1VJ",
+      "type": "text",
+      "weight": 1,
+      "range": [
+        7,
+        7
+      ],
+      "drawn": false,
+      "flags": {},
+      "img": "icons/svg/d20-black.svg",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1776825153155,
+        "createdTime": null
+      },
+      "description": "<p>Your training days at Camp Pendleton were hell. A vindictive drill sergeant singled you out for merciless punishments. Gain the @UUID[Item.HbTFhYtgnh8fDSKY]{Tough} talent.</p>",
+      "name": "",
+      "documentUuid": null,
+      "_key": "!tables.results!1WzZ6kEaydH5wmLD.ZXYImoWGcEMJs1VJ"
+    },
+    {
+      "_id": "60q1aimA6uyCDgOH",
+      "type": "text",
+      "weight": 1,
+      "range": [
+        8,
+        8
+      ],
+      "drawn": false,
+      "flags": {},
+      "img": "icons/svg/d20-black.svg",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1776824925844,
+        "createdTime": null
+      },
+      "description": "You risked your life to save your comrades and were awarded the Galactic Cross, the second highest award that the UAAC can bestow. Officers in the battalion give you special treatment which causes tension in your platoon.",
+      "name": "",
+      "_key": "!tables.results!1WzZ6kEaydH5wmLD.60q1aimA6uyCDgOH"
+    },
+    {
+      "_id": "Mad38lUNP5TqO6ra",
+      "type": "text",
+      "weight": 1,
+      "range": [
+        9,
+        9
+      ],
+      "drawn": false,
+      "flags": {},
+      "img": "icons/svg/d20-black.svg",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1776824925844,
+        "createdTime": null
+      },
+      "description": "Manning a checkpoint on a war-torn colony world, you spotted suspicious behavior and shot the suicide bomber dead, saving a dozen lives in the process. Gain +1 <b>OBSERVATION</b> skill.",
+      "name": "",
+      "_key": "!tables.results!1WzZ6kEaydH5wmLD.Mad38lUNP5TqO6ra"
+    },
+    {
+      "_id": "tiUrvRICSJcA5U59",
+      "type": "text",
+      "weight": 1,
+      "range": [
+        10,
+        10
+      ],
+      "drawn": false,
+      "flags": {},
+      "img": "icons/svg/d20-black.svg",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1776825141402,
+        "createdTime": null
+      },
+      "description": "<p>You’ve got a good rapport with the company logistics sergeant and he’s always supplying you with unexpected or unconventional bits of equipment. Gain the @UUID[Item.j5NtyDAj3RdsDX62]{Hidden Stash} talent.</p>",
+      "name": "",
+      "documentUuid": null,
+      "_key": "!tables.results!1WzZ6kEaydH5wmLD.tiUrvRICSJcA5U59"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        11,
+        11
+      ],
+      "_id": "XtXzRylZdpSFfJD9",
+      "name": "",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>A combat synthetic on your team had a critical error mid-mission. You had to deactivate it while it was still trying to complete its orders. <strong>Gained: +1 Comtech or +1 Close Combat</strong></p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "createdTime": 1776824929951,
+        "modifiedTime": 1776825005631,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!1WzZ6kEaydH5wmLD.XtXzRylZdpSFfJD9"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        12,
+        12
+      ],
+      "_id": "6BYKhadkmDKPbbQ6",
+      "name": "",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p><strong>Live Fire Accident</strong> - A training exercise turned deadly when someone made a mistake. You helped contain the situation and kept quiet during the ensuing investigation. <strong>Gained: +1 Medical Aid or +1 Command</strong></p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "createdTime": 1776825247981,
+        "modifiedTime": 1776825312896,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!1WzZ6kEaydH5wmLD.6BYKhadkmDKPbbQ6"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        13,
+        13
+      ],
+      "_id": "X2NfsG67yfWkGOWs",
+      "name": "",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p><strong>Wilderness Evasion</strong> - Cut off from your unit for 72 hours on a hostile world. The local predators taught you to move quietly. <strong>Gained: +1 Survival or +1 Mobility or +1 Damage to animals</strong> (this does not include xenomorphs, abominations, etc., only non-intelligent natural animals)</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "createdTime": 1776825358168,
+        "modifiedTime": 1776825462674,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!1WzZ6kEaydH5wmLD.X2NfsG67yfWkGOWs"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        14,
+        14
+      ],
+      "_id": "J7TIPlCCeL5NXJi6",
+      "name": "",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>MP Guard Duty - You were tasked with guarding a USCMC CID officer during a criminal investigation. Seeing you had a keen eye, they allowed you to assist them in the investigation. Gain the @UUID[Item.oqJy0QyS0kp5YcXe]{Investigator} talent.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "createdTime": 1776825489077,
+        "modifiedTime": 1776825830696,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!1WzZ6kEaydH5wmLD.J7TIPlCCeL5NXJi6"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        15,
+        15
+      ],
+      "_id": "TjA5n25hnPO6HSAh",
+      "name": "",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p><strong>Epidemic Response</strong> - Deployed to colony suffering disease outbreak. The things you saw in the medical tents still haunt you. <strong>Gained: +1 Medical Aid</strong></p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "createdTime": 1776825919843,
+        "modifiedTime": 1776826072731,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!1WzZ6kEaydH5wmLD.TjA5n25hnPO6HSAh"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        16,
+        16
+      ],
+      "_id": "zeOThOdZgylZhHRU",
+      "name": "",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p><strong>Emergency Pilot.</strong> At a hot LZ, the pilot and crew chief of the drop ship were incapacitated. You jumped to the controls and, using all of the skill you garnered from Microsoft Flight Simulator 2177, you were able to pilot the ship to safety. Gain +1 <strong>PILOTING</strong></p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "createdTime": 1776826009652,
+        "modifiedTime": 1776826394556,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!1WzZ6kEaydH5wmLD.zeOThOdZgylZhHRU"
+    }
+  ],
+  "formula": "1d14",
+  "replacement": true,
+  "displayRoll": false,
+  "folder": null,
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": "RollTable.ipwsKughr8tccffr",
+    "coreVersion": "13.351",
+    "systemId": "alienrpg",
+    "systemVersion": "4.0.11",
+    "createdTime": 1773921824557,
+    "modifiedTime": 1776826012856,
+    "lastModifiedBy": null
+  }
+}

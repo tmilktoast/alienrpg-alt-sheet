@@ -1,0 +1,189 @@
+{
+  "_id": "OvVupwwFwz4oSpNu",
+  "_key": "!tables!OvVupwwFwz4oSpNu",
+  "name": "Joining the Marines",
+  "folder": null,
+  "img": "icons/svg/d20-grey.svg",
+  "description": "",
+  "results": [
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "_id": "hCxSrwWJhZRYY6D3",
+      "name": "Military Family",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>Your family has a military history and you felt it was your duty to carry on that tradition; or, your parents pressured you into it and you are filled with resentment.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "createdTime": 1773891450176,
+        "modifiedTime": 1773891483070,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!OvVupwwFwz4oSpNu.hCxSrwWJhZRYY6D3"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "_id": "xd1AA7cTfDZ10NBj",
+      "name": "Love of Country",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>The Americas are the best place not only in the world but on all worlds. It is your duty to bring freedom throughout the systems. But, does your beloved country love you back? What kind of question is that?</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "createdTime": 1773891488098,
+        "modifiedTime": 1773891523752,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!OvVupwwFwz4oSpNu.xd1AA7cTfDZ10NBj"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "_id": "dtfqowdTwHhMYmza",
+      "name": "Self Betterment",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>You felt joining the military would improve you: your body, your mind, your will. You were right in some respects but will the experience leave you a broken and gibbering mess?</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "createdTime": 1773891527283,
+        "modifiedTime": 1773891549676,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!OvVupwwFwz4oSpNu.dtfqowdTwHhMYmza"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "_id": "Mc76iLKMHW877bBI",
+      "name": "Down and Out",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>You're poor and have no prospects. The Corps provides room and board, and you get to shoot a gun. What more could you ask for? Keep asking yourself that after being dropped on another shithole being shot by some kid who thinks he's a freedom fighter.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "createdTime": 1773891556319,
+        "modifiedTime": 1773891577811,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!OvVupwwFwz4oSpNu.Mc76iLKMHW877bBI"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "_id": "fQl4QtkJaMBOt3gW",
+      "name": "Boredom",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>You were bored and had no direction in life. Maybe someone convinced you the military would give you a purpose. Regardless, boredom is a really stupid. reason to get yourself killed.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "createdTime": 1773891585166,
+        "modifiedTime": 1773891599287,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!OvVupwwFwz4oSpNu.fQl4QtkJaMBOt3gW"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "_id": "LWGQNAmMMVOSePlX",
+      "name": "No Choice",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>A magristrate gave you a choice: jail time or join the military. You made a poor life choice and picked the military.</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "createdTime": 1773891601936,
+        "modifiedTime": 1773891621995,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!OvVupwwFwz4oSpNu.LWGQNAmMMVOSePlX"
+    }
+  ],
+  "replacement": true,
+  "displayRoll": true,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.351",
+    "systemId": "alienrpg",
+    "systemVersion": "4.0.11",
+    "createdTime": 1773891445622,
+    "modifiedTime": 1773891625344,
+    "lastModifiedBy": null
+  },
+  "formula": "1d6"
+}

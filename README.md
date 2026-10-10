@@ -86,6 +86,19 @@ KEY ATTRIBUTE: Agility SKILLS: Piloting, Ranged Combat TALENTS: Banter, Overkill
 A career it can't work out either way isn't offered. The creation rules' numbers are the `RULES`
 table at the top of the file, and the steps are the `STEPS` list, which is where further steps go.
 
+## Life path tables
+
+The module ships a compendium pack, **Life Path Tables**, with the roll tables for a Colonial
+Marines life path: Life Path - Origin, Early Life (which draws from the three EL tables), Joining
+the Marines, and the Enlisted and NCO event tables. They are tables only; the character builder
+doesn't use them.
+
+Some results link to documents that aren't in the pack: the Origin table draws from the
+`EV - … SUB-AFFILIATION` and `EV - … HOME` tables, and the event tables link to talents and gear.
+Those links point at world documents by ID, so they only resolve in a world that has them.
+
+The sources are the JSON files in `src/packs/life-path/`, one per table.
+
 ## Local development
 
 Symlink this folder into a Foundry data directory that has the `alienrpg` system installed, then
@@ -96,6 +109,16 @@ ln -s "$PWD" "<foundry data>/Data/modules/alienrpg-alt-sheet"
 ```
 
 Changes to `module.json` need a return to Setup; everything else only needs F5.
+
+The compendium packs in `packs/` are build output and aren't in git. Compile them from
+`src/packs/` once after cloning, and again after editing a source file, with Foundry stopped:
+
+```sh
+npm install
+npm run packs
+```
+
+`build.sh` compiles them into the release zip by itself.
 
 ## How it hooks in
 

@@ -1,0 +1,342 @@
+{
+  "_id": "KgY8RjTMBTGLbYd3",
+  "_key": "!tables!KgY8RjTMBTGLbYd3",
+  "name": "EVENT TABLE B – NCO (BC)",
+  "img": "icons/svg/d20-grey.svg",
+  "description": "<p><span style=\"color:deepskyblue;font-weight:bolder;font-size:large\"><strong>EVENT TABLE B – NCO</strong></span></p>",
+  "results": [
+    {
+      "_id": "NXwUPF8qEk5s9hSD",
+      "type": "text",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false,
+      "flags": {},
+      "img": "icons/svg/d20-black.svg",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "createdTime": null,
+        "modifiedTime": null
+      },
+      "description": "Age didn’t play a part—everyone came to you during the hard times of the campaign. You were a brother, a father and confidante. Gain +1 <b>EMPATHY</b>.",
+      "name": "",
+      "_key": "!tables.results!KgY8RjTMBTGLbYd3.NXwUPF8qEk5s9hSD"
+    },
+    {
+      "_id": "TTsE6xjgji9752RP",
+      "type": "text",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "drawn": false,
+      "flags": {},
+      "img": "icons/svg/d20-black.svg",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1776826792901,
+        "createdTime": null
+      },
+      "description": "<p><strong>Cross-Training Exchange</strong> - Embedded with 3WE forces as part of diplomatic exchange program. Gained perspective on how other militaries operate. <strong>Gained: +1 Manipulation</strong></p>",
+      "name": "",
+      "documentUuid": null,
+      "_key": "!tables.results!KgY8RjTMBTGLbYd3.TTsE6xjgji9752RP"
+    },
+    {
+      "_id": "sPWLmSgTRwjo6OYJ",
+      "type": "text",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "drawn": false,
+      "flags": {},
+      "img": "icons/svg/d20-black.svg",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "modifiedTime": 1776826843805,
+        "createdTime": null
+      },
+      "description": "<p>You spent time training with Force Recon and gained a special ops @UUID[Item.nLAWbpHwm01svvYv]{M4A3 Service Pistol} with custom @UUID[Item.cuXKEZN70XbVjQKU]{Muzzle Suppressor}.</p>",
+      "name": "",
+      "documentUuid": null,
+      "_key": "!tables.results!KgY8RjTMBTGLbYd3.sPWLmSgTRwjo6OYJ"
+    },
+    {
+      "_id": "GwDbAG27nYExkkmv",
+      "type": "text",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "drawn": false,
+      "flags": {},
+      "img": "icons/svg/d20-black.svg",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "createdTime": null,
+        "modifiedTime": null
+      },
+      "description": "In combat you were severely injured and held on to life throughout the night behind enemy lines. Gain +1 <b>STAMINA</b> skill.",
+      "name": "",
+      "_key": "!tables.results!KgY8RjTMBTGLbYd3.GwDbAG27nYExkkmv"
+    },
+    {
+      "_id": "2djShpmqcdc5ZgjX",
+      "type": "text",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "drawn": false,
+      "flags": {},
+      "img": "icons/svg/d20-black.svg",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "createdTime": null,
+        "modifiedTime": null
+      },
+      "description": "In a protracted bug hunt the ammo ran dry. Only determination, bravery and skill with a combat knife and entrenching tool saved your skin. Gain +1 <b>CLOSE COMBAT</b> skill.",
+      "name": "",
+      "_key": "!tables.results!KgY8RjTMBTGLbYd3.2djShpmqcdc5ZgjX"
+    },
+    {
+      "_id": "qgA99nvKzqE3DRW5",
+      "type": "text",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "drawn": false,
+      "flags": {},
+      "img": "icons/svg/d20-black.svg",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "createdTime": null,
+        "modifiedTime": null
+      },
+      "description": "It looked like the hostage rescue had failed but you bargained with the insurgents and secured their release after all. No medal for you, but you gain +1 <b>MANIPULATION</b>.",
+      "name": "",
+      "_key": "!tables.results!KgY8RjTMBTGLbYd3.qgA99nvKzqE3DRW5"
+    },
+    {
+      "_id": "wc0CYGDHKFtZ4vHb",
+      "type": "text",
+      "weight": 1,
+      "range": [
+        7,
+        7
+      ],
+      "drawn": false,
+      "flags": {},
+      "img": "icons/svg/d20-black.svg",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "createdTime": null,
+        "modifiedTime": null
+      },
+      "description": "Your squad was relentlessly hit by booby traps and sniper fire from an invisible and unreachable enemy. Frustration and anger boiled over. Gain the Merciless talent.",
+      "name": "",
+      "_key": "!tables.results!KgY8RjTMBTGLbYd3.wc0CYGDHKFtZ4vHb"
+    },
+    {
+      "_id": "ZXYImoWGcEMJs1VJ",
+      "type": "text",
+      "weight": 1,
+      "range": [
+        8,
+        8
+      ],
+      "drawn": false,
+      "flags": {},
+      "img": "icons/svg/d20-black.svg",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "createdTime": null,
+        "modifiedTime": null
+      },
+      "description": "The guy was screaming and bleeding. The squad panicked, but you took decisive action which saved the marine’s life. Gain +1 <b>MEDICAL AID</b> skill.",
+      "name": "",
+      "_key": "!tables.results!KgY8RjTMBTGLbYd3.ZXYImoWGcEMJs1VJ"
+    },
+    {
+      "_id": "60q1aimA6uyCDgOH",
+      "type": "text",
+      "weight": 1,
+      "range": [
+        9,
+        9
+      ],
+      "drawn": false,
+      "flags": {},
+      "img": "icons/svg/d20-black.svg",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "createdTime": null,
+        "modifiedTime": null
+      },
+      "description": "Your position was compromised, and the squad had to escape across rugged and dangerous terrain whilst under withering fire. Gain +1 <b>MOBILITY</b> skill.",
+      "name": "",
+      "_key": "!tables.results!KgY8RjTMBTGLbYd3.60q1aimA6uyCDgOH"
+    },
+    {
+      "_id": "Mad38lUNP5TqO6ra",
+      "type": "text",
+      "weight": 1,
+      "range": [
+        10,
+        10
+      ],
+      "drawn": false,
+      "flags": {},
+      "img": "icons/svg/d20-black.svg",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "createdTime": null,
+        "modifiedTime": null
+      },
+      "description": "Isolated behind enemy lines in a harsh environment, it looked like the end of the line for the squad. Your ingenuity in securing shelter and food kept your comrades alive during the march back to base. Gain +1 <b>SURVIVAL</b> skill.",
+      "name": "",
+      "_key": "!tables.results!KgY8RjTMBTGLbYd3.Mad38lUNP5TqO6ra"
+    },
+    {
+      "_id": "tiUrvRICSJcA5U59",
+      "type": "text",
+      "weight": 1,
+      "range": [
+        11,
+        11
+      ],
+      "drawn": false,
+      "flags": {},
+      "img": "icons/svg/d20-black.svg",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "lastModifiedBy": null,
+        "createdTime": null,
+        "modifiedTime": null
+      },
+      "description": "The abandoned and damaged vehicle was the only way to escape an imminent attack, but you diagnosed the main problems and got the squad to fix it—fast. Gain +1 <b>HEAVY MACHINERY</b> skill.",
+      "name": "",
+      "_key": "!tables.results!KgY8RjTMBTGLbYd3.tiUrvRICSJcA5U59"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        12,
+        12
+      ],
+      "_id": "6kUc1tifes5SsXpB",
+      "name": "",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p><strong>Hot Zone Insertion</strong> - Rode in the crew compartment during an emergency combat drop when regular seats were full. Pilot talked you through basic controls \"just in case.\" You helped manage systems during evasive maneuvers under AA fire. <strong>Gained: +1 Piloting</strong></p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "alienrpg",
+        "systemVersion": "4.0.11",
+        "createdTime": 1776826729600,
+        "modifiedTime": 1776826756717,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!KgY8RjTMBTGLbYd3.6kUc1tifes5SsXpB"
+    }
+  ],
+  "formula": "1d11",
+  "replacement": true,
+  "displayRoll": false,
+  "folder": null,
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": "RollTable.z4nxz2melTQAHR5E",
+    "coreVersion": "13.351",
+    "systemId": "alienrpg",
+    "systemVersion": "4.0.11",
+    "createdTime": 1773927420023,
+    "modifiedTime": 1776826731652,
+    "lastModifiedBy": null
+  }
+}
