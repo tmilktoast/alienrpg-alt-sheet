@@ -47,6 +47,8 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
   sidebar, title, headings and links restyled to match the other alternate sheets.
 - A journal page's editor window takes the alternate journal look when its journal uses the
   Alternate Journal Sheet.
+- **Readable chat** — a per-player setting, on by default, that restyles chat messages for easier
+  reading while keeping the terminal green for the sender, headings and labels.
 - The pilot's Piloting roll adds the vehicle's manoeuvrability, which the system's sheet leaves out.
 
 ### Fixed

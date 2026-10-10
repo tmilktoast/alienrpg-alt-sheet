@@ -1636,3 +1636,134 @@
   font-size: 15px;
   line-height: 1.55;
 }
+
+/* ---------- Chat ---------- */
+
+/* Chat messages, when the Readable chat setting is on. The terminal green and the system's display
+   typeface stay for the sender, headings and labels; what you read is set plainly on a flat card. */
+
+.alien-alt-chat {
+  --aac-card: #0b110e;
+  --aac-border: #24382b;
+  --aac-green: #8fe85a;
+  --aac-green-dim: #5aa63c;
+  --aac-text: #dfeadf;
+  --aac-muted: #8fa596;
+  --aac-font: "Signika", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+.alien-alt-chat .chat-message,
+.alien-alt-chat .chat-message.whisper,
+.alien-alt-chat .chat-message.blind,
+.alien-alt-chat .chat-message.emote {
+  padding: 6px 10px 8px;
+  font-family: var(--aac-font);
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--aac-text);
+  background: var(--aac-card);
+  border: 1px solid var(--aac-border);
+  border-left: 3px solid var(--aac-green-dim);
+  border-radius: 3px;
+}
+
+/* A whisper or blind roll is marked by its edge, not by dimming what it says. */
+.alien-alt-chat .chat-message:is(.whisper, .blind) {
+  border-left-style: dashed;
+}
+
+.alien-alt-chat .chat-message .message-header {
+  align-items: baseline;
+  margin-bottom: 4px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid var(--aac-border);
+}
+
+.alien-alt-chat .chat-message .message-header .message-sender {
+  font-family: var(--alienfont), monospace;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--aac-green);
+}
+
+.alien-alt-chat .chat-message .message-metadata {
+  font-family: var(--aac-font);
+  font-size: 11px;
+  color: var(--aac-muted);
+}
+
+.alien-alt-chat .chat-message .message-content {
+  font-family: var(--aac-font);
+  font-weight: 400;
+  color: var(--aac-text);
+}
+
+.alien-alt-chat .chat-message .message-content p {
+  margin: 0 0 0.5em;
+}
+
+.alien-alt-chat .chat-message .message-content > :last-child {
+  margin-bottom: 0;
+}
+
+.alien-alt-chat .chat-message :is(h2, h3) {
+  margin: 2px 0 4px;
+  font-family: var(--alienfont), monospace;
+  font-size: 15px;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  color: var(--aac-green);
+  text-shadow: none;
+}
+
+.alien-alt-chat .chat-message h3 {
+  font-size: 14px;
+}
+
+.alien-alt-chat .chat-message .message-content h4 {
+  margin: 0 0 4px;
+  font-family: var(--aac-font);
+  font-size: 12.5px;
+  color: var(--aac-muted);
+}
+
+.alien-alt-chat .chat-message :is(strong, b) {
+  font-weight: 600;
+  color: #fff;
+}
+
+.alien-alt-chat .chat-message :is(.flavor-text, .table-draw .table-description, .table-draw .table-results .table-result, .critchat) {
+  color: var(--aac-text);
+}
+
+/* The system's own colour classes: labels in terminal green, values in white. */
+.alien-alt-chat .chat-message .alienchatlightgreen {
+  color: var(--aac-green);
+}
+
+.alien-alt-chat .chat-message .alienchatwhite {
+  color: var(--aac-green);
+}
+
+.alien-alt-chat .chat-message .chatBG {
+  background: none;
+  color: var(--aac-text);
+}
+
+.alien-alt-chat .chat-message :is(a.inline-roll, a.content-link) {
+  padding: 0 5px;
+  color: var(--aac-text);
+  background: #131d17;
+  border: 1px solid var(--aac-green-dim);
+  border-radius: 3px;
+}
+
+.alien-alt-chat .chat-message :is(a.inline-roll, a.content-link) > i {
+  color: var(--aac-green);
+}
+
+.alien-alt-chat .chat-message :is(a.inline-roll, a.content-link):hover {
+  border-color: var(--aac-green);
+  text-shadow: none;
+}

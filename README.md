@@ -47,6 +47,10 @@ system's sheet for `character`, `synthetic`, `creature`, `vehicles`, `spacecraft
   links are restyled, and what a page's own layout sets is left alone. A page's editor window takes
   the same look when its journal uses this sheet.
 
+- **Readable chat** — chat messages on a flat dark card in a plainer typeface, with the system's
+  terminal green and display font kept for the sender, headings and labels. Each player can turn it
+  off under Configure Settings → Alien RPG Alternate Sheet.
+
 The sheet subclasses the system's own sheet class and calls the system's roll methods, so dice,
 pushes, panic and supply rolls behave exactly as they do on the original sheet.
 

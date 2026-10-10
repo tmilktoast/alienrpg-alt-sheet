@@ -201,6 +201,8 @@ const ACTIONS_JOURNAL =
 
 /** The class the module's stylesheet restyles Foundry's journal markup under. */
 const JOURNAL_CLASS = "alien-alt-journal";
+/** The class on <body> that turns on the module's restyle of chat messages. */
+const CHAT_CLASS = "alien-alt-chat";
 
 /** Classes the system's stylesheet hangs its CRT look on; dropped so it doesn't restyle this sheet. */
 const SYSTEM_CLASSES = ["alienrpg", "ALIENRPG"];
@@ -1857,7 +1859,21 @@ function formatCash(text) {
 }
 
 Hooks.once("init", () => {
-  if (game.system.id === SYSTEM_ID) foundry.applications.handlebars.loadTemplates(PARTIALS);
+  if (game.system.id !== SYSTEM_ID) return;
+  foundry.applications.handlebars.loadTemplates(PARTIALS);
+
+  // Chat is shared by everyone at the table, so each player chooses for themselves.
+  const applyChat = (on) => document.body.classList.toggle(CHAT_CLASS, on);
+  game.settings.register(MODULE_ID, "readableChat", {
+    name: "ALTSHEET.Settings.ReadableChat.Name",
+    hint: "ALTSHEET.Settings.ReadableChat.Hint",
+    scope: "client",
+    config: true,
+    type: Boolean,
+    default: true,
+    onChange: applyChat,
+  });
+  applyChat(game.settings.get(MODULE_ID, "readableChat"));
 });
 
 // The system's sheet classes only show up in CONFIG once Foundry has applied the registrations

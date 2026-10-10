@@ -22,6 +22,12 @@
       "shipDamage": "Alternate Ship Damage Sheet",
       "initiative": "Alternate Colony Initiative Sheet"
     },
+    "Settings": {
+      "ReadableChat": {
+        "Name": "Readable chat",
+        "Hint": "Show chat messages in a plainer typeface on a flat dark card, keeping the terminal green for headings and labels. Turn off for the system's own chat look."
+      }
+    },
     "Tabs": {
       "Play": "Play",
       "Gear": "Gear",
