@@ -1,10 +1,13 @@
 <section class="tab aas-tab aas-item-details {{tab.cssClass}}" data-group="primary" data-tab="details">
+  {{#if details.fields.length}}
   <section class="aas-panel">
-    <div class="aas-fields">
+    <div class="aas-fields {{#if details.text}}aas-fields-text{{/if}}">
       {{#each details.fields}}
-      <label class="aas-labelled">
+      <label class="aas-labelled {{#if (eq kind "textarea")}}aas-field-wide{{/if}}">
         <span>{{label}}</span>
-        {{#if (eq kind "select")}}
+        {{#if (eq kind "textarea")}}
+        <textarea name="{{name}}" rows="2">{{value}}</textarea>
+        {{else if (eq kind "select")}}
         <select name="{{name}}" data-dtype="Number">
           {{#each options}}
           <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
@@ -33,6 +36,7 @@
     </div>
     {{/if}}
   </section>
+  {{/if}}
 
   {{#if details.computer.length}}
   <section class="aas-panel">
@@ -63,10 +67,10 @@
       <h2>{{localize 'ALIENRPG.Description'}}</h2>
     </header>
     {{#if editable}}
-    <prose-mirror name="system.attributes.comment.value" data-document-uuid="{{item.uuid}}"
-      value="{{system.attributes.comment.value}}" collaborate="true" toggled="true">{{{enrichedComment}}}</prose-mirror>
+    <prose-mirror name="{{description.name}}" data-document-uuid="{{item.uuid}}" value="{{description.value}}"
+      collaborate="true" toggled="true">{{{description.html}}}</prose-mirror>
     {{else}}
-    <div class="aas-prose">{{{enrichedComment}}}</div>
+    <div class="aas-prose">{{{description.html}}}</div>
     {{/if}}
   </section>
 </section>

@@ -6,7 +6,9 @@
       "creature": "Alternate Creature Sheet",
       "vehicles": "Alternate Vehicle Sheet",
       "item": "Alternate Item Sheet",
-      "journal": "Alternate Journal Sheet"
+      "journal": "Alternate Journal Sheet",
+      "career": "Alternate Career Sheet",
+      "system": "Alternate System Sheet"
     },
     "Tabs": {
       "Play": "Play",

@@ -27,6 +27,9 @@ system's sheet for `character`, `synthetic`, `creature` and `vehicles` actors, s
 - **Gear sheets** — one sheet for weapons, armor and items: the fields that apply to that kind of
   gear on a Details tab with its description, a Notes tab, and a Modifiers tab for the bonuses it
   gives whoever has it equipped. A computer's own dice are roll buttons.
+- **Career and system sheets** — the same item sheet for Career/Specialty items (the description
+  on its own) and Planet/System items (the system's details as labelled fields, then its
+  description).
 - **Journal sheet** — Foundry's journal sheet in the same look: the sidebar, title, headings and
   links are restyled, and what a page's own layout sets is left alone.
 

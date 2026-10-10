@@ -52,6 +52,10 @@ const ITEM_TABS = {
 
 /** The item types that are gear, which the alternate item sheet covers. */
 const GEAR_TYPES = ["weapon", "armor", "item"];
+/** Other item types with an alternate sheet of their own name, keyed by its ALTSHEET.SheetLabel. */
+const LORE_TYPES = { career: "specialty", system: "planet-system" };
+/** Item types whose sheet is the Details tab alone; the rest also get Notes and Modifiers. */
+const SINGLE_TAB_TYPES = Object.values(LORE_TYPES);
 /** Which of the system's numbered item types (`item_types_list`) use each optional field. */
 const ITEM_FIELDS = {
   power: ["3", "4", "8", "10"],
@@ -539,21 +543,45 @@ async function prepareCreatureTable(actor, name, results = false) {
 }
 
 /**
- * The fields of a weapon, armor or item, as the Details tab lays them out.
- * @returns {{types: object[]|null, fields: object[], checks: object[], computer: object[]}}
+ * The fields of an item, as the Details tab lays them out, and where its description is kept.
+ * @returns {{types: object[]|null, fields: object[], checks: object[], computer: object[], description: string,
+ *   text?: boolean}}  `text` when the fields hold phrases and want wider columns
  */
 export function prepareItemDetails(item, { evolved }) {
   const cfg = CONFIG.ALIENRPG;
   const { attributes: a, header, modifiers } = item.system;
-  const type = header.type?.value;
+  const type = header?.type?.value;
   const options = (list, selected) =>
     Object.entries(list).map(([value, { label }]) => ({ value, label: loc(label), selected: value === String(selected) }));
   const fields = [];
   const field = (label, key, kind = "number", extra = {}) =>
     fields.push({ label: loc(label), name: `system.attributes.${key}.value`, value: a[key].value, kind, ...extra });
-  const details = { types: null, fields, checks: [], computer: [] };
+  const details = { types: null, fields, checks: [], computer: [], description: "system.attributes.comment.value" };
 
   switch (item.type) {
+    // A career or specialty is its description and nothing else.
+    case "specialty":
+      details.description = "system.general.comment.value";
+      break;
+    case "planet-system": {
+      const text = (group, key, label, kind = "text") =>
+        fields.push({ label: loc(label), name: `system.${group}.${key}.value`, value: item.system[group][key].value, kind });
+      text("header", "commonName", "ALIENRPG.CommonName");
+      text("header", "system", "ALIENRPG.System");
+      text("header", "sector", "ALIENRPG.Sector");
+      text("header", "location", "ALIENRPG.Location");
+      text("details", "affiliation", "ALIENRPG.Affiliation");
+      text("details", "classification", "ALIENRPG.Classification");
+      text("details", "population", "ALIENRPG.population");
+      text("details", "meanTemperature", "ALIENRPG.meanTemperature");
+      text("details", "climate", "ALIENRPG.climate", "textarea");
+      text("details", "terrain", "ALIENRPG.terrain", "textarea");
+      text("details", "colonies", "ALIENRPG.colonies", "textarea");
+      text("details", "keyResources", "ALIENRPG.keyResources", "textarea");
+      details.description = "system.misc.description.value";
+      details.text = true;
+      break;
+    }
     case "weapon": {
       const ranged = type === WEAPON_RANGED;
       const ranges = evolved ? cfg.evolved_weapon_range_list : cfg.weapon_range_list;
@@ -1132,8 +1160,8 @@ function makeVehicleSheet(Base) {
 }
 
 /**
- * The alternate sheet for gear: weapons, armor and items. One class covers all three, as the
- * system's own item sheet does.
+ * The alternate sheet for items. One class lays out every item type it is registered for, as the
+ * system's own item sheet does: gear (weapons, armor and items), careers and systems.
  * @param {typeof foundry.applications.sheets.ItemSheetV2} Base  The system's item sheet
  */
 function makeItemSheet(Base) {
@@ -1164,6 +1192,8 @@ function makeItemSheet(Base) {
     _configureRenderOptions(options) {
       Core._configureRenderOptions.call(this, options);
       if (this.document.limited) options.parts = ["header"];
+      // A lone tab needs no tab bar.
+      else if (SINGLE_TAB_TYPES.includes(this.document.type)) options.parts = ["header", "details"];
     }
 
     _getTabs(parts) {
@@ -1185,11 +1215,15 @@ function makeItemSheet(Base) {
     async _prepareContext(options) {
       const context = await super._prepareContext(options);
       const item = this.item;
+      const details = prepareItemDetails(item, { evolved: context.isEvolved });
+      const description = foundry.utils.getProperty(item, details.description);
       return Object.assign(context, {
-        details: prepareItemDetails(item, { evolved: context.isEvolved }),
+        details,
+        description: { name: details.description, value: description, html: await enrich(item, description) },
         modifierGroups: prepareItemModifiers(item),
         typeLabel: loc(`TYPES.Item.${item.type}`),
-        enrichedComment: await enrich(item, item.system.attributes.comment.value),
+        // The system sets a career's and a system's image itself each time their sheet draws.
+        imageEditable: context.editable && !SINGLE_TAB_TYPES.includes(item.type),
         enrichedNotes: await enrich(item, item.system.notes),
       });
     }
@@ -1262,11 +1296,22 @@ Hooks.once("ready", () => {
   // The system uses one sheet class for every item type; so does this, for the gear types.
   const ItemBase = Object.values(CONFIG.Item.sheetClasses[GEAR_TYPES[0]] ?? {}).find((s) => s.id.startsWith(`${SYSTEM_ID}.`))?.cls;
   if (ItemBase) {
-    foundry.applications.apps.DocumentSheetConfig.registerSheet(Item, MODULE_ID, makeItemSheet(ItemBase), {
+    const AltItemSheet = makeItemSheet(ItemBase);
+    foundry.applications.apps.DocumentSheetConfig.registerSheet(Item, MODULE_ID, AltItemSheet, {
       types: GEAR_TYPES,
       makeDefault: false,
       label: "ALTSHEET.SheetLabel.item",
     });
+    // Sheets are registered by class name, so each differently named sheet needs its own class.
+    for (const [key, type] of Object.entries(LORE_TYPES)) {
+      const Sheet = class extends AltItemSheet {};
+      Object.defineProperty(Sheet, "name", { value: `Alt${key.capitalize()}Sheet` });
+      foundry.applications.apps.DocumentSheetConfig.registerSheet(Item, MODULE_ID, Sheet, {
+        types: [type],
+        makeDefault: false,
+        label: `ALTSHEET.SheetLabel.${key}`,
+      });
+    }
   } else console.warn(`${MODULE_ID} | No ${SYSTEM_ID} item sheet found; skipping.`);
 
   const JournalBase = foundry.applications.sheets.journal.JournalEntrySheet;

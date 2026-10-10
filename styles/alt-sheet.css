@@ -1236,6 +1236,32 @@
   gap: 8px 10px;
 }
 
+/* Fields that hold a phrase, not a number. */
+.alien-alt-sheet .aas-fields-text {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.alien-alt-sheet .aas-fields .aas-labelled > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.alien-alt-sheet .aas-field-wide {
+  grid-column: 1 / -1;
+}
+
+/* The rulebooks' descriptions are tables sized in pixels for the system's sheet; let them fit this one. */
+.alien-alt-sheet.aas-item-sheet :is(.editor-content, .aas-prose) table {
+  width: 100% !important;
+  height: auto !important;
+}
+
+.alien-alt-sheet.aas-item-sheet :is(.editor-content, .aas-prose) :is(td, th) {
+  width: auto !important;
+  height: auto !important;
+}
+
 .alien-alt-sheet .aas-panel-grow {
   flex: 1 1 auto;
 }
