@@ -1639,7 +1639,8 @@
 
 /* ---------- Chat ---------- */
 
-/* Chat messages, when the Readable chat setting is on. The terminal green and the system's display
+/* Chat messages, when the Readable chat setting is on. Sizes are relative to the size Foundry and
+   the system already give chat, so the player's interface scale still applies. The terminal green and the system's display
    typeface stay for the sender, headings and labels; what you read is set plainly on a flat card. */
 
 .alien-alt-chat {
@@ -1658,7 +1659,6 @@
 .alien-alt-chat .chat-message.emote {
   padding: 6px 10px 8px;
   font-family: var(--aac-font);
-  font-size: 14.5px;
   line-height: 1.5;
   color: var(--aac-text);
   background: var(--aac-card);
@@ -1681,7 +1681,7 @@
 
 .alien-alt-chat .chat-message .message-header .message-sender {
   font-family: var(--alienfont), monospace;
-  font-size: 12px;
+  font-size: 0.82em;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--aac-green);
@@ -1689,7 +1689,7 @@
 
 .alien-alt-chat .chat-message .message-metadata {
   font-family: var(--aac-font);
-  font-size: 11px;
+  font-size: 0.75em;
   color: var(--aac-muted);
 }
 
@@ -1710,7 +1710,7 @@
 .alien-alt-chat .chat-message :is(h2, h3) {
   margin: 2px 0 4px;
   font-family: var(--alienfont), monospace;
-  font-size: 15px;
+  font-size: 1.1em;
   line-height: 1.3;
   letter-spacing: 0.02em;
   color: var(--aac-green);
@@ -1718,13 +1718,13 @@
 }
 
 .alien-alt-chat .chat-message h3 {
-  font-size: 14px;
+  font-size: 1em;
 }
 
 .alien-alt-chat .chat-message .message-content h4 {
   margin: 0 0 4px;
   font-family: var(--aac-font);
-  font-size: 12.5px;
+  font-size: 0.88em;
   color: var(--aac-muted);
 }
 
