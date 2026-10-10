@@ -13,7 +13,8 @@
       "territory": "Alternate Territory Sheet",
       "colony": "Alternate Colony Sheet",
       "planet": "Alternate Planet Sheet",
-      "talent": "Alternate Talent Sheet"
+      "talent": "Alternate Talent Sheet",
+      "module": "Alternate Ship Module Sheet"
     },
     "Tabs": {
       "Play": "Play",

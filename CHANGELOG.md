@@ -30,6 +30,8 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
   `planet-system` (Planet/System) items, built on the gear sheet.
 - **Talent sheet** — an alternate sheet for `talent` items: the career it belongs to, its
   description and notes.
+- **Ship module sheet** — an alternate sheet for `spacecraftmods` items: size class, quantity,
+  capacity, cost, description and notes.
 - **Journal sheet** — an alternate sheet for journal entries: Foundry's journal sheet with the
   sidebar, title, headings and links restyled to match the other alternate sheets.
 - The pilot's Piloting roll adds the vehicle's manoeuvrability, which the system's sheet leaves out.

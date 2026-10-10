@@ -120,9 +120,14 @@ const ITEM_TABS = {
 /** The item types that are gear, which the alternate item sheet covers. */
 const GEAR_TYPES = ["weapon", "armor", "item"];
 /** Other item types with an alternate sheet of their own name, keyed by its ALTSHEET.SheetLabel. */
-const NAMED_ITEM_TYPES = { career: "specialty", system: "planet-system", talent: "talent" };
+const NAMED_ITEM_TYPES = {
+  career: "specialty",
+  system: "planet-system",
+  talent: "talent",
+  module: "spacecraftmods",
+};
 /** The tabs after Details that each item type has; a type not listed has Notes and Modifiers. */
-const ITEM_EXTRA_TABS = { specialty: [], "planet-system": [], talent: ["notes"] };
+const ITEM_EXTRA_TABS = { specialty: [], "planet-system": [], talent: ["notes"], spacecraftmods: ["notes"] };
 /** Item types whose image the system sets itself each time their sheet draws. */
 const ITEM_FIXED_IMAGE = ["specialty", "planet-system", "talent"];
 /** Which of the system's numbered item types (`item_types_list`) use each optional field. */
@@ -776,6 +781,20 @@ export function prepareItemDetails(item, { evolved }) {
     case "talent":
       typed("system.general.career.value", cfg.career_list, item.system.general.career.value);
       details.description = "system.general.comment.value";
+      break;
+    case "spacecraftmods":
+      // A module's size class, or that it is an upgrade; the system stores the label itself.
+      details.types = {
+        name: "system.attributes.size.value",
+        options: Object.values(cfg.ship_attributes_list).map(({ key, label }) => ({
+          value: key,
+          label: loc(label),
+          selected: key === a.size.value,
+        })),
+      };
+      field("ALIENRPG.QuantityLabel", "quantity");
+      field("ALIENRPG.CapacityBarLabel", "capacity", "text");
+      field("ALIENRPG.Cost", "cost", "cash");
       break;
     // A career or specialty is its description and nothing else.
     case "specialty":
