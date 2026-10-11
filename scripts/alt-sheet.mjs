@@ -496,6 +496,51 @@ export function nameWithNickname(name, nickname) {
   return [first, `\u201c${nickname}\u201d`, ...rest].join(" ");
 }
 
+/** The Colonial Marines' ranks, in lower case, and the abbreviation each goes by. */
+const RANK_ABBREVIATIONS = {
+  private: "PVT",
+  "private first class": "PFC",
+  "lance corporal": "LCPL",
+  corporal: "CPL",
+  sergeant: "SGT",
+  "staff sergeant": "SSGT",
+  "gunnery sergeant": "GYSGT",
+  "master sergeant": "MSGT",
+  "first sergeant": "1STSGT",
+  "master gunnery sergeant": "MGYSGT",
+  "sergeant major": "SGTMAJ",
+  "warrant officer": "WO",
+  "chief warrant officer": "CWO",
+  "second lieutenant": "2NDLT",
+  "first lieutenant": "1STLT",
+  lieutenant: "LT",
+  captain: "CAPT",
+  major: "MAJ",
+  "lieutenant colonel": "LTCOL",
+  colonel: "COL",
+  "brigadier general": "BGEN",
+  "major general": "MAJGEN",
+  "lieutenant general": "LTGEN",
+  general: "GEN",
+};
+
+/**
+ * A rank as it is written before a name: its abbreviation if it is one of the Marines', and
+ * otherwise as it was typed, which may be an abbreviation already or a rank of some other service.
+ */
+export function rankAbbreviation(rank) {
+  const key = rank.trim().toLowerCase().replace(/\./g, "").replace(/\s+/g, " ");
+  return RANK_ABBREVIATIONS[key] ?? rank.trim();
+}
+
+/** A character's name as it is shown when it isn't being edited: PVT Kalah "Dagger" Hardnick. */
+export function displayName(actor) {
+  const rank = actor.getFlag(MODULE_ID, "rank")?.trim();
+  const nickname = actor.getFlag(MODULE_ID, "nickname")?.trim();
+  const name = nickname ? nameWithNickname(actor.name, nickname) : actor.name;
+  return rank ? `${rankAbbreviation(rank)} ${name}` : name;
+}
+
 /** The names of a character's careers: their Career items, and the system's older career field. */
 function careerNames(actor) {
   const { career } = actor.system.general;
@@ -520,6 +565,7 @@ function prepareBio(actor) {
     career: legacy ? loc(legacy.label) : "",
     // The system has no fields for a rank or a life path, so they are kept on the module's own flags.
     rank: actor.getFlag(MODULE_ID, "rank") ?? "",
+    displayName: displayName(actor),
     // A marine's fields: on anyone else's sheet only the ones already filled in are shown.
     marine: isMarine(actor),
     // What kind of character this is: the system knows them all as characters.

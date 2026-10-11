@@ -10,7 +10,7 @@
     {{#if editMode}}
     <input class="aas-name" type="text" name="name" value="{{actor.name}}" placeholder="{{localize 'ALIENRPG.Name'}}">
     {{else}}
-    <h1 class="aas-name">{{actor.name}}</h1>
+    <h1 class="aas-name" data-tooltip="{{bio.displayName}}">{{bio.displayName}}</h1>
     {{/if}}
     <div class="aas-career">
       <span class="aas-career-label">{{localize 'ALIENRPG.Career'}}</span>

@@ -20,7 +20,7 @@
         "type": "system",
         "compatibility": {
           "minimum": "4.0.0",
-          "verified": "4.1.17"
+          "verified": "4.1.18"
         }
       }
     ]
