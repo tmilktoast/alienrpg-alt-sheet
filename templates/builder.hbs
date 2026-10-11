@@ -17,14 +17,14 @@
 </div>
 {{/inline}}
 
-{{!-- One answer to a simple question: the creation method, or a life path's yes or no. --}}
+{{!-- One answer to a simple question: the creation method, or one of a life path's. --}}
 {{#*inline "answer"}}
 <button type="button" class="aas-builder-choice {{#if selected}}active{{/if}}" data-action="pick"
   data-choice="{{choice}}" data-value="{{id}}" aria-pressed="{{#if selected}}true{{else}}false{{/if}}">
   <i class="{{icon}}" inert></i>
   <span class="aas-builder-choice-body">
     <b>{{label}}</b>
-    <span>{{hint}}</span>
+    {{#if hint}}<span>{{hint}}</span>{{/if}}
   </span>
 </button>
 {{/inline}}
@@ -62,6 +62,16 @@
         {{/each}}
       </div>
     </section>
+    {{#if ranks}}
+    <section class="aas-panel">
+      <header class="aas-panel-head"><h2>{{localize 'ALTSHEET.Builder.Commander.RankQuestion'}}</h2></header>
+      <div class="aas-builder-choices">
+        {{#each ranks}}
+        {{> answer choice="rank"}}
+        {{/each}}
+      </div>
+    </section>
+    {{/if}}
     {{/if}}
 
     {{#if (eq step "career")}}

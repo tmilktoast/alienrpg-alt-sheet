@@ -30,7 +30,7 @@
     },
     "Builder": {
       "Open": "Builder",
-      "OpenHint": "Create this character step by step, by the book or with a life path: career, attributes, skills and a talent.",
+      "OpenHint": "Create this character step by step, by the book or with the Colonial Marine life path: career, attributes, skills and a talent.",
       "Title": "Character Builder: {name}",
       "StepsLabel": "Steps",
       "Steps": {
@@ -49,8 +49,8 @@
           "Hint": "Pick a career, spend your points on attributes and skills, and choose a talent."
         },
         "lifepath": {
-          "Label": "Life path",
-          "Hint": "Answer questions about your character's history first, then build as the book says."
+          "Label": "Colonial Marine Life Path",
+          "Hint": "For a Colonial Marines campaign. Answer questions about your marine's rank and history first, then build as the book says."
         }
       },
       "Commander": {
@@ -62,8 +62,9 @@
         },
         "no": {
           "Label": "No",
-          "Hint": "You follow the commander's orders. Your rank is left as it is."
-        }
+          "Hint": "You follow the commander's orders. Choose your rank below."
+        },
+        "RankQuestion": "What is your rank?"
       },
       "CareerHint": "Your career sets your key attribute, your key skills and the talents you can start with.",
       "NoCareers": "No careers found. Import the rulebook's Career items into the world's Items sidebar.",

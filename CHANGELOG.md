@@ -8,8 +8,9 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
 ### Added
 
 - **Builder creation methods** — the character builder now starts by asking how to create the
-  character. By the book is the builder as it was. Life path adds its own questions first; so far
-  there is one, whether you are the unit commander, which sets your rank to Corporal.
+  character. By the book is the builder as it was. Colonial Marine Life Path, for a Colonial
+  Marines campaign, adds its own questions first; so far there is one, whether you are the unit
+  commander. The commander is a Corporal; anyone else picks Private or Private First Class.
 - **Rank** — a Rank field on the character sheet's Bio tab.
 - **Life Path Tables** — a compendium pack of fourteen roll tables for a Colonial Marines life
   path: Life Path - Origin and its six sub-affiliation and home tables, Early Life and its three EL

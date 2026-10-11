@@ -32,18 +32,20 @@ const CORE_CAREERS = {
   scientist: ["wit", ["observation", "survival", "comtech"], ["Analysis", "Inquisitive", "Xenomorphology"]],
 };
 
-/** The rank a life path gives the unit's commander. */
+/** The ranks the Colonial Marine life path gives: one for the unit's commander, a choice for the rest. */
 const COMMANDER_RANK = "Corporal";
+const ENLISTED_RANKS = ["Private", "Private First Class"];
 
 /**
  * Every step the builder knows, in order. Each says whether what has been chosen so far completes
  * it, and may name the one creation method it belongs to: "book" spends the rulebook's points and
- * nothing more, "lifepath" asks its own questions as well. A new life path question is another
- * entry here and another block in the template.
+ * nothing more, "lifepath" (the Colonial Marine life path) asks its own questions as well. A new
+ * life path question is another entry here and another block in the template.
  */
 const STEPS = [
   { id: "method", done: (state) => !!state.method },
-  { id: "commander", method: "lifepath", done: (state) => !!state.commander },
+  // The commander's rank is fixed; anyone else has one to pick.
+  { id: "commander", method: "lifepath", done: (state) => state.commander === "yes" || (state.commander === "no" && !!state.rank) },
   { id: "career", done: (state) => !!state.career },
   { id: "attributes", done: (state) => spent(state.attributes) === RULES.attributePoints },
   { id: "skills", done: (state) => spent(state.skills) === RULES.skillPoints },
@@ -114,7 +116,8 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 /**
  * Walks a player through creating a character: career, attributes, skills and a talent, with a
- * life path's questions first for those who choose one, then writes the result to the actor in one go. Nothing on the actor changes until Apply.
+ * life path's questions first for those who choose one, then writes the result to the actor in one
+ * go. Nothing on the actor changes until Apply.
  */
 export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) {
   static DEFAULT_OPTIONS = {
@@ -148,11 +151,13 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     this.step = STEPS[0].id;
     /**
      * What has been chosen so far. The method is "book" or "lifepath"; commander is "yes" or "no";
-     * a career is the id of its Career item; a talent is its name.
+     * rank is the one a marine who isn't the commander picked; a career is the id of its Career
+     * item; a talent is its name.
      */
     this.choices = {
       method: null,
       commander: null,
+      rank: null,
       career: null,
       attributes: Object.fromEntries(ATTRIBUTES.map((key) => [key, RULES.attributeMin])),
       skills: Object.fromEntries(Object.keys(CONFIG.ALIENRPG.skills).map((key) => [key, 0])),
@@ -282,6 +287,13 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
         hint: fmt(`ALTSHEET.Builder.Commander.${id}.Hint`, { rank: COMMANDER_RANK }),
         selected: state.commander === id,
       })),
+      // Only a marine who isn't the commander picks a rank.
+      ranks: state.commander === "no" && ENLISTED_RANKS.map((rank) => ({
+        id: rank,
+        icon: "fa-solid fa-angle-up",
+        label: rank,
+        selected: state.rank === rank,
+      })),
       groups,
       career: career && {
         ...career,
@@ -330,8 +342,9 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
 
   /** The rank the choices so far give the character, or null if they leave it alone. */
   get #rank() {
-    const { method, commander } = this.choices;
-    return method === "lifepath" && commander === "yes" ? COMMANDER_RANK : null;
+    const { method, commander, rank } = this.choices;
+    if (method !== "lifepath") return null;
+    return commander === "yes" ? COMMANDER_RANK : commander === "no" ? rank : null;
   }
 
   static #onGoTo(event, target) {
@@ -358,10 +371,10 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     return this.render();
   }
 
-  /** Answer one of the simple questions: the creation method, or a life path's yes or no. */
+  /** Answer one of the simple questions: the creation method, or one of a life path's. */
   static #onPick(event, target) {
     const { choice, value } = target.dataset;
-    if (!["method", "commander"].includes(choice)) return;
+    if (!["method", "commander", "rank"].includes(choice)) return;
     this.choices[choice] = value;
     return this.render();
   }
