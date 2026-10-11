@@ -444,6 +444,13 @@
       </div>
       {{/if}}
     </section>
+    {{#if gear.nco.length}}
+    <section class="aas-panel">
+      <header class="aas-panel-head"><h2>{{localize 'ALTSHEET.Builder.Gear.Nco'}}</h2></header>
+      <p class="aas-hint">{{localize 'ALTSHEET.Builder.Gear.NcoHint'}}</p>
+      {{> gearList gear=gear.nco}}
+    </section>
+    {{/if}}
     {{/if}}
 
     {{#if (eq step "review")}}

@@ -122,6 +122,8 @@
         "ListB": "Bonus gear: List B (choose one)",
         "Mos": "{career} gear",
         "MosChoice": "Choose one",
+        "Nco": "NCO gear",
+        "NcoHint": "As the unit commander, you get this as well as your MOS gear. You don't get a second of anything your MOS already gave you.",
         "NoMos": "This MOS has no gear of its own."
       },
       "Agenda": {

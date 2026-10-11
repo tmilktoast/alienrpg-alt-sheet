@@ -63,7 +63,8 @@ const FIELD_EVENT_TABLES = [
 ];
 /**
  * The gear a marine on the life path starts with, by the name of each Gear item in the world: all
- * of the basic gear, one pick from each bonus list, and all of their MOS's. A number is how many;
+ * of the basic gear, one pick from each bonus list, all of their MOS's, and an NCO's on top for the
+ * unit commander, who doesn't get a second of anything their MOS already gave. A number is how many;
  * an inner list in an MOS's gear is a choice of one. Gear with no item in the world is added as a
  * plain item of that name.
  */
@@ -127,6 +128,7 @@ const MARINE_GEAR = {
     ],
     Rifleman: ["Armat M41A Pulse Rifle", "M314 Motion Tracker"],
   },
+  nco: ["Armat M41A Pulse Rifle", "Binoculars"],
 };
 /** The Officer talents a unit commander, as an NCO, may start with one of instead of their MOS's. */
 const OFFICER_TALENTS = ["Field Commander", "Frontline Leader", "Pull Rank"];
@@ -372,6 +374,9 @@ function gearEntry(entry) {
 /** The gear a marine's MOS gives them, as its entries in the gear lists. */
 const mosGear = (state) => MARINE_GEAR.mos[game.items.get(state.career)?.name.trim()] ?? [];
 
+/** The gear an NCO gets besides their MOS's: only the unit commander is one. */
+const ncoGear = (state) => (state.commander === "yes" ? MARINE_GEAR.nco : []);
+
 /** The names an MOS's gear leaves the marine to pick one of, or null if it leaves no choice. */
 const mosGearChoice = (state) => mosGear(state).find((entry) => entry.oneOf)?.oneOf ?? null;
 
@@ -392,6 +397,9 @@ function startingGear(state) {
     if (!held) gear.push(entry);
     // Armor isn't counted, so a second suit of it is nothing more.
     else if (entry.item?.type !== "armor") Object.assign(held, gearEntry([held.name, held.quantity + entry.quantity]));
+  }
+  for (const entry of ncoGear(state).map(gearEntry)) {
+    if (!gear.some((other) => sameName(other.name, entry.name))) gear.push(entry);
   }
   return gear;
 }
@@ -788,6 +796,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
         })),
         mos: mosGear(state).filter((entry) => !entry.oneOf).map(gearEntry),
         mosTitle: fmt("ALTSHEET.Builder.Gear.Mos", { career: career?.name ?? "" }),
+        nco: ncoGear(state).map(gearEntry),
         mosOptions: (mosGearChoice(state) ?? []).map(gearEntry).map((entry) => ({ ...entry, id: entry.name, selected: state.gearMos === entry.name })),
       },
       agenda: {
