@@ -404,16 +404,23 @@ async function rollWombEarlyLife() {
   for (const result of draw?.results ?? []) {
     parts.push({ label: loc("ALTSHEET.Builder.Womb.ExperiencedLabel"), text: plain(result.description) });
   }
-  return { ...earlyLifeFrom(parts), womb: true, missing: !draw };
+  // Their story is told in their own words, as the table's results are written.
+  const experienced = parts.slice(2).map((part) => `${withoutSkill(part.text)}.`);
+  const story = [loc("ALTSHEET.Builder.Womb.Story"), ...experienced].join(" ");
+  return { ...earlyLifeFrom(parts), story, womb: true, missing: !draw };
+}
+
+/** A life path result's text without the skill it gives on the end, unless that is worded into a sentence. */
+function withoutSkill(text) {
+  const before = text.match(/^([^+]*?)\s*\+1 [A-Z ]+?(?: or \+1 [A-Z ]+?)*$/)?.[1] ?? text;
+  return before.replace(/[\s.]+$/, "");
 }
 
 /** An early life from its parts: the story they tell, and the skill or choice of skills they give. */
 function earlyLifeFrom(parts) {
   const skills = [...new Set(parts.flatMap((part) => skillsGranted(part.text)))];
-  // The story leaves the skill off the end of a result, unless the result words it into a sentence.
   const told = parts.map(({ label, text }) => {
-    const before = text.match(/^([^+]*?)\s*\+1 [A-Z ]+?(?: or \+1 [A-Z ]+?)*$/)?.[1] ?? text;
-    const body = before.replace(/[\s.]+$/, "");
+    const body = withoutSkill(text);
     return `${label.toLowerCase()} ${body.charAt(0).toLowerCase()}${body.slice(1)}`;
   });
   const story = told.join(", ");
