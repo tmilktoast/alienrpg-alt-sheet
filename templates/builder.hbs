@@ -509,6 +509,23 @@
     <p class="aas-hint aas-danger"><i class="fa-solid fa-triangle-exclamation" inert></i> {{localize 'ALTSHEET.Builder.ReplaceNote'}}</p>
     {{/if}}
     {{/if}}
+
+    {{#if (eq step "finish")}}
+    <section class="aas-panel">
+      <header class="aas-panel-head"><h2>{{localize 'ALTSHEET.Builder.Finish.Title'}}</h2></header>
+      <div class="aas-prose">
+        <p>{{{localize 'ALTSHEET.Builder.Finish.Intro'}}}</p>
+        <ul>
+          <li>{{{localize 'ALTSHEET.Builder.Finish.Name'}}}</li>
+          <li>{{{localize 'ALTSHEET.Builder.Finish.Appearance'}}}</li>
+          <li>{{{localize 'ALTSHEET.Builder.Finish.Buddy'}}}</li>
+        </ul>
+      </div>
+    </section>
+    {{#if review.replaces}}
+    <p class="aas-hint aas-danger"><i class="fa-solid fa-triangle-exclamation" inert></i> {{localize 'ALTSHEET.Builder.ReplaceNote'}}</p>
+    {{/if}}
+    {{/if}}
   </div>
 
   <footer class="aas-builder-footer">

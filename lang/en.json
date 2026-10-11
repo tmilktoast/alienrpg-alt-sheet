@@ -47,6 +47,7 @@
         "fieldEvent": "Field Event",
         "agenda": "Agenda",
         "signature": "Signature Item",
+        "finish": "Finishing Touches",
         "gear": "Gear",
         "review": "Review"
       },
@@ -127,6 +128,13 @@
         "Nco": "NCO gear",
         "NcoHint": "As the unit commander, you get this as well as your MOS gear. You don't get a second of anything your MOS already gave you.",
         "NoMos": "This MOS has no gear of its own."
+      },
+      "Finish": {
+        "Title": "Finishing touches",
+        "Intro": "The builder is complete. Click <strong>Apply to character</strong> and you'll be returned to your character sheet, where you can add:",
+        "Name": "Your <strong>name</strong>",
+        "Appearance": "Your <strong>appearance</strong>",
+        "Buddy": "Your <strong>buddy</strong> and <strong>rival</strong>, if your game uses them"
       },
       "Signature": {
         "Intro": "A small item of no practical use that has sentimental value to you and says something about your character, such as a patch, a cap or a photo of a loved one. It's tiny, so it doesn't encumber you.",

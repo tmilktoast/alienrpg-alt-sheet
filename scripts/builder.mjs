@@ -190,6 +190,8 @@ const STEPS = [
   // Nor does a signature item have to be settled here.
   { id: "signature", method: "lifepath", done: () => true },
   { id: "review", done: () => true },
+  // Nothing to answer: it says what is left to fill in on the sheet, and is where the life path applies.
+  { id: "finish", method: "lifepath", done: () => true },
 ];
 
 /** The steps the chosen creation method walks through. */

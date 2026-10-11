@@ -24,7 +24,8 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
   Agenda offers a list of personal agendas to pick from or roll for, or room to write your own.
   Gear shows the basic gear every marine starts with and the gear of their MOS, asks for one pick
   from each of two bonus lists, gives the commander an NCO's gear as well, and adds it all to the
-  character. Signature Item offers examples to pick from or roll for, or room to write your own.
+  character. Signature Item offers examples to pick from or roll for, or room to write your own. Finishing
+  Touches, after the review, says what is left to fill in on the sheet.
   Rolls show in chat.
 - **Rank, origin, early life, joining and field events** — Rank, Supernation, Sub-affiliation,
   Home, Early life, Joining the Marines and Field events fields on the character sheet's Bio tab.
