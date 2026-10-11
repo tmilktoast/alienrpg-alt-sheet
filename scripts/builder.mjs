@@ -140,6 +140,20 @@ function findTalent(name) {
   );
 }
 
+/**
+ * A career's description, ready to enrich. The manuals' descriptions open with an empty paragraph,
+ * which is only blank lines in the builder, and link their talents to compendiums that may not be
+ * installed: those links are pointed at the world's Talent items instead, so they open.
+ */
+function careerDescription(item) {
+  return (item?.system.general.comment.value ?? "")
+    .replace(/^(\s*<p>(\s|&nbsp;|<br\s*\/?>)*<\/p>)+/i, "")
+    .replace(/<a\b[^>]*\bclass="entity-link"[^>]*>(.*?)<\/a>/gis, (link, label) => {
+      const talent = findTalent(plain(label));
+      return talent ? `@UUID[${talent.uuid}]{${plain(label)}}` : label;
+    });
+}
+
 /* -------------------------------------------- */
 /*  Life path                                   */
 /* -------------------------------------------- */
@@ -450,10 +464,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
         ...career,
         attributeLabel: attributeLabel(career.attribute),
         skillLabels: career.skills.map(skillLabel).join(", "),
-        // The manuals' descriptions open with an empty paragraph, which is only blank lines here.
-        description: await foundry.applications.ux.TextEditor.enrichHTML(
-          (game.items.get(career.id)?.system.general.comment.value ?? "").replace(/^(\s*<p>(\s|&nbsp;|<br\s*\/?>)*<\/p>)+/i, ""),
-        ),
+        description: await foundry.applications.ux.TextEditor.enrichHTML(careerDescription(game.items.get(career.id))),
       },
       attributes: {
         left: attributesLeft,
