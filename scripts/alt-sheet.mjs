@@ -497,6 +497,7 @@ function prepareBio(actor) {
     origin: actor.getFlag(MODULE_ID, "origin") ?? {},
     earlyLife: actor.getFlag(MODULE_ID, "earlyLife") ?? "",
     joining: actor.getFlag(MODULE_ID, "joining") ?? "",
+    fieldEvents: actor.getFlag(MODULE_ID, "fieldEvents") ?? "",
     xp: { value: xp.value, max: xp.max, pips: pips(xp.value, xp.max) },
     sp: { value: sp.value, max: sp.max, pips: pips(sp.value, sp.max) },
   };

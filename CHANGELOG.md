@@ -16,13 +16,16 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
   it (your pick, where the table offers a choice) on top of the points you spend. Joining lists
   the reasons a marine joined up, to pick one or roll for it. The career step becomes MOS and
   offers the eight marine MOSs, whose skills can be raised to 4 rather than 3. The Early Life
-  skill point counts toward the skill's limit. Rolls show in chat.
-- **Rank, origin, early life and joining** — Rank, Supernation, Sub-affiliation, Home, Early life
-  and Joining the Marines fields on the character sheet's Bio tab.
+  skill point counts toward the skill's limit. Field Event, after the talent, rolls an event from
+  the marine's career (and a second, NCO event for the commander) and adds the skill point,
+  attribute point or talent it gives; these may pass the creation limits but no score goes above 5.
+  Rolls show in chat.
+- **Rank, origin, early life, joining and field events** — Rank, Supernation, Sub-affiliation,
+  Home, Early life, Joining the Marines and Field events fields on the character sheet's Bio tab.
 - **Life Path Tables** — a compendium pack of fourteen roll tables for a Colonial Marines life
   path: Life Path - Origin and its six sub-affiliation and home tables, Early Life and its three EL
   tables, Joining the Marines, and the Enlisted and NCO event tables. The character builder uses
-  the Origin, Early Life and Joining the Marines tables; the rest are tables only.
+  the Origin, Early Life, Joining the Marines and event tables.
 - **Creature sheet** — an alternate sheet for `creature` actors. Health, speed and armor sit in the
   header; the Creature tab has the signature attack with a list of what each roll on its table
   does, mobility, observation and acid splash as roll buttons, special abilities and critical

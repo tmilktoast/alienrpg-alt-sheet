@@ -16,6 +16,8 @@ const RULES = {
   // Not the rulebook's: an MOS's skills go higher on the Colonial Marine Life Path, for a marine's
   // specialized and extensive training.
   mosSkillMax: 4,
+  // Nor this: what a field event adds may pass the limits above, but no score goes higher than this.
+  scoreMax: 5,
 };
 
 /**
@@ -47,6 +49,14 @@ const LIFE_PATH_PACK = `${MODULE_ID}.life-path`;
 const ORIGIN_TABLE = "Life Path - Origin";
 const EARLY_LIFE_TABLE = "Early Life";
 const JOINING_TABLE = "Joining the Marines";
+/**
+ * The tables a marine's field events are rolled on. Everyone rolls on the first; only an NCO, which
+ * among new marines is the unit commander, rolls on the one marked so.
+ */
+const FIELD_EVENT_TABLES = [
+  { id: "enlisted", table: "EVENT TABLE A – ENLISTED (BC)" },
+  { id: "nco", table: "EVENT TABLE B – NCO (BC)", nco: true },
+];
 /**
  * The Military Occupational Specialties a marine on the life path chooses from, by the name of
  * their Career item and in the order they are offered. An MOS is the marine's career.
@@ -82,6 +92,16 @@ const STEPS = [
   { id: "attributes", done: (state) => spent(state.attributes) === RULES.attributePoints },
   { id: "skills", done: (state) => spent(state.skills) === RULES.skillPoints },
   { id: "talent", done: (state) => !!state.talent },
+  // A field event that offers a choice isn't settled until one is picked, and none may take a score too high.
+  {
+    id: "fieldEvent",
+    method: "lifepath",
+    done: (state) =>
+      fieldEventsFor(state).every(({ id }) => {
+        const event = state.fieldEvents[id];
+        return !!event && (!event.gains.length || !!event.pick) && !fieldEventOver(state, id, event.pick);
+      }),
+  },
   { id: "review", done: () => true },
 ];
 
@@ -252,6 +272,68 @@ async function rollEarlyLife() {
   };
 }
 
+/** The field event tables a marine rolls on: the NCO's only for the unit commander. */
+const fieldEventsFor = (state) => FIELD_EVENT_TABLES.filter((entry) => !entry.nco || state.commander === "yes");
+
+/**
+ * Roll a field event: something from earlier in a marine's career, which may give a point in a
+ * skill or an attribute (or a choice of what to gain) or a talent. Anything else it gives, such as
+ * gear, is in its text for the player to note.
+ * @param {string} table  The event table's name in the life path pack
+ * @returns {Promise<{roll: number, html: string, text: string, gains: {id: string, kind: string,
+ *   key: string, label: string}[], pick: string|null, talents: string[]}|null>}  Null if the table
+ *   isn't there to roll on.
+ */
+async function rollFieldEvent(table) {
+  const draw = await drawLifePath(table);
+  const result = draw?.results[0];
+  if (!result) return null;
+  const cfg = CONFIG.ALIENRPG;
+  const html = result.description ?? "";
+  const text = plain(html);
+  const lower = text.toLowerCase();
+  const attributes = ATTRIBUTES.filter((key) => lower.includes(`+1 ${loc(cfg.attributes[key]).toLowerCase()}`));
+  const gains = [
+    ...skillsGranted(text).map((key) => ({ id: `skills:${key}`, kind: "skills", key, label: loc(cfg.skills[key].name) })),
+    ...attributes.map((key) => ({ id: `attributes:${key}`, kind: "attributes", key, label: loc(cfg.attributes[key]) })),
+  ];
+  // An alternative that is neither a skill nor an attribute is still a choice, for the player to note.
+  for (const [, name] of text.matchAll(/\bor \+1 ([^.(+]+?)(?=\s*(?:\(|\.|$|\bor \+1))/gi)) {
+    if (gains.some((gain) => sameName(gain.label, name))) continue;
+    gains.push({ id: `other:${gains.length}`, kind: "other", key: "", label: name.trim() });
+  }
+  const talents = [...html.matchAll(/<(?:strong|b)>\s*([^<]+?)\s*<\/(?:strong|b)>\s*talent/gi)].map(([, name]) => talentName(name));
+  return { roll: draw.roll.total, html, text, gains, pick: gains.length === 1 ? gains[0].id : null, talents };
+}
+
+/** The skill the life path's early life gives a point in, over and above the points spent, or null. */
+const earlyLifeSkill = (state) => (state.method === "lifepath" ? (state.earlyLife?.skill ?? null) : null);
+
+/**
+ * What a marine's field events add to their scores, by kind and key.
+ * @param {object} state  The builder's choices
+ * @param {string} [except]  A field event to leave out
+ */
+function fieldEventGains(state, except) {
+  const gains = { attributes: {}, skills: {} };
+  if (state.method !== "lifepath") return gains;
+  for (const { id } of fieldEventsFor(state)) {
+    const event = state.fieldEvents[id];
+    const gain = id !== except && event?.gains.find((entry) => entry.id === event.pick);
+    if (gain && gain.kind !== "other") gains[gain.kind][gain.key] = (gains[gain.kind][gain.key] ?? 0) + 1;
+  }
+  return gains;
+}
+
+/** Whether taking one of a field event's gains would put its score above the highest any may be. */
+function fieldEventOver(state, id, pick) {
+  const gain = state.fieldEvents[id]?.gains.find((entry) => entry.id === pick);
+  if (!gain || gain.kind === "other") return false;
+  const others = fieldEventGains(state, id)[gain.kind][gain.key] ?? 0;
+  const early = gain.kind === "skills" && gain.key === earlyLifeSkill(state) ? 1 : 0;
+  return state[gain.kind][gain.key] + early + others + 1 > RULES.scoreMax;
+}
+
 /* -------------------------------------------- */
 /*  Application                                 */
 /* -------------------------------------------- */
@@ -277,6 +359,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       rollOrigin: CharacterBuilder.#onRollOrigin,
       rollEarlyLife: CharacterBuilder.#onRollEarlyLife,
       rollJoining: CharacterBuilder.#onRollJoining,
+      rollFieldEvent: CharacterBuilder.#onRollFieldEvent,
       pickCareer: CharacterBuilder.#onPickCareer,
       pickTalent: CharacterBuilder.#onPickTalent,
       adjust: CharacterBuilder.#onAdjust,
@@ -300,7 +383,8 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
      * What has been chosen so far. The method is "book" or "lifepath"; commander is "yes" or "no";
      * rank is the one a marine who isn't the commander picked; origin and earlyLife are what was
      * rolled for them; joining is why they joined the Marines, picked or rolled; a career is the
-     * id of its Career item; a talent is its name.
+     * id of its Career item; a talent is its name; fieldEvents are the events rolled, by the id
+     * of the table each was rolled on.
      */
     this.choices = {
       method: null,
@@ -313,6 +397,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       attributes: Object.fromEntries(ATTRIBUTES.map((key) => [key, RULES.attributeMin])),
       skills: Object.fromEntries(Object.keys(CONFIG.ALIENRPG.skills).map((key) => [key, 0])),
       talent: null,
+      fieldEvents: {},
     };
   }
 
@@ -416,6 +501,29 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       });
     }
 
+    const eventGains = fieldEventGains(state);
+    const fieldEvents = state.method !== "lifepath" ? [] : fieldEventsFor(state).map(({ id, nco }, i) => {
+      const event = state.fieldEvents[id];
+      const options = (event?.gains ?? []).map((gain) => ({
+        id: `${id}/${gain.id}`,
+        icon: "fa-solid fa-plus",
+        label: `+1 ${gain.label}`,
+        selected: event.pick === gain.id,
+        disabled: fieldEventOver(state, id, gain.id),
+      }));
+      return {
+        id,
+        first: i === 0,
+        title: loc(`ALTSHEET.Builder.FieldEvent.${nco ? "NcoTitle" : "Title"}`),
+        event,
+        gained: options.length === 1 ? options[0].label : "",
+        options: options.length > 1 && options,
+        // An event that can only take a score too high has to be rolled again.
+        over: options.length > 0 && options.every((option) => option.disabled),
+        talents: (event?.talents ?? []).map((name) => ({ name, missing: !findTalent(name) })),
+      };
+    });
+
     const talents = await Promise.all(
       (career?.talents ?? []).map(async (name) => {
         const item = findTalent(name);
@@ -512,15 +620,23 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
           selected: state.joining?.id === reason.id,
         })),
       },
+      fieldEvents,
       review: {
+        fieldEvents: fieldEvents.filter(({ event }) => event).map(({ title, event }) => ({ title, text: event.text })),
         rank: this.#rank,
         origin: state.method === "lifepath" ? state.origin : null,
         earlyLife: state.method === "lifepath" ? state.earlyLife?.story : null,
         joining: state.method === "lifepath" ? state.joining?.name : null,
         talent: state.talent,
-        attributes: ATTRIBUTES.map((key) => ({ label: attributeLabel(key), value: state.attributes[key] })),
+        attributes: ATTRIBUTES.map((key) => ({
+          label: attributeLabel(key),
+          value: state.attributes[key] + (eventGains.attributes[key] ?? 0),
+        })),
         skills: Object.entries(state.skills)
-          .map(([key, value]) => ({ label: skillLabel(key), value: value + (key === bonusSkill ? 1 : 0) }))
+          .map(([key, value]) => ({
+            label: skillLabel(key),
+            value: value + (key === bonusSkill ? 1 : 0) + (eventGains.skills[key] ?? 0),
+          }))
           .filter(({ value }) => value > 0),
         // Applying overwrites a character that already has scores, so say so first.
         replaces: ATTRIBUTES.some((key) => this.actor.system.attributes[key]?.value),
@@ -553,8 +669,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
 
   /** The skill the life path gives a point in, over and above the points spent, or null. */
   get #bonusSkill() {
-    const { method, earlyLife } = this.choices;
-    return method === "lifepath" ? (earlyLife?.skill ?? null) : null;
+    return earlyLifeSkill(this.choices);
   }
 
   static #onGoTo(event, target) {
@@ -588,6 +703,11 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       if (!this.choices.earlyLife?.skills.includes(value)) return;
       this.choices.earlyLife.skill = value;
       this.#fitToCareer();
+    } else if (choice === "fieldEvent") {
+      const [id, pick] = value.split("/");
+      const event = this.choices.fieldEvents[id];
+      if (!event?.gains.some((gain) => gain.id === pick) || fieldEventOver(this.choices, id, pick)) return;
+      event.pick = pick;
     } else if (choice === "joining") {
       const reason = this._joiningReasons?.find((entry) => entry.id === value);
       if (!reason) return;
@@ -633,6 +753,16 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     return this.render();
   }
 
+  /** Roll one of the marine's field events, or roll it again. */
+  static async #onRollFieldEvent(event, target) {
+    target.disabled = true;
+    const entry = FIELD_EVENT_TABLES.find(({ id }) => id === target.dataset.table);
+    const rolled = entry && (await rollFieldEvent(entry.table));
+    if (!rolled) return ui.notifications.warn(loc("ALTSHEET.Builder.FieldEvent.NoTable"));
+    this.choices.fieldEvents[entry.id] = rolled;
+    return this.render();
+  }
+
   static #onPickCareer(event, target) {
     this.choices.career = target.dataset.careerId;
     this.#fitToCareer();
@@ -672,11 +802,16 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     }
 
     const update = {};
-    for (const [key, value] of Object.entries(state.attributes)) update[`system.attributes.${key}.value`] = value;
+    const eventGains = fieldEventGains(state);
+    for (const [key, value] of Object.entries(state.attributes)) {
+      update[`system.attributes.${key}.value`] = value + (eventGains.attributes[key] ?? 0);
+    }
     const bonusSkill = this.#bonusSkill;
     for (const [key, value] of Object.entries(state.skills)) {
-      update[`system.skills.${key}.value`] = value + (key === bonusSkill ? 1 : 0);
+      update[`system.skills.${key}.value`] = value + (key === bonusSkill ? 1 : 0) + (eventGains.skills[key] ?? 0);
     }
+    const events = state.method === "lifepath" ? fieldEventsFor(state).map(({ id }) => state.fieldEvents[id]).filter(Boolean) : [];
+    if (events.length) update[`flags.${MODULE_ID}.fieldEvents`] = events.map((event) => event.text).join("\n\n");
     // The system's older career field, for anything that still reads it.
     const legacy = Object.entries(CONFIG.ALIENRPG.career_list).find(([, entry]) => sameName(loc(entry.label), careerItem.name));
     if (legacy) update["system.general.career.value"] = legacy[0];
@@ -697,12 +832,19 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     const careers = actor.items.filter((item) => item.type === "specialty").map((item) => item.id);
     if (careers.length) await actor.deleteEmbeddedDocuments("Item", careers);
     const create = [careerItem.toObject()];
-    const talentItem = findTalent(state.talent);
-    const hasTalent = actor.items.some((item) => item.type === "talent" && sameName(item.name, state.talent));
-    if (talentItem && !hasTalent) create.push(talentItem.toObject());
+    // The starting talent, and any the field events gave.
+    const missing = [];
+    for (const name of new Set([state.talent, ...events.flatMap((event) => event.talents)])) {
+      const talentItem = findTalent(name);
+      if (!talentItem) missing.push(name);
+      else if (
+        !actor.items.some((item) => item.type === "talent" && sameName(item.name, talentItem.name)) &&
+        !create.some((item) => item.type === "talent" && sameName(item.name, talentItem.name))
+      ) create.push(talentItem.toObject());
+    }
     await actor.createEmbeddedDocuments("Item", create);
 
-    if (!talentItem) ui.notifications.warn(fmt("ALTSHEET.Builder.TalentMissing", { name: state.talent }));
+    for (const name of missing) ui.notifications.warn(fmt("ALTSHEET.Builder.TalentMissing", { name }));
     ui.notifications.info(fmt("ALTSHEET.Builder.Applied", { name: actor.name }));
     return this.close();
   }

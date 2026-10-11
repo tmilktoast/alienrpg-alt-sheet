@@ -44,6 +44,7 @@
         "attributes": "Attributes",
         "skills": "Skills",
         "talent": "Talent",
+        "fieldEvent": "Field Event",
         "review": "Review"
       },
       "MethodHint": "Choose how to create this character. You can come back and change this before applying.",
@@ -98,6 +99,19 @@
         "IntroPick": "<strong>Choose</strong> from the list below, or click Roll.",
         "Roll": "Roll",
         "NoTable": "The Joining the Marines table is missing from the Life Path Tables compendium."
+      },
+      "FieldEvent": {
+        "Title": "Field Event",
+        "NcoTitle": "NCO Field Event",
+        "Intro": "A significant event from earlier in your marine career. Everyone rolls once on the Enlisted table; an NCO, such as the unit commander, also rolls on the NCO table.",
+        "IntroSame": "<strong>Roll again if you get the same event as another player</strong>, unless everyone agrees it makes a bond (or a rivalry) between your characters.",
+        "IntroLimits": "A skill or attribute you gain from an event can go above the limits of the Skills step, but <strong>never above {max}</strong>.",
+        "IntroRoll": "Click to roll your Field Event.",
+        "NcoIntro": "As an NCO, you roll a second event on the NCO table.",
+        "Roll": "Roll field event",
+        "GainQuestion": "What did you gain?",
+        "Over": "This event would raise a score above {max}. Roll again.",
+        "NoTable": "The field event table is missing from the Life Path Tables compendium."
       },
       "Mos": {
         "Title": "Military Occupational Specialty",
@@ -213,6 +227,7 @@
     "MilitaryRank": "Rank",
     "EarlyLife": "Early life",
     "Joining": "Joining the Marines",
+    "FieldEvents": "Field events",
     "Origin": {
       "Label": "Origin",
       "Supernation": "Supernation",

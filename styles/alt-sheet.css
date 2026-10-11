@@ -1979,6 +1979,16 @@
   margin-bottom: 0;
 }
 
+.alien-alt-sheet .aas-builder-tags {
+  display: flex;
+  gap: 6px;
+}
+
+.alien-alt-sheet .window-content .aas-builder-choice:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .alien-alt-sheet .aas-builder-roll-top {
   margin: 0 0 8px;
 }

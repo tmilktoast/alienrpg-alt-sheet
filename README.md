@@ -52,8 +52,8 @@ system's sheet for `character`, `synthetic`, `creature`, `vehicles`, `spacecraft
   character in one go. It offers the Career/Specialty items in the world's Items sidebar. It can
   build by the book, or by the Colonial Marine Life Path, which is written for a Colonial Marines
   campaign and asks about the marine's rank and history first (so far, whether they command the
-  unit, their rank, a rolled origin, a rolled early life and why they joined the Marines) and
-  offers the marine MOSs as its careers.
+  unit, their rank, a rolled origin, a rolled early life and why they joined the Marines),
+  offers the marine MOSs as its careers, and rolls a field event after the talent.
 - **Readable chat** — chat messages on a flat dark card in a plainer typeface, with the system's
   terminal green and display font kept for the sender, headings and labels. Each player can turn it
   off under Configure Settings → Alien RPG Alternate Sheet.
@@ -95,8 +95,8 @@ An MOS's skills can be raised to `mosSkillMax` there, and the early life's skill
 toward the skill's limit.
 
 The system has no rank or life path fields, so the Bio tab's Rank, Supernation, Sub-affiliation,
-Home, Early life and Joining the Marines are stored on the actor as the module flags `rank`,
-`origin`, `earlyLife` and `joining` under `flags.alienrpg-alt-sheet`.
+Home, Early life, Joining the Marines and Field events are stored on the actor as the module flags
+`rank`, `origin`, `earlyLife`, `joining` and `fieldEvents` under `flags.alienrpg-alt-sheet`.
 
 ## Life path tables
 
@@ -105,7 +105,10 @@ Marines life path: Life Path - Origin (which draws a sub-affiliation and a home 
 tables), Early Life (which draws from the three EL tables), Joining the Marines, and the Enlisted
 and NCO event tables. The character builder's Colonial Marine Life Path rolls on Life Path -
 Origin and Early Life, and offers Joining the Marines' results to pick from or roll for. It finds
-the tables in the pack by name; it doesn't use the event tables yet. It reads
+the tables in the pack by name. Everyone rolls a field event on the Enlisted event table and the
+unit commander another on the NCO one. An event's `+1 SKILL` or `+1 ATTRIBUTE` is added to the
+character (several joined by "or" are a choice), and a talent written as `<strong>Name</strong>
+talent` is added from the world's Items; anything else an event gives is left in its text. It reads
 an early life's skill point from the `+1 SKILL` in the result's text, so keep that wording when
 editing the EL - And Experienced table.
 

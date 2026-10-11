@@ -20,7 +20,8 @@
 {{!-- One answer to a simple question: the creation method, or one of a life path's. --}}
 {{#*inline "answer"}}
 <button type="button" class="aas-builder-choice {{#if selected}}active{{/if}}" data-action="pick"
-  data-choice="{{choice}}" data-value="{{id}}" aria-pressed="{{#if selected}}true{{else}}false{{/if}}">
+  data-choice="{{choice}}" data-value="{{id}}" aria-pressed="{{#if selected}}true{{else}}false{{/if}}"
+  {{#if disabled}}disabled{{/if}}>
   <i class="{{icon}}" inert></i>
   <span class="aas-builder-choice-body">
     <b>{{label}}</b>
@@ -278,6 +279,58 @@
     </section>
     {{/if}}
 
+    {{#if (eq step "fieldEvent")}}
+    {{#each fieldEvents}}
+    <section class="aas-panel">
+      <header class="aas-panel-head">
+        <h2>{{title}}</h2>
+        <span class="aas-builder-tags">
+          {{#if gained}}<span class="aas-tag">{{gained}}</span>{{/if}}
+          {{#if event}}<span class="aas-tag">{{localize 'ALTSHEET.Builder.Origin.Rolled' roll=event.roll}}</span>{{/if}}
+        </span>
+      </header>
+      {{#if event}}
+      <div class="aas-prose aas-builder-description">{{{event.html}}}</div>
+      {{#each talents}}
+      {{#if missing}}
+      <p class="aas-hint aas-danger"><i class="fa-solid fa-triangle-exclamation" inert></i> {{localize 'ALTSHEET.Builder.TalentMissing' name=name}}</p>
+      {{/if}}
+      {{/each}}
+      {{#if options}}
+      <h3>{{localize 'ALTSHEET.Builder.FieldEvent.GainQuestion'}}</h3>
+      <div class="aas-builder-choices">
+        {{#each options}}
+        {{> answer choice="fieldEvent"}}
+        {{/each}}
+      </div>
+      {{/if}}
+      {{#if over}}
+      <p class="aas-hint aas-danger"><i class="fa-solid fa-triangle-exclamation" inert></i> {{localize 'ALTSHEET.Builder.FieldEvent.Over' max=@root.rules.scoreMax}}</p>
+      {{/if}}
+      {{else}}
+      <div class="aas-prose">
+        {{#if first}}
+        <p>{{localize 'ALTSHEET.Builder.FieldEvent.Intro'}}</p>
+        <ul>
+          <li>{{{localize 'ALTSHEET.Builder.FieldEvent.IntroSame'}}}</li>
+          <li>{{{localize 'ALTSHEET.Builder.FieldEvent.IntroLimits' max=@root.rules.scoreMax}}}</li>
+        </ul>
+        <p>{{localize 'ALTSHEET.Builder.FieldEvent.IntroRoll'}}</p>
+        {{else}}
+        <p>{{localize 'ALTSHEET.Builder.FieldEvent.NcoIntro'}}</p>
+        {{/if}}
+      </div>
+      {{/if}}
+      <div class="aas-builder-roll">
+        <button type="button" class="aas-button {{#if over}}aas-button-primary{{/if}}{{#unless event}}aas-button-primary{{/unless}}" data-action="rollFieldEvent" data-table="{{id}}">
+          <i class="fa-solid fa-dice" inert></i>
+          {{#if event}}{{localize 'ALTSHEET.Builder.Origin.Reroll'}}{{else}}{{localize 'ALTSHEET.Builder.FieldEvent.Roll'}}{{/if}}
+        </button>
+      </div>
+    </section>
+    {{/each}}
+    {{/if}}
+
     {{#if (eq step "review")}}
     <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.ReviewHint'}}</p>
     <section class="aas-panel">
@@ -295,6 +348,7 @@
         <dt>{{localize 'ALIENRPG.Skills'}}</dt>
         <dd>{{#each review.skills}}<span class="aas-builder-pair">{{label}} <b>{{value}}</b></span>{{/each}}</dd>
         <dt>{{localize 'ALTSHEET.Builder.Steps.talent'}}</dt><dd>{{review.talent}}</dd>
+        {{#each review.fieldEvents}}<dt>{{title}}</dt><dd>{{text}}</dd>{{/each}}
       </dl>
     </section>
     {{#if review.replaces}}
