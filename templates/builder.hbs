@@ -331,6 +331,31 @@
     {{/each}}
     {{/if}}
 
+    {{#if (eq step "agenda")}}
+    <section class="aas-panel">
+      <header class="aas-panel-head"><h2>{{localize 'ALIENRPG.PersonalAgenda'}}</h2></header>
+      <div class="aas-prose">
+        <p>{{localize 'ALTSHEET.Builder.Agenda.Intro'}}</p>
+        <p>{{{localize 'ALTSHEET.Builder.Agenda.IntroPick'}}}</p>
+      </div>
+      <div class="aas-builder-roll aas-builder-roll-top">
+        <button type="button" class="aas-button" data-action="rollAgenda">
+          <i class="fa-solid fa-dice" inert></i>
+          {{localize 'ALTSHEET.Builder.Joining.Roll'}}
+        </button>
+      </div>
+      <label class="aas-labelled">
+        <span>{{localize 'ALTSHEET.Builder.Agenda.Yours'}}</span>
+        <textarea data-field="agenda" rows="3" placeholder="{{localize 'ALTSHEET.Builder.Agenda.Placeholder'}}">{{agenda.text}}</textarea>
+      </label>
+      <div class="aas-builder-choices aas-builder-choices-wide">
+        {{#each agenda.examples}}
+        {{> answer choice="agenda"}}
+        {{/each}}
+      </div>
+    </section>
+    {{/if}}
+
     {{#if (eq step "review")}}
     <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.ReviewHint'}}</p>
     <section class="aas-panel">
@@ -349,6 +374,7 @@
         <dd>{{#each review.skills}}<span class="aas-builder-pair">{{label}} <b>{{value}}</b></span>{{/each}}</dd>
         <dt>{{localize 'ALTSHEET.Builder.Steps.talent'}}</dt><dd>{{review.talent}}</dd>
         {{#each review.fieldEvents}}<dt>{{title}}</dt><dd>{{text}}</dd>{{/each}}
+        {{#if review.agenda}}<dt>{{localize 'ALIENRPG.PersonalAgenda'}}</dt><dd>{{review.agenda}}</dd>{{/if}}
       </dl>
     </section>
     {{#if review.replaces}}

@@ -19,6 +19,7 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
   skill point counts toward the skill's limit. Field Event, after the talent, rolls an event from
   the marine's career (and a second, NCO event for the commander) and adds the skill point,
   attribute point or talent it gives; these may pass the creation limits but no score goes above 5.
+  Agenda offers a list of personal agendas to pick from or roll for, or room to write your own.
   Rolls show in chat.
 - **Rank, origin, early life, joining and field events** — Rank, Supernation, Sub-affiliation,
   Home, Early life, Joining the Marines and Field events fields on the character sheet's Bio tab.

@@ -45,6 +45,7 @@
         "skills": "Skills",
         "talent": "Talent",
         "fieldEvent": "Field Event",
+        "agenda": "Agenda",
         "review": "Review"
       },
       "MethodHint": "Choose how to create this character. You can come back and change this before applying.",
@@ -112,6 +113,26 @@
         "GainQuestion": "What did you gain?",
         "Over": "This event would raise a score above {max}. Roll again.",
         "NoTable": "The field event table is missing from the Life Path Tables compendium."
+      },
+      "Agenda": {
+        "Intro": "Even as part of a unit, everyone has a personal agenda.",
+        "IntroPick": "<strong>Choose</strong> from the list below, click Roll, or write your own.",
+        "Yours": "Your agenda",
+        "Placeholder": "Write your own, or leave it for later.",
+        "Examples": [
+          "Keep a buddy safe no matter what.",
+          "Defend your reputation at all costs.",
+          "You once helped cover up a war crime. No one must ever know.",
+          "The death of a buddy spooked you. Now you secretly fear combat and confrontation, and you need to overcome the fear.",
+          "You have a secret that no one can know, or you'll be ruined.",
+          "Someone important to you disappeared on a colony mission. You've been searching for answers ever since.",
+          "You made a promise to a dying marine that you're struggling to keep.",
+          "You're addicted to stims or medication and hiding it from the unit.",
+          "The UPP (or rebels, or another faction) killed someone in your family. You want revenge.",
+          "You're gathering intelligence to sell when your tour ends. Corporate pays well.",
+          "You're romantically involved with someone in the company (forbidden) and must keep it secret.",
+          "Another marine outside the unit is blackmailing you over a secret or something shameful. It might be time to silence them one way or another."
+        ]
       },
       "Mos": {
         "Title": "Military Occupational Specialty",
