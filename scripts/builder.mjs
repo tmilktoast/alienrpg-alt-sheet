@@ -423,13 +423,15 @@ function careerDescription(item) {
  */
 /**
  * Draw from one of the life path tables and the tables it draws from in turn. The draw is shown in
- * chat, as a roll at the table would be.
+ * chat, as a roll at the table would be, unless it is asked not to be.
  * @param {string} name  The table's name in the life path pack
+ * @param {object} [options]
+ * @param {boolean} [options.chat=true]  Whether to post the draw to chat
  * @returns {Promise<{roll: Roll, results: TableResult[]}|null>}  Null if the table isn't there.
  */
-async function drawLifePath(name) {
+async function drawLifePath(name, { chat = true } = {}) {
   const table = await lifePathTable(name);
-  return table ? table.draw({ recursive: true }) : null;
+  return table ? table.draw({ recursive: true, displayChat: chat }) : null;
 }
 
 /** One of the life path tables, by its name in the life path pack, or null if it isn't there. */
@@ -699,7 +701,8 @@ const fieldEventsFor = (state) => FIELD_EVENT_TABLES.filter((entry) => !entry.nc
  *   isn't there to roll on.
  */
 async function rollFieldEvent(table) {
-  const draw = await drawLifePath(table);
+  // A field event is long and the builder shows it, so it isn't posted to chat as well.
+  const draw = await drawLifePath(table, { chat: false });
   const result = draw?.results[0];
   if (!result) return null;
   const cfg = CONFIG.ALIENRPG;

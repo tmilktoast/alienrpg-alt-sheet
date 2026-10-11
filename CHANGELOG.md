@@ -3,6 +3,17 @@
 Notable changes to the Alien RPG Companion (formerly the Alien RPG Alternate Sheet). Versions follow the `version` field in
 `module.json`.
 
+## Unreleased
+
+### Changed
+
+- Rolling a field event in the builder no longer posts the roll to chat.
+
+### Fixed
+
+- A nickname or callsign that is part of a word in the character's name, like Ford in Stanford
+  Daemonn, is shown in the name. It was taken as already being there.
+
 ## 0.3.2 — 2026-10-11
 
 ### Added

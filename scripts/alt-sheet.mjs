@@ -491,8 +491,11 @@ async function prepareActionsLink() {
  */
 export function nameWithNickname(name, nickname) {
   const [first, ...rest] = name.trim().split(/\s+/);
-  // A name that already says it is left alone.
-  if (!first || name.toLowerCase().includes(nickname.toLowerCase())) return name;
+  // A name that already says it is left alone: as a word of its own, not as part of one, so Ford
+  // still goes into Stanford Daemonn.
+  const escaped = nickname.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const said = new RegExp(`(^|[^\\p{L}\\p{N}])${escaped}($|[^\\p{L}\\p{N}])`, "iu");
+  if (!first || said.test(name)) return name;
   return [first, `\u201c${nickname}\u201d`, ...rest].join(" ");
 }
 
