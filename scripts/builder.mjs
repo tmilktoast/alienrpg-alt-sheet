@@ -276,6 +276,12 @@ const sameName = (a, b) => a.trim().toLowerCase() === b.trim().toLowerCase();
 const RENAMED_TALENTS = { "field surgeon": "Field Medic", "past the limit": "True Grit" };
 
 /** The name a talent goes by now, for one a career names. */
+/**
+ * Talents the Colonial Marines manual names that aren't carried over to the Evolved rules, in lower
+ * case: a career that lists one doesn't offer it.
+ */
+const DROPPED_TALENTS = ["nerves of steel"];
+
 const talentName = (name) => RENAMED_TALENTS[name.trim().toLowerCase()] ?? name.trim();
 
 /** Look up an attribute or skill key by the name the rulebook prints for it. */
@@ -302,7 +308,11 @@ export function careerDefinition(item) {
   if (written) {
     const attribute = keyByLabel(attributeLabels, written[1]);
     const skills = written[2].split(",").map((name) => keyByLabel(skillLabels, name)).filter(Boolean);
-    const talents = written[3].split(",").map((name) => name.trim()).filter(Boolean).map(talentName);
+    const talents = written[3]
+      .split(",")
+      .map((name) => name.trim())
+      .filter((name) => name && !DROPPED_TALENTS.includes(name.toLowerCase()))
+      .map(talentName);
     if (attribute && skills.length) return { ...base, core: false, attribute, skills, talents };
   }
 
@@ -330,6 +340,8 @@ function careerDescription(item) {
     .replace(/^(\s*<p>(\s|&nbsp;|<br\s*\/?>)*<\/p>)+/i, "")
     .replace(/<a\b[^>]*\bclass="entity-link"[^>]*>(.*?)<\/a>/gis, (link, label) => {
       const name = talentName(plain(label));
+      // One that isn't carried over stays in the list, struck out, since the career's own text names it.
+      if (DROPPED_TALENTS.includes(name.toLowerCase())) return `<s>${name}</s>`;
       const talent = findTalent(name);
       return talent ? `@UUID[${talent.uuid}]{${name}}` : name;
     });
@@ -640,7 +652,9 @@ async function rollFieldEvent(table) {
     if (gains.some((gain) => sameName(gain.label, name))) continue;
     gains.push({ id: `other:${gains.length}`, kind: "other", key: "", label: name.trim() });
   }
-  const talents = [...html.matchAll(/<(?:strong|b)>\s*([^<]+?)\s*<\/(?:strong|b)>\s*talent/gi)].map(([, name]) => talentName(name));
+  const talents = [...html.matchAll(/<(?:strong|b)>\s*([^<]+?)\s*<\/(?:strong|b)>\s*talent/gi)]
+    .map(([, name]) => talentName(name))
+    .filter((name) => !DROPPED_TALENTS.includes(name.toLowerCase()));
   return { roll: draw.roll.total, html, text, gains, pick: gains.length === 1 ? gains[0].id : null, talents };
 }
 
