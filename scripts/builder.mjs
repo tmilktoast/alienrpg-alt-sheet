@@ -262,7 +262,17 @@ const stepsFor = (state) =>
 const loc = (key) => game.i18n.localize(key);
 const fmt = (key, data) => game.i18n.format(key, data);
 const spent = (scores) => Object.values(scores).reduce((sum, value) => sum + value, 0);
-const plain = (html) => (html ?? "").replace(/<[^>]+>/g, " ").replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim();
+/**
+ * Text as it reads, from HTML as it is stored: tags dropped, and a link written the way Foundry
+ * stores one, @UUID[Item.abc]{Banter}, read as its label.
+ */
+const plain = (html) =>
+  (html ?? "")
+    .replace(/@\w+\[[^\]]*\]\{([^}]*)\}/g, "$1")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 const sameName = (a, b) => a.trim().toLowerCase() === b.trim().toLowerCase();
 
 /* -------------------------------------------- */
@@ -371,15 +381,18 @@ function findTalent(name) {
  * installed: those links are pointed at the world's Talent items instead, so they open.
  */
 function careerDescription(item) {
+  const linked = (link, label) => {
+    const name = talentName(plain(label));
+    // One that isn't carried over stays in the list, struck out, since the career's own text names it.
+    if (DROPPED_TALENTS.includes(name.toLowerCase())) return `<s>${name}</s>`;
+    const talent = findTalent(name);
+    return talent ? `@UUID[${talent.uuid}]{${name}}` : name;
+  };
+  // A talent is linked either the older way, as an anchor, or the way Foundry stores a link now.
   return (item?.system.general.comment.value ?? "")
     .replace(/^(\s*<p>(\s|&nbsp;|<br\s*\/?>)*<\/p>)+/i, "")
-    .replace(/<a\b[^>]*\bclass="entity-link"[^>]*>(.*?)<\/a>/gis, (link, label) => {
-      const name = talentName(plain(label));
-      // One that isn't carried over stays in the list, struck out, since the career's own text names it.
-      if (DROPPED_TALENTS.includes(name.toLowerCase())) return `<s>${name}</s>`;
-      const talent = findTalent(name);
-      return talent ? `@UUID[${talent.uuid}]{${name}}` : name;
-    });
+    .replace(/<a\b[^>]*\bclass="entity-link"[^>]*>(.*?)<\/a>/gis, linked)
+    .replace(/@UUID\[[^\]]*\]\{([^}]*)\}/g, linked);
 }
 
 /* -------------------------------------------- */

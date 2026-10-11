@@ -3,6 +3,16 @@
 Notable changes to the Alien RPG Companion (formerly the Alien RPG Alternate Sheet). Versions follow the `version` field in
 `module.json`.
 
+## Unreleased
+
+### Fixed
+
+- The builder reads a career whose description links its talents the way Foundry stores a link now
+  (`@UUID[Item.…]{Banter}`). It took the whole link for the talent's name, so every such talent
+  showed as not in the world's Items.
+- A release's stylesheet carries the version in its file name, so a browser or host can't go on
+  serving the last release's styles after an update.
+
 ## 0.3.1 — 2026-10-11
 
 ### Added
