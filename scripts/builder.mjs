@@ -36,9 +36,10 @@ const CORE_CAREERS = {
 const COMMANDER_RANK = "Corporal";
 const ENLISTED_RANKS = ["Private", "Private First Class"];
 
-/** The module's pack of life path roll tables, and the one a marine's origin is rolled on. */
+/** The module's pack of life path roll tables, and the ones a marine's origin and early life are rolled on. */
 const LIFE_PATH_PACK = `${MODULE_ID}.life-path`;
 const ORIGIN_TABLE = "Life Path - Origin";
+const EARLY_LIFE_TABLE = "Early Life";
 /** The parts of an origin, by the name the tables give the result that carries each. */
 const ORIGIN_PARTS = { SUPERNATION: "supernation", "SUB-AFFILIATION": "subAffiliation", HOME: "home" };
 
@@ -53,6 +54,8 @@ const STEPS = [
   // The commander's rank is fixed; anyone else has one to pick.
   { id: "commander", method: "lifepath", done: (state) => state.commander === "yes" || (state.commander === "no" && !!state.rank) },
   { id: "origin", method: "lifepath", done: (state) => !!state.origin },
+  // An early life that offers a choice of skills isn't settled until one is picked.
+  { id: "earlyLife", method: "lifepath", done: (state) => !!state.earlyLife && (!state.earlyLife.skills.length || !!state.earlyLife.skill) },
   { id: "career", done: (state) => !!state.career },
   { id: "attributes", done: (state) => spent(state.attributes) === RULES.attributePoints },
   { id: "skills", done: (state) => spent(state.skills) === RULES.skillPoints },
@@ -121,16 +124,26 @@ function findTalent(name) {
 
 /**
  * Roll a marine's origin on the life path tables: a supernation, and from that supernation's own
- * tables a sub-affiliation and a home. The draw is shown in chat, as a roll at the table would be.
+ * tables a sub-affiliation and a home.
  * @returns {Promise<{roll: number, supernation: string, detail: string, subAffiliation: string,
  *   home: string}|null>}  Null if the tables aren't there to roll on.
  */
-async function rollOrigin() {
+/**
+ * Draw from one of the life path tables and the tables it draws from in turn. The draw is shown in
+ * chat, as a roll at the table would be.
+ * @param {string} name  The table's name in the life path pack
+ * @returns {Promise<{roll: Roll, results: TableResult[]}|null>}  Null if the table isn't there.
+ */
+async function drawLifePath(name) {
   const pack = game.packs.get(LIFE_PATH_PACK);
-  const entry = pack?.index.find((table) => table.name === ORIGIN_TABLE);
+  const entry = pack?.index.find((table) => table.name === name);
   const table = entry && (await pack.getDocument(entry._id));
-  if (!table) return null;
-  const draw = await table.draw({ recursive: true });
+  return table ? table.draw({ recursive: true }) : null;
+}
+
+async function rollOrigin() {
+  const draw = await drawLifePath(ORIGIN_TABLE);
+  if (!draw) return null;
   const origin = { roll: draw.roll.total, supernation: "", detail: "", subAffiliation: "", home: "" };
   for (const result of draw.results) {
     const part = ORIGIN_PARTS[result.name?.trim().toUpperCase()];
@@ -141,6 +154,39 @@ async function rollOrigin() {
     if (part === "supernation") origin.detail = rest.join(" ");
   }
   return origin;
+}
+
+/** The skills a life path result gives a point in, as their keys: more than one is a choice. */
+function skillsGranted(text) {
+  return Object.entries(CONFIG.ALIENRPG.skills)
+    .filter(([, skill]) => text.toLowerCase().includes(`+1 ${loc(skill.name).toLowerCase()}`))
+    .map(([key]) => key);
+}
+
+/**
+ * Roll a marine's early life: what they were as a youth, in whose company, and what they
+ * experienced, which gives a point in a skill or a choice of skills to put one in.
+ * @returns {Promise<{parts: {label: string, text: string}[], story: string, skills: string[],
+ *   skill: string|null}|null>}  Null if the tables aren't there to roll on.
+ */
+async function rollEarlyLife() {
+  const draw = await drawLifePath(EARLY_LIFE_TABLE);
+  if (!draw) return null;
+  const parts = draw.results.map((result) => ({ label: result.name?.trim() ?? "", text: plain(result.description) }));
+  const skills = [...new Set(parts.flatMap((part) => skillsGranted(part.text)))];
+  // The story leaves the skill off the end of a result, unless the result words it into a sentence.
+  const told = parts.map(({ label, text }) => {
+    const before = text.match(/^([^+]*?)\s*\+1 [A-Z ]+?(?: or \+1 [A-Z ]+?)*$/)?.[1] ?? text;
+    const body = before.replace(/[\s.]+$/, "");
+    return `${label.toLowerCase()} ${body.charAt(0).toLowerCase()}${body.slice(1)}`;
+  });
+  const story = told.join(", ");
+  return {
+    parts,
+    story: `${story.charAt(0).toUpperCase()}${story.slice(1)}.`,
+    skills,
+    skill: skills.length === 1 ? skills[0] : null,
+  };
 }
 
 /* -------------------------------------------- */
@@ -166,6 +212,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       back: CharacterBuilder.#onBack,
       pick: CharacterBuilder.#onPick,
       rollOrigin: CharacterBuilder.#onRollOrigin,
+      rollEarlyLife: CharacterBuilder.#onRollEarlyLife,
       pickCareer: CharacterBuilder.#onPickCareer,
       pickTalent: CharacterBuilder.#onPickTalent,
       adjust: CharacterBuilder.#onAdjust,
@@ -187,14 +234,15 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     this.step = STEPS[0].id;
     /**
      * What has been chosen so far. The method is "book" or "lifepath"; commander is "yes" or "no";
-     * rank is the one a marine who isn't the commander picked; origin is what was rolled for it; a
-     * career is the id of its Career item; a talent is its name.
+     * rank is the one a marine who isn't the commander picked; origin and earlyLife are what was
+     * rolled for them; a career is the id of its Career item; a talent is its name.
      */
     this.choices = {
       method: null,
       commander: null,
       rank: null,
       origin: null,
+      earlyLife: null,
       career: null,
       attributes: Object.fromEntries(ATTRIBUTES.map((key) => [key, RULES.attributeMin])),
       skills: Object.fromEntries(Object.keys(CONFIG.ALIENRPG.skills).map((key) => [key, 0])),
@@ -251,6 +299,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     const attributeLabel = (key) => loc(cfg.attributes[key]);
     const skillLabel = (key) => loc(cfg.skills[key].name);
 
+    const bonusSkill = this.#bonusSkill;
     const scoreRow = (kind, key, label, isKey, left) => {
       const value = state[kind][key];
       const max = this.#max(kind, key);
@@ -261,6 +310,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
         value,
         max,
         isKey,
+        bonus: kind === "skills" && key === bonusSkill,
         pips: Array.from({ length: max }, (_, i) => ({ filled: i < value })),
         canLower: value > this.#min(kind),
         canRaise: value < max && left > 0,
@@ -355,14 +405,26 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       },
       talents,
       origin: state.origin,
+      earlyLife: state.earlyLife && {
+        ...state.earlyLife,
+        // One skill is simply gained; several are a choice.
+        gained: state.earlyLife.skills.length === 1 ? skillLabel(state.earlyLife.skills[0]) : "",
+        options: state.earlyLife.skills.length > 1 && state.earlyLife.skills.map((key) => ({
+          id: key,
+          icon: "fa-solid fa-plus",
+          label: skillLabel(key),
+          selected: state.earlyLife.skill === key,
+        })),
+      },
       review: {
         rank: this.#rank,
         origin: state.method === "lifepath" ? state.origin : null,
+        earlyLife: state.method === "lifepath" ? state.earlyLife?.story : null,
         talent: state.talent,
         attributes: ATTRIBUTES.map((key) => ({ label: attributeLabel(key), value: state.attributes[key] })),
         skills: Object.entries(state.skills)
-          .filter(([, value]) => value > 0)
-          .map(([key, value]) => ({ label: skillLabel(key), value })),
+          .map(([key, value]) => ({ label: skillLabel(key), value: value + (key === bonusSkill ? 1 : 0) }))
+          .filter(({ value }) => value > 0),
         // Applying overwrites a character that already has scores, so say so first.
         replaces: ATTRIBUTES.some((key) => this.actor.system.attributes[key]?.value),
       },
@@ -384,6 +446,12 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     const { method, commander, rank } = this.choices;
     if (method !== "lifepath") return null;
     return commander === "yes" ? COMMANDER_RANK : commander === "no" ? rank : null;
+  }
+
+  /** The skill the life path gives a point in, over and above the points spent, or null. */
+  get #bonusSkill() {
+    const { method, earlyLife } = this.choices;
+    return method === "lifepath" ? (earlyLife?.skill ?? null) : null;
   }
 
   static #onGoTo(event, target) {
@@ -413,8 +481,11 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
   /** Answer one of the simple questions: the creation method, or one of a life path's. */
   static #onPick(event, target) {
     const { choice, value } = target.dataset;
-    if (!["method", "commander", "rank"].includes(choice)) return;
-    this.choices[choice] = value;
+    if (choice === "earlyLifeSkill") {
+      if (!this.choices.earlyLife?.skills.includes(value)) return;
+      this.choices.earlyLife.skill = value;
+    } else if (["method", "commander", "rank"].includes(choice)) this.choices[choice] = value;
+    else return;
     return this.render();
   }
 
@@ -424,6 +495,15 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     const origin = await rollOrigin();
     if (!origin) return ui.notifications.warn(loc("ALTSHEET.Builder.Origin.NoTable"));
     this.choices.origin = origin;
+    return this.render();
+  }
+
+  /** Roll the marine's early life, or roll it again. */
+  static async #onRollEarlyLife(event, target) {
+    target.disabled = true;
+    const earlyLife = await rollEarlyLife();
+    if (!earlyLife) return ui.notifications.warn(loc("ALTSHEET.Builder.EarlyLife.NoTable"));
+    this.choices.earlyLife = earlyLife;
     return this.render();
   }
 
@@ -467,7 +547,10 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
 
     const update = {};
     for (const [key, value] of Object.entries(state.attributes)) update[`system.attributes.${key}.value`] = value;
-    for (const [key, value] of Object.entries(state.skills)) update[`system.skills.${key}.value`] = value;
+    const bonusSkill = this.#bonusSkill;
+    for (const [key, value] of Object.entries(state.skills)) {
+      update[`system.skills.${key}.value`] = value + (key === bonusSkill ? 1 : 0);
+    }
     // The system's older career field, for anything that still reads it.
     const legacy = Object.entries(CONFIG.ALIENRPG.career_list).find(([, entry]) => sameName(loc(entry.label), careerItem.name));
     if (legacy) update["system.general.career.value"] = legacy[0];
@@ -476,6 +559,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       const { supernation, subAffiliation, home } = state.origin;
       update[`flags.${MODULE_ID}.origin`] = { supernation, subAffiliation, home };
     }
+    if (state.method === "lifepath" && state.earlyLife) update[`flags.${MODULE_ID}.earlyLife`] = state.earlyLife.story;
     await actor.update(update);
     // A new character starts unhurt; the system works out maximum Health from the scores just set.
     const { calculatedMax, max } = actor.system.header.health;

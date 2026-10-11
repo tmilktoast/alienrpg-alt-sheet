@@ -1,7 +1,7 @@
 {{!-- One attribute or skill being bought: its pips and the buttons to spend or take back a point. --}}
 {{#*inline "scoreRow"}}
 <div class="aas-builder-score {{#if isKey}}key{{/if}}">
-  <span class="aas-builder-score-name">{{label}}{{#if isKey}} <span class="aas-tag">{{localize 'ALTSHEET.Builder.Key'}}</span>{{/if}}</span>
+  <span class="aas-builder-score-name">{{label}}{{#if isKey}} <span class="aas-tag">{{localize 'ALTSHEET.Builder.Key'}}</span>{{/if}}{{#if bonus}} <span class="aas-tag">{{localize 'ALTSHEET.Builder.EarlyLife.Bonus'}}</span>{{/if}}</span>
   <span class="aas-pips aas-pips-static">{{#each pips}}<span class="aas-pip {{#if filled}}filled{{/if}}"></span>{{/each}}</span>
   <div class="aas-stepper aas-stepper-small">
     <button type="button" data-action="adjust" data-kind="{{kind}}" data-key="{{key}}" data-step="-1"
@@ -100,6 +100,41 @@
     </section>
     {{/if}}
 
+    {{#if (eq step "earlyLife")}}
+    <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.EarlyLife.Hint'}}</p>
+    <section class="aas-panel">
+      <header class="aas-panel-head">
+        <h2>{{localize 'ALTSHEET.EarlyLife'}}</h2>
+        {{#if earlyLife.gained}}<span class="aas-tag">+1 {{earlyLife.gained}}</span>{{/if}}
+      </header>
+      {{#if earlyLife}}
+      <dl class="aas-facts aas-facts-stacked">
+        {{#each earlyLife.parts}}
+        <dt>{{label}}</dt><dd>{{text}}</dd>
+        {{/each}}
+      </dl>
+      {{else}}
+      <p class="aas-empty">{{localize 'ALTSHEET.Builder.Origin.NotRolled'}}</p>
+      {{/if}}
+      <div class="aas-builder-roll">
+        <button type="button" class="aas-button {{#unless earlyLife}}aas-button-primary{{/unless}}" data-action="rollEarlyLife">
+          <i class="fa-solid fa-dice" inert></i>
+          {{#if earlyLife}}{{localize 'ALTSHEET.Builder.Origin.Reroll'}}{{else}}{{localize 'ALTSHEET.Builder.EarlyLife.Roll'}}{{/if}}
+        </button>
+      </div>
+    </section>
+    {{#if earlyLife.options}}
+    <section class="aas-panel">
+      <header class="aas-panel-head"><h2>{{localize 'ALTSHEET.Builder.EarlyLife.SkillQuestion'}}</h2></header>
+      <div class="aas-builder-choices">
+        {{#each earlyLife.options}}
+        {{> answer choice="earlyLifeSkill"}}
+        {{/each}}
+      </div>
+    </section>
+    {{/if}}
+    {{/if}}
+
     {{#if (eq step "career")}}
     <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.CareerHint'}}</p>
     {{#each groups}}
@@ -195,6 +230,7 @@
         <dt>{{localize 'ALTSHEET.Origin.Label'}}</dt>
         <dd>{{review.origin.supernation}}, {{review.origin.subAffiliation}}, {{review.origin.home}}</dd>
         {{/if}}
+        {{#if review.earlyLife}}<dt>{{localize 'ALTSHEET.EarlyLife'}}</dt><dd>{{review.earlyLife}}</dd>{{/if}}
         <dt>{{localize 'ALIENRPG.Attributes'}}</dt>
         <dd>{{#each review.attributes}}<span class="aas-builder-pair">{{label}} <b>{{value}}</b></span>{{/each}}</dd>
         <dt>{{localize 'ALIENRPG.Skills'}}</dt>

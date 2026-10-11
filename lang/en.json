@@ -37,6 +37,7 @@
         "method": "Method",
         "commander": "Command",
         "origin": "Origin",
+        "earlyLife": "Early Life",
         "career": "Career",
         "attributes": "Attributes",
         "skills": "Skills",
@@ -74,6 +75,13 @@
         "Reroll": "Roll again",
         "Rolled": "Rolled {roll}",
         "NoTable": "The Life Path - Origin table is missing from the Life Path Tables compendium."
+      },
+      "EarlyLife": {
+        "Hint": "Roll your marine's early life: what you were as a youth, in whose company, and what you experienced. The experience gives you a point in a skill, on top of the points you spend later. The roll is shown in chat.",
+        "Roll": "Roll early life",
+        "SkillQuestion": "Which skill did it teach you?",
+        "Bonus": "+1 Early life",
+        "NoTable": "The Early Life table is missing from the Life Path Tables compendium."
       },
       "CareerHint": "Your career sets your key attribute, your key skills and the talents you can start with.",
       "NoCareers": "No careers found. Import the rulebook's Career items into the world's Items sidebar.",
@@ -177,6 +185,7 @@
     "AttributesSkills": "Attributes & Skills",
     "Rank": "Rank",
     "MilitaryRank": "Rank",
+    "EarlyLife": "Early life",
     "Origin": {
       "Label": "Origin",
       "Supernation": "Supernation",

@@ -1948,6 +1948,15 @@
   flex: 0 0 110px;
 }
 
+/* Facts whose labels are too long to sit beside their values. */
+.alien-alt-sheet .window-content .aas-facts-stacked {
+  display: block;
+}
+
+.alien-alt-sheet .window-content .aas-facts-stacked dd {
+  margin: 0 0 8px;
+}
+
 .alien-alt-sheet .aas-builder-roll {
   display: flex;
   justify-content: flex-end;
