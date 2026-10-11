@@ -273,7 +273,7 @@ const sameName = (a, b) => a.trim().toLowerCase() === b.trim().toLowerCase();
  * Talents the Colonial Marines manual names that the Evolved rules renamed, by the manual's name
  * in lower case.
  */
-const RENAMED_TALENTS = { "field surgeon": "Field Medic" };
+const RENAMED_TALENTS = { "field surgeon": "Field Medic", "past the limit": "True Grit" };
 
 /** The name a talent goes by now, for one a career names. */
 const talentName = (name) => RENAMED_TALENTS[name.trim().toLowerCase()] ?? name.trim();
