@@ -97,7 +97,8 @@ trained in to `marineSkillMax`; each of those starts with at least `trainedSkill
 early life's skill point counts toward a skill's limit and its minimum.
 
 The personal agendas the Agenda step offers are the `ALTSHEET.Builder.Agenda.Examples` list in
-`lang/en.json`: edit, add or remove lines there, and the roll's die follows the list's length.
+`lang/en.json`, and the Signature Item step's are `ALTSHEET.Builder.Signature.Examples`: edit, add
+or remove lines there, and the roll's die follows the list's length.
 
 The Gear step's lists are `MARINE_GEAR` in `scripts/builder.mjs`: the basic gear every marine
 gets, the two bonus lists to pick one from each, and each MOS's gear. They name Gear items in the

@@ -393,7 +393,7 @@
         <p>{{{localize 'ALTSHEET.Builder.Agenda.IntroPick'}}}</p>
       </div>
       <div class="aas-builder-roll aas-builder-roll-top">
-        <button type="button" class="aas-button" data-action="rollAgenda">
+        <button type="button" class="aas-button" data-action="rollWritten" data-field="agenda">
           <i class="fa-solid fa-dice" inert></i>
           {{localize 'ALTSHEET.Builder.Joining.Roll'}}
         </button>
@@ -454,6 +454,34 @@
     {{/if}}
     {{/if}}
 
+    {{#if (eq step "signature")}}
+    <section class="aas-panel">
+      <header class="aas-panel-head"><h2>{{localize 'ALIENRPG.SignatureItem'}}</h2></header>
+      <div class="aas-prose">
+        <p>{{localize 'ALTSHEET.Builder.Signature.Intro'}}</p>
+        <p>{{{localize 'ALTSHEET.Builder.Signature.IntroPick'}}}</p>
+        {{#each signatureEvents}}
+        <p><strong>{{localize 'ALTSHEET.Builder.Signature.FromEvent'}}</strong> {{this}}</p>
+        {{/each}}
+      </div>
+      <div class="aas-builder-roll aas-builder-roll-top">
+        <button type="button" class="aas-button" data-action="rollWritten" data-field="signature">
+          <i class="fa-solid fa-dice" inert></i>
+          {{localize 'ALTSHEET.Builder.Joining.Roll'}}
+        </button>
+      </div>
+      <label class="aas-labelled">
+        <span>{{localize 'ALTSHEET.Builder.Signature.Yours'}}</span>
+        <textarea data-field="signature" rows="2" placeholder="{{localize 'ALTSHEET.Builder.Agenda.Placeholder'}}">{{signature.text}}</textarea>
+      </label>
+      <div class="aas-builder-choices">
+        {{#each signature.examples}}
+        {{> answer choice="signature"}}
+        {{/each}}
+      </div>
+    </section>
+    {{/if}}
+
     {{#if (eq step "review")}}
     <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.ReviewHint'}}</p>
     <section class="aas-panel">
@@ -473,6 +501,7 @@
         <dt>{{localize 'ALTSHEET.Builder.Steps.talent'}}</dt><dd>{{review.talent}}</dd>
         {{#each review.fieldEvents}}<dt>{{title}}</dt><dd>{{text}}</dd>{{/each}}
         {{#if review.agenda}}<dt>{{localize 'ALIENRPG.PersonalAgenda'}}</dt><dd>{{review.agenda}}</dd>{{/if}}
+        {{#if review.signature}}<dt>{{localize 'ALIENRPG.SignatureItem'}}</dt><dd>{{review.signature}}</dd>{{/if}}
         {{#if review.gear}}<dt>{{localize 'ALTSHEET.Builder.Steps.gear'}}</dt><dd>{{review.gear}}</dd>{{/if}}
       </dl>
     </section>

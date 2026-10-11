@@ -187,6 +187,8 @@ const STEPS = [
     method: "lifepath",
     done: (state) => !!state.gearA && !!state.gearB && (!mosGearChoice(state) || !!state.gearMos),
   },
+  // Nor does a signature item have to be settled here.
+  { id: "signature", method: "lifepath", done: () => true },
   { id: "review", done: () => true },
 ];
 
@@ -407,12 +409,23 @@ function startingGear(state) {
 }
 
 /**
- * The personal agendas a marine may pick from or roll for: the list in the language file, which is
- * where to edit it.
+ * The life path's questions answered in the player's own words, each with a list of examples to
+ * pick from or roll for: the step's id, the language file's section holding its examples, and the
+ * label of the character's field it fills.
+ */
+const WRITTEN = {
+  agenda: { section: "Agenda", label: "ALIENRPG.PersonalAgenda", icon: "fa-solid fa-bullseye" },
+  signature: { section: "Signature", label: "ALIENRPG.SignatureItem", icon: "fa-solid fa-heart" },
+};
+
+/**
+ * The examples a marine may pick from or roll for, for their personal agenda or signature item:
+ * the list in the language file, which is where to edit it.
+ * @param {keyof WRITTEN} field
  * @returns {string[]}
  */
-function agendaExamples() {
-  const key = "ALTSHEET.Builder.Agenda.Examples";
+function writtenExamples(field) {
+  const key = `ALTSHEET.Builder.${WRITTEN[field].section}.Examples`;
   const list = foundry.utils.getProperty(game.i18n.translations, key) ?? foundry.utils.getProperty(game.i18n._fallback, key);
   return Object.values(list ?? {}).filter((entry) => typeof entry === "string");
 }
@@ -505,7 +518,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       rollEarlyLife: CharacterBuilder.#onRollEarlyLife,
       rollJoining: CharacterBuilder.#onRollJoining,
       rollFieldEvent: CharacterBuilder.#onRollFieldEvent,
-      rollAgenda: CharacterBuilder.#onRollAgenda,
+      rollWritten: CharacterBuilder.#onRollWritten,
       pickCareer: CharacterBuilder.#onPickCareer,
       pickTalent: CharacterBuilder.#onPickTalent,
       adjust: CharacterBuilder.#onAdjust,
@@ -531,6 +544,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
      * rolled for them; joining is why they joined the Marines, picked or rolled; a career is the
      * id of its Career item; a talent is its name; fieldEvents are the events rolled, by the id
      * of the table each was rolled on; agenda is the personal agenda picked, rolled or written;
+     * signature is their signature item, likewise;
      * gearA, gearB and gearMos are the names of the gear picked from the two bonus lists and from
      * any choice the MOS's gear leaves.
      */
@@ -547,6 +561,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       talent: null,
       fieldEvents: {},
       agenda: "",
+      signature: "",
       gearA: null,
       gearB: null,
       gearMos: null,
@@ -801,17 +816,25 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
         nco: ncoGear(state).map(gearEntry),
         mosOptions: (mosGearChoice(state) ?? []).map(gearEntry).map((entry) => ({ ...entry, id: entry.name, selected: state.gearMos === entry.name })),
       },
-      agenda: {
-        text: state.agenda,
-        examples: agendaExamples().map((text, i) => ({
-          id: String(i),
-          icon: "fa-solid fa-bullseye",
-          label: text,
-          selected: state.agenda.trim() === text,
-        })),
-      },
+      ...Object.fromEntries(
+        Object.entries(WRITTEN).map(([field, { icon }]) => [
+          field,
+          {
+            text: state[field],
+            examples: writtenExamples(field).map((text, i) => ({
+              id: String(i),
+              icon,
+              label: text,
+              selected: state[field].trim() === text,
+            })),
+          },
+        ]),
+      ),
+      // A field event may have handed the marine a signature item already.
+      signatureEvents: fieldEvents.filter(({ event }) => /signature item/i.test(event?.text ?? "")).map(({ event }) => event.text),
       review: {
         agenda: state.method === "lifepath" ? state.agenda.trim() : "",
+        signature: state.method === "lifepath" ? state.signature.trim() : "",
         gear: state.method === "lifepath" ? startingGear(state).map((entry) => entry.label).join(", ") : "",
         fieldEvents: fieldEvents.filter(({ event }) => event).map(({ title, event }) => ({ title, text: event.text })),
         rank: this.#rank,
@@ -933,10 +956,10 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       const offered = { gearA: MARINE_GEAR.listA, gearB: MARINE_GEAR.listB, gearMos: mosGearChoice(this.choices) ?? [] }[choice];
       if (!offered.some((entry) => gearEntry(entry).name === value)) return;
       this.choices[choice] = value;
-    } else if (choice === "agenda") {
-      const text = agendaExamples()[Number(value)];
+    } else if (choice in WRITTEN) {
+      const text = writtenExamples(choice)[Number(value)];
       if (!text) return;
-      this.choices.agenda = text;
+      this.choices[choice] = text;
     } else if (choice === "joining") {
       const reason = this._joiningReasons?.find((entry) => entry.id === value);
       if (!reason) return;
@@ -995,27 +1018,30 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     return this.render();
   }
 
-  /** Roll for one of the personal agendas, shown in chat as a roll at the table would be. */
-  static async #onRollAgenda(event, target) {
+  /** Roll for one of a written answer's examples, shown in chat as a roll at the table would be. */
+  static async #onRollWritten(event, target) {
     target.disabled = true;
-    const examples = agendaExamples();
+    const { field } = target.dataset;
+    if (!(field in WRITTEN)) return;
+    const examples = writtenExamples(field);
     if (!examples.length) return this.render();
     const roll = await new Roll(`1d${examples.length}`).evaluate();
     const text = examples[roll.total - 1];
     await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: `<b>${loc("ALIENRPG.PersonalAgenda")}</b><br>${foundry.utils.escapeHTML(text)}`,
+      flavor: `<b>${loc(WRITTEN[field].label)}</b><br>${foundry.utils.escapeHTML(text)}`,
     });
-    this.choices.agenda = text;
+    this.choices[field] = text;
     return this.render();
   }
 
-  /** An agenda the player writes is kept as they type it. */
+  /** An answer the player writes is kept as they type it. */
   _onRender(context, options) {
     super._onRender(context, options);
-    this.element.querySelector("textarea[data-field='agenda']")?.addEventListener("input", (event) => {
-      this.choices.agenda = event.target.value;
-    });
+    for (const input of this.element.querySelectorAll("textarea[data-field]")) {
+      if (!(input.dataset.field in WRITTEN)) continue;
+      input.addEventListener("input", (event) => (this.choices[input.dataset.field] = event.target.value));
+    }
   }
 
   static #onPickCareer(event, target) {
@@ -1067,6 +1093,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     }
     const events = state.method === "lifepath" ? fieldEventsFor(state).map(({ id }) => state.fieldEvents[id]).filter(Boolean) : [];
     if (state.method === "lifepath" && state.agenda.trim()) update["system.general.agenda.value"] = state.agenda.trim();
+    if (state.method === "lifepath" && state.signature.trim()) update["system.general.sigItem.value"] = state.signature.trim();
     if (events.length) update[`flags.${MODULE_ID}.fieldEvents`] = events.map((event) => event.text).join("\n\n");
     // The system's older career field, for anything that still reads it.
     const legacy = Object.entries(CONFIG.ALIENRPG.career_list).find(([, entry]) => sameName(loc(entry.label), careerItem.name));
