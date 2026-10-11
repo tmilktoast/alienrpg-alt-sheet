@@ -308,6 +308,12 @@ const MOS_TALENTS = {
   "cbrn specialist": ["Calm Breather"],
 };
 
+/**
+ * Talents for pushing rolls on one attribute twice, by the attribute. An MOS only offers the one
+ * for its own key attribute, though the manual lists the Strength one for most of them.
+ */
+const PUSH_TALENTS = { str: "True Grit", agl: "Nimble", wit: "Inquisitive" };
+
 const talentName = (name) => RENAMED_TALENTS[name.trim().toLowerCase()] ?? name.trim();
 
 /** Look up an attribute or skill key by the name the rulebook prints for it. */
@@ -338,7 +344,8 @@ export function careerDefinition(item) {
       .split(",")
       .map((name) => name.trim())
       .filter((name) => name && !DROPPED_TALENTS.includes(name.toLowerCase()))
-      .map(talentName);
+      .map(talentName)
+      .filter((name) => !Object.entries(PUSH_TALENTS).some(([key, push]) => key !== attribute && sameName(push, name)));
     const extra = [...(MOS_TALENTS[item.name.trim().toLowerCase()] ?? []), ...(isMarineCareer(item.name) ? MARINE_TALENTS : [])];
     talents.push(...extra.filter((name) => !talents.some((held) => sameName(held, name))));
     if (attribute && skills.length) return { ...base, core: false, attribute, skills, talents };

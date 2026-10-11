@@ -10,8 +10,8 @@ Notable changes to the Alien RPG Companion (formerly the Alien RPG Alternate She
 - **MOS talents evened out** — in the builder every MOS also offers Precise Shooter; the Agility
   MOSs offer Nimble and the Wits MOSs Inquisitive; the Rifleman offers Weapon Specialist (M41A
   Pulse Rifle), the Comtech Marine Tech Savvy, the Forward Observer Investigator and the CBRN
-  Specialist Calm Breather. Past the Limit is True Grit, Field Surgeon is Field Medic, and Nerves
-  of Steel isn't offered.
+  Specialist Calm Breather. Past the Limit is True Grit, which only the Strength MOSs offer;
+  Field Surgeon is Field Medic, and Nerves of Steel isn't offered.
 - **Renamed** — the module is now the Alien RPG Companion, since it has grown past a character
   sheet. Its id is still `alienrpg-alt-sheet`, so nothing saved in a world changes.
 
