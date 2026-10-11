@@ -232,6 +232,7 @@
         "Title": "Cash",
         "Intro": "A {career} starts with D6 \u00d7 {amount} W-Y dollars.",
         "Roll": "Roll for cash",
+        "Rolled": "You rolled {die}, so you start with <strong>{amount}</strong>. Cash is rolled for once.",
         "Amount": "${amount}"
       },
       "Agenda": {

@@ -557,12 +557,16 @@
       <div class="aas-prose">
         <p>{{localize 'ALTSHEET.Builder.Cash.Intro' career=career.name amount=kit.cash}}</p>
       </div>
+      {{#if review.cash}}
+      <p>{{{localize 'ALTSHEET.Builder.Cash.Rolled' die=kit.die amount=review.cash}}}</p>
+      {{else}}
       <div class="aas-builder-roll">
-        <button type="button" class="aas-button {{#unless review.cash}}aas-button-primary{{/unless}}" data-action="rollCash">
+        <button type="button" class="aas-button aas-button-primary" data-action="rollCash">
           <i class="fa-solid fa-dice" inert></i>
-          {{#if review.cash}}{{localize 'ALTSHEET.Builder.Origin.Reroll'}}{{else}}{{localize 'ALTSHEET.Builder.Cash.Roll'}}{{/if}}
+          {{localize 'ALTSHEET.Builder.Cash.Roll'}}
         </button>
       </div>
+      {{/if}}
       {{else}}
       <p class="aas-empty">{{localize 'ALTSHEET.Builder.Kit.None' career=career.name}}</p>
       {{/if}}

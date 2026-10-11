@@ -249,7 +249,7 @@ const STEPS = [
   },
   { id: "signature", done: () => true },
   // And cash to roll for, likewise.
-  { id: "cash", method: "book", done: (state) => !kitFor(state)?.cash || state.cash !== null },
+  { id: "cash", method: "book", done: (state) => !kitFor(state)?.cash || cashFor(state) !== null },
   { id: "review", done: () => true },
   // Nothing to answer: it says what is left to fill in on the sheet, and is where the life path applies.
   { id: "finish", method: "lifepath", done: () => true },
@@ -546,6 +546,12 @@ function careerKit(name) {
 /** What the rulebook gives the career chosen, when building by the book. */
 const kitFor = (state) => (state.method === "book" ? careerKit(game.items.get(state.career)?.name) : null);
 
+/**
+ * The cash a character built by the book starts with, or null until it is rolled for. The roll is
+ * made once and kept, so it is the die that is remembered: a change of career changes what it is worth.
+ */
+const cashFor = (state) => (state.method === "book" && state.cash !== null && kitFor(state)?.cash ? state.cash * kitFor(state).cash : null);
+
 const NUMBER_WORDS = { two: 2, three: 3, four: 4, five: 5, six: 6 };
 
 /**
@@ -723,7 +729,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
      * id of its Career item; a talent is its name; fieldEvents are the events rolled, by the id
      * of the table each was rolled on; agenda is the personal agenda picked, rolled or written;
      * signature is their signature item, likewise; kit is the gear picked from the career's
-     * list by the book, as it is worded there, and cash what was rolled for it;
+     * list by the book, as it is worded there, and cash the die rolled for their cash;
      * gearA, gearB and gearMos are the names of the gear picked from the two bonus lists and from
      * any choice the MOS's gear leaves.
      */
@@ -1063,7 +1069,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
           disabled: !state.kit.includes(entry.label) && state.kit.length >= RULES.kitPicks,
         })),
         cash: kitFor(state)?.cash ?? 0,
-        rolled: state.cash,
+        die: state.cash,
       },
       // A field event may have handed the marine a signature item already.
       signatureEvents: fieldEvents.filter(({ event }) => /signature item/i.test(event?.text ?? "")).map(({ event }) => event.text),
@@ -1071,7 +1077,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
         agenda: state.agenda.trim(),
         signature: state.signature.trim(),
         kit: state.method === "book" ? state.kit.join(", ") : "",
-        cash: state.method === "book" && state.cash !== null ? fmt("ALTSHEET.Builder.Cash.Amount", { amount: state.cash }) : "",
+        cash: cashFor(state) !== null ? fmt("ALTSHEET.Builder.Cash.Amount", { amount: cashFor(state) }) : "",
         gear: state.method === "lifepath" ? startingGear(state).map((entry) => entry.label).join(", ") : "",
         fieldEvents: fieldEvents.filter(({ event }) => event).map(({ title, event }) => ({ title, text: event.text })),
         rank: this.#rank,
@@ -1116,7 +1122,6 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     if (!mosGearChoice(this.choices)?.includes(this.choices.gearMos)) this.choices.gearMos = null;
     const kit = kitFor(this.choices);
     this.choices.kit = this.choices.kit.filter((text) => kit?.gear.includes(text));
-    if (!kit?.cash) this.choices.cash = null;
     const talents = [...this.#careerTalents, ...this.#officerTalents];
     if (!talents.includes(this.choices.talent)) this.choices.talent = null;
     // With only one talent to start with, there is nothing to pick.
@@ -1340,13 +1345,14 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
   static async #onRollCash(event, target) {
     target.disabled = true;
     const cash = kitFor(this.choices)?.cash;
-    if (!cash) return this.render();
+    // Cash is rolled for once.
+    if (!cash || this.choices.cash !== null) return this.render();
     const roll = await new Roll(`1d6 * ${cash}`).evaluate();
     await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       flavor: `<b>${loc("ALTSHEET.Builder.Cash.Title")}</b>`,
     });
-    this.choices.cash = roll.total;
+    this.choices.cash = roll.dice[0].total;
     return this.render();
   }
 
@@ -1410,7 +1416,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     const events = state.method === "lifepath" ? fieldEventsFor(state).map(({ id }) => state.fieldEvents[id]).filter(Boolean) : [];
     if (state.agenda.trim()) update["system.general.agenda.value"] = state.agenda.trim();
     if (state.signature.trim()) update["system.general.sigItem.value"] = state.signature.trim();
-    if (state.method === "book" && state.cash !== null) update["system.general.cash.value"] = String(state.cash);
+    if (cashFor(state) !== null) update["system.general.cash.value"] = String(cashFor(state));
     if (events.length) update[`flags.${MODULE_ID}.fieldEvents`] = events.map((event) => event.text).join("\n\n");
     // The system's older career field, for anything that still reads it.
     const legacy = Object.entries(CONFIG.ALIENRPG.career_list).find(([, entry]) => sameName(loc(entry.label), careerItem.name));
