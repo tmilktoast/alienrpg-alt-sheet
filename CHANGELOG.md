@@ -3,7 +3,7 @@
 Notable changes to the Alien RPG Companion (formerly the Alien RPG Alternate Sheet). Versions follow the `version` field in
 `module.json`.
 
-## Unreleased
+## 0.3.1 — 2026-10-11
 
 ### Added
 
@@ -11,6 +11,12 @@ Notable changes to the Alien RPG Companion (formerly the Alien RPG Alternate She
   abbreviation before it and their nickname or callsign inside it, as in PVT Kalah “Dagger”
   Hardnick. A Colonial Marines rank is abbreviated; any other is shown as written. Chat messages
   show the speaker's name the same way.
+
+### Changed
+
+- A character's career has its own line under the name in the sheet's header, leaving the name the
+  full width.
+- Verified with Alien RPG system 4.1.18 on Foundry 14.369.
 
 ## 0.3.0 — 2026-10-11
 
