@@ -3,7 +3,7 @@
 Notable changes to the Alien RPG Companion (formerly the Alien RPG Alternate Sheet). Versions follow the `version` field in
 `module.json`.
 
-## Unreleased
+## 0.3.0 — 2026-10-11
 
 ### Changed
 
@@ -14,6 +14,11 @@ Notable changes to the Alien RPG Companion (formerly the Alien RPG Alternate She
   Field Surgeon is Field Medic, and Nerves of Steel isn't offered.
 - **Renamed** — the module is now the Alien RPG Companion, since it has grown past a character
   sheet. Its id is still `alienrpg-alt-sheet`, so nothing saved in a world changes.
+- Each sheet is listed under its own name in Configure Sheet — Alternate Character Sheet,
+  Alternate Synthetic Sheet, Alternate Creature Sheet, Alternate Vehicle Sheet, Alternate Item Sheet,
+  Alternate Career Sheet, Alternate System Sheet, Alternate Journal Sheet and so on — in place of "Alternate Sheet" for all of them.
+- The ranged attack dialog starts on Short range instead of Adjacent. A weapon that only reaches
+  Adjacent still starts there.
 
 ### Added
 
@@ -108,14 +113,6 @@ Notable changes to the Alien RPG Companion (formerly the Alien RPG Alternate She
 
 - A Notes tab no longer shows "[object Object]" for the many items and actors whose notes a past
   system migration left holding that text. They show as empty, and saving a note replaces it.
-
-### Changed
-
-- Each sheet is listed under its own name in Configure Sheet — Alternate Character Sheet,
-  Alternate Synthetic Sheet, Alternate Creature Sheet, Alternate Vehicle Sheet, Alternate Item Sheet,
-  Alternate Career Sheet, Alternate System Sheet, Alternate Journal Sheet and so on — in place of "Alternate Sheet" for all of them.
-- The ranged attack dialog starts on Short range instead of Adjacent. A weapon that only reaches
-  Adjacent still starts there.
 
 ## 0.2.1 — 2026-10-09
 
