@@ -75,7 +75,6 @@
     {{/if}}
 
     {{#if (eq step "origin")}}
-    <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.Origin.Hint'}}</p>
     <section class="aas-panel">
       <header class="aas-panel-head">
         <h2>{{localize 'ALTSHEET.Origin.Label'}}</h2>
@@ -89,7 +88,15 @@
         <dt>{{localize 'ALTSHEET.Origin.Home'}}</dt><dd><b>{{origin.home}}</b></dd>
       </dl>
       {{else}}
-      <p class="aas-empty">{{localize 'ALTSHEET.Builder.Origin.NotRolled'}}</p>
+      <div class="aas-prose">
+        <p>{{localize 'ALTSHEET.Builder.Origin.Intro'}}</p>
+        <ul>
+          <li>{{localize 'ALTSHEET.Builder.Origin.IntroSupernation'}}</li>
+          <li>{{localize 'ALTSHEET.Builder.Origin.IntroSubAffiliation'}}</li>
+          <li>{{localize 'ALTSHEET.Builder.Origin.IntroHome'}}</li>
+        </ul>
+        <p>{{localize 'ALTSHEET.Builder.Origin.IntroRoll'}}</p>
+      </div>
       {{/if}}
       <div class="aas-builder-roll">
         <button type="button" class="aas-button {{#unless origin}}aas-button-primary{{/unless}}" data-action="rollOrigin">

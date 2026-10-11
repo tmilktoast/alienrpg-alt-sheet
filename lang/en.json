@@ -69,7 +69,11 @@
         "RankQuestion": "What is your rank?"
       },
       "Origin": {
-        "Hint": "Roll where your marine comes from: a supernation, a sub-affiliation within it, and a home world or sector. The roll is shown in chat.",
+        "Intro": "Most soldiers in the Colonial Marines were born and raised in the United Americas, but some may have come from elsewhere before emigrating to the UA.",
+        "IntroSupernation": "The Origin includes your supernation, e.g. UA, ICSC, or 3WE.",
+        "IntroSubAffiliation": "Your sub-affiliation, typically a corporation that you or your family worked for.",
+        "IntroHome": "Your home world or sector.",
+        "IntroRoll": "Click to roll your Origin.",
         "NotRolled": "Not rolled yet.",
         "Roll": "Roll origin",
         "Reroll": "Roll again",
