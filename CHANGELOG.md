@@ -5,6 +5,14 @@ Notable changes to the Alien RPG Companion (formerly the Alien RPG Alternate She
 
 ## Unreleased
 
+### Added
+
+- **Marine Talents** — a compendium pack with Watchful, Killer and Hidden Stash, which the MOSs
+  and field events give and the Evolved rules' compendiums lack. The builder uses them when the
+  world has no item of that name.
+- The Life Path Tables pack has the table an artificial womb soldier's early life experience is
+  rolled on, EL - And Experienced (AW Soldier).
+
 ### Fixed
 
 - The builder reads a career whose description links its talents the way Foundry stores a link now

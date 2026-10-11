@@ -1,0 +1,133 @@
+{
+  "_id": "iedMXygYfPNjCcql",
+  "_key": "!items!iedMXygYfPNjCcql",
+  "name": "Killer",
+  "type": "talent",
+  "img": "icons/svg/skull.svg",
+  "system": {
+    "general": {
+      "career": {
+        "value": "1"
+      },
+      "comment": {
+        "value": "<p>You know where to strike to make your enemy fail and not get up. Ever. When your enemy sustains a critical injury you may switch the d66 roll so that the ones die becomes the tens die and vice versa. This talent can only be used on humans.</p>"
+      }
+    },
+    "notes": "",
+    "modifiers": {
+      "attributes": {
+        "str": {
+          "value": 0,
+          "label": ""
+        },
+        "wit": {
+          "value": 0,
+          "label": ""
+        },
+        "agl": {
+          "value": 0,
+          "label": ""
+        },
+        "emp": {
+          "value": 0,
+          "label": ""
+        },
+        "health": {
+          "value": 0,
+          "label": ""
+        },
+        "stress": {
+          "value": 0,
+          "label": ""
+        },
+        "resolve": {
+          "value": 0,
+          "label": ""
+        }
+      },
+      "skills": {
+        "heavyMach": {
+          "value": 0,
+          "label": "",
+          "ability": ""
+        },
+        "closeCbt": {
+          "value": 0,
+          "label": "",
+          "ability": ""
+        },
+        "stamina": {
+          "value": 0,
+          "label": "",
+          "ability": ""
+        },
+        "rangedCbt": {
+          "value": 0,
+          "label": "",
+          "ability": ""
+        },
+        "mobility": {
+          "value": 0,
+          "label": "",
+          "ability": ""
+        },
+        "piloting": {
+          "value": 0,
+          "label": "",
+          "ability": ""
+        },
+        "command": {
+          "value": 0,
+          "label": "",
+          "ability": ""
+        },
+        "manipulation": {
+          "value": 0,
+          "label": "",
+          "ability": ""
+        },
+        "medicalAid": {
+          "value": 0,
+          "label": "",
+          "ability": ""
+        },
+        "observation": {
+          "value": 0,
+          "label": "",
+          "ability": ""
+        },
+        "survival": {
+          "value": 0,
+          "label": "",
+          "ability": ""
+        },
+        "comtech": {
+          "value": 0,
+          "label": "",
+          "ability": ""
+        }
+      }
+    },
+    "header": {
+      "active": "false"
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "14.368",
+    "systemId": "alienrpg",
+    "systemVersion": "4.1.17",
+    "createdTime": 1791736751958,
+    "modifiedTime": 1791736751958,
+    "lastModifiedBy": null
+  }
+}

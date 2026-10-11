@@ -1,0 +1,217 @@
+{
+  "_id": "3Y3n6OcEfJjBlWlY",
+  "_key": "!tables!3Y3n6OcEfJjBlWlY",
+  "name": "EL - And Experienced (AW Soldier)",
+  "folder": null,
+  "img": "icons/svg/d20-grey.svg",
+  "description": "<p>What an artificial womb soldier experienced growing up. Rolled by the character builder's Colonial Marine Life Path.</p>",
+  "results": [
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "_id": "2GyTKrekjYppyQeA",
+      "name": "AND EXPERIENCED",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>A brother challenged me. I put him in his place.</p><p>+1 CLOSE COMBAT</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "14.368",
+        "systemId": "alienrpg",
+        "systemVersion": "4.1.17",
+        "createdTime": 1791733751965,
+        "modifiedTime": 1791733751965,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!3Y3n6OcEfJjBlWlY.2GyTKrekjYppyQeA"
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "_id": "HYekD8nTBsWh7A65",
+      "name": "AND EXPERIENCED",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>A sister challenged me. I put her in her place.</p><p>+1 CLOSE COMBAT</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "14.368",
+        "systemId": "alienrpg",
+        "systemVersion": "4.1.17",
+        "createdTime": 1791733751965,
+        "modifiedTime": 1791733751965,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!3Y3n6OcEfJjBlWlY.HYekD8nTBsWh7A65"
+    },
+    {
+      "type": "text",
+      "weight": 2,
+      "range": [
+        3,
+        4
+      ],
+      "_id": "SbAa69cEyGcLrFR6",
+      "name": "AND EXPERIENCED",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>A squadmate attempted to ambush me. They learned better.</p><p>+1 OBSERVATION</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "14.368",
+        "systemId": "alienrpg",
+        "systemVersion": "4.1.17",
+        "createdTime": 1791733751965,
+        "modifiedTime": 1791733751965,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!3Y3n6OcEfJjBlWlY.SbAa69cEyGcLrFR6"
+    },
+    {
+      "type": "text",
+      "weight": 2,
+      "range": [
+        5,
+        6
+      ],
+      "_id": "v7zANHVQE93IoiSy",
+      "name": "AND EXPERIENCED",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>My squadmates looked up to me.</p><p>+1 COMMAND</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "14.368",
+        "systemId": "alienrpg",
+        "systemVersion": "4.1.17",
+        "createdTime": 1791733751965,
+        "modifiedTime": 1791733751965,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!3Y3n6OcEfJjBlWlY.v7zANHVQE93IoiSy"
+    },
+    {
+      "type": "text",
+      "weight": 2,
+      "range": [
+        7,
+        8
+      ],
+      "_id": "oUNMtUNreHT5uAx5",
+      "name": "AND EXPERIENCED",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>None could catch me on the obstacle course.</p><p>+1 MOBILITY</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "14.368",
+        "systemId": "alienrpg",
+        "systemVersion": "4.1.17",
+        "createdTime": 1791733751965,
+        "modifiedTime": 1791733751965,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!3Y3n6OcEfJjBlWlY.oUNMtUNreHT5uAx5"
+    },
+    {
+      "type": "text",
+      "weight": 2,
+      "range": [
+        9,
+        10
+      ],
+      "_id": "ZJ8p6O6IZCw5Uqc6",
+      "name": "AND EXPERIENCED",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>I spent 3 months alone in the bush during survival training. I could have stayed there forever.</p><p>+1 SURVIVAL</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "14.368",
+        "systemId": "alienrpg",
+        "systemVersion": "4.1.17",
+        "createdTime": 1791733751965,
+        "modifiedTime": 1791733751965,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!3Y3n6OcEfJjBlWlY.ZJ8p6O6IZCw5Uqc6"
+    },
+    {
+      "type": "text",
+      "weight": 2,
+      "range": [
+        11,
+        12
+      ],
+      "_id": "BRM4lXAQQ9P894bs",
+      "name": "AND EXPERIENCED",
+      "img": "icons/svg/d20-black.svg",
+      "description": "<p>The punching bag in the training room disintegrated from use, so I told my squadmates they could use me instead.</p><p>+1 STAMINA</p>",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "14.368",
+        "systemId": "alienrpg",
+        "systemVersion": "4.1.17",
+        "createdTime": 1791733751965,
+        "modifiedTime": 1791733751965,
+        "lastModifiedBy": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!3Y3n6OcEfJjBlWlY.BRM4lXAQQ9P894bs"
+    }
+  ],
+  "replacement": true,
+  "displayRoll": false,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "14.368",
+    "systemId": "alienrpg",
+    "systemVersion": "4.1.17",
+    "createdTime": 1791733751965,
+    "modifiedTime": 1791733751967,
+    "lastModifiedBy": null
+  },
+  "formula": "1d12",
+  "ownership": {
+    "default": 0
+  }
+}

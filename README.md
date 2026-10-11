@@ -129,9 +129,7 @@ for the type after the method, and for a womb soldier offers only marine careers
 attributes by `wombAttributeMax` and gives Overkill as the starting talent. The Bio tab's Type
 field shows and changes it. On the life path a womb soldier's origin, upbringing and reason for
 joining are fixed (the `ALTSHEET.Builder.Womb` strings in `lang/en.json`); only what they
-experienced is rolled, on a table named `EL - And Experienced (AW Soldier)` in the life path pack
-or the world's Rollable Tables, written like the EL - And Experienced table. Without that table
-nothing is rolled for it.
+experienced is rolled, on the life path pack's `EL - And Experienced (AW Soldier)` table.
 
 The system has no nickname, rank or life path fields, so the Bio tab's Nickname (labelled
 Callsign for a marine or a pilot, going by the character's career), Rank, Supernation, Sub-affiliation,
@@ -152,12 +150,19 @@ unit commander another on the NCO one. An event's `+1 SKILL` or `+1 ATTRIBUTE` i
 character (several joined by "or" are a choice), and a talent written as `<strong>Name</strong>
 talent` is added from the world's Items; anything else an event gives is left in its text. It reads
 an early life's skill point from the `+1 SKILL` in the result's text, so keep that wording when
-editing the EL - And Experienced table.
+editing the EL - And Experienced table. EL - And Experienced (AW Soldier) is the table an
+artificial womb soldier's experience is rolled on.
+
+A second pack, **Marine Talents**, holds the talents the Colonial Marines manual's MOSs and field
+events give that the Evolved rules' compendiums don't have: Watchful, Killer and Hidden Stash. The
+builder uses a talent from this pack when the world's Items have none of that name, so a world
+needs nothing imported; an item of the world's own with the same name is used in its place.
 
 The tables stand on their own: they only draw from each other, and talents and gear are named in
 the text rather than linked.
 
-The sources are the JSON files in `src/packs/life-path/`, one per table.
+The sources are the JSON files in `src/packs/life-path/` and `src/packs/talents/`, one per table
+or item.
 
 ## Local development
 

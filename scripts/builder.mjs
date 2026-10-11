@@ -368,11 +368,27 @@ export function careerDefinition(item) {
 
 /** The world's Talent item for a talent a career names, e.g. "Weapon Specialist (M5 RPG)". */
 function findTalent(name) {
-  const talents = game.items.filter((item) => item.type === "talent");
-  return (
-    talents.find((item) => sameName(item.name, name)) ??
-    talents.find((item) => sameName(item.name, name.replace(/\s*\(.*\)\s*$/, "")))
-  );
+  const plainName = name.replace(/\s*\(.*\)\s*$/, "");
+  // The world's own item comes first, so a GM's version of a talent wins over the module's.
+  for (const talents of [game.items.filter((item) => item.type === "talent"), packTalents]) {
+    const found = talents.find((item) => sameName(item.name, name)) ?? talents.find((item) => sameName(item.name, plainName));
+    if (found) return found;
+  }
+}
+
+/**
+ * The talents the module ships, for a world that has no item of its own for one: those the
+ * Colonial Marines manual's MOSs and field events give that the Evolved rules' compendiums lack.
+ * They are read from the pack once, when a builder first needs them, so looking one up needn't wait.
+ * @type {Item[]}
+ */
+let packTalents = [];
+const TALENT_PACK = `${MODULE_ID}.talents`;
+
+async function loadPackTalents() {
+  const pack = game.packs.get(TALENT_PACK);
+  if (!pack || packTalents.length) return;
+  packTalents = (await pack.getDocuments()).filter((item) => item.type === "talent");
 }
 
 /**
@@ -890,6 +906,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
   }
 
   async _prepareContext() {
+    await loadPackTalents();
     const cfg = CONFIG.ALIENRPG;
     const state = this.choices;
     const career = this.career;
