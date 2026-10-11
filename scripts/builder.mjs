@@ -1392,9 +1392,15 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     return this.render();
   }
 
-  /** An answer the player writes is kept as they type it. */
+  /** Start a new step at its top, and keep an answer the player writes as they type it. */
   _onRender(context, options) {
     super._onRender(context, options);
+    // A render keeps the pane where it was scrolled to, which is right within a step and wrong for a new one.
+    if (this._shownStep !== this.step) {
+      const body = this.element.querySelector(".aas-builder-body");
+      if (body) body.scrollTop = 0;
+      this._shownStep = this.step;
+    }
     for (const input of this.element.querySelectorAll("textarea[data-field]")) {
       if (!(input.dataset.field in WRITTEN)) continue;
       input.addEventListener("input", (event) => (this.choices[input.dataset.field] = event.target.value));
