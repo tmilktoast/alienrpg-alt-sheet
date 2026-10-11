@@ -3,7 +3,7 @@
 Notable changes to the Alien RPG Companion (formerly the Alien RPG Alternate Sheet). Versions follow the `version` field in
 `module.json`.
 
-## Unreleased
+## 0.3.3 — 2026-10-11
 
 ### Changed
 
