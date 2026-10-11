@@ -273,14 +273,20 @@ const sameName = (a, b) => a.trim().toLowerCase() === b.trim().toLowerCase();
  * Talents the Colonial Marines manual names that the Evolved rules renamed, by the manual's name
  * in lower case.
  */
-const RENAMED_TALENTS = { "field surgeon": "Field Medic", "past the limit": "True Grit", tough: "Hardened" };
+const RENAMED_TALENTS = {
+  "field surgeon": "Field Medic",
+  "past the limit": "True Grit",
+  tough: "Hardened",
+  // Not a rename: Merciless isn't carried over, and the event that gave it gives this instead.
+  merciless: "Reckless",
+};
 
 /** The name a talent goes by now, for one a career names. */
 /**
  * Talents the Colonial Marines manual names that aren't carried over to the Evolved rules, in lower
  * case: a career that lists one doesn't offer it.
  */
-const DROPPED_TALENTS = ["nerves of steel", "merciless"];
+const DROPPED_TALENTS = ["nerves of steel"];
 
 /**
  * Talents every MOS offers besides its own, which the Colonial Marines manual's lists predate: the
