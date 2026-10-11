@@ -9,12 +9,15 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
 
 - **Builder creation methods** — the character builder now starts by asking how to create the
   character. By the book is the builder as it was. Colonial Marine Life Path, for a Colonial
-  Marines campaign, adds its own questions first; so far there is one, whether you are the unit
-  commander. The commander is a Corporal; anyone else picks Private or Private First Class.
-- **Rank** — a Rank field on the character sheet's Bio tab.
+  Marines campaign, adds its own steps first. Command asks whether you are the unit commander: the
+  commander is a Corporal; anyone else picks Private or Private First Class. Origin rolls a
+  supernation, sub-affiliation and home on the Life Path Tables, showing the roll in chat.
+- **Rank and origin** — Rank, Supernation, Sub-affiliation and Home fields on the character
+  sheet's Bio tab.
 - **Life Path Tables** — a compendium pack of fourteen roll tables for a Colonial Marines life
   path: Life Path - Origin and its six sub-affiliation and home tables, Early Life and its three EL
-  tables, Joining the Marines, and the Enlisted and NCO event tables. Tables only; nothing rolls on them automatically.
+  tables, Joining the Marines, and the Enlisted and NCO event tables. The character builder rolls on
+  the Origin table; the rest are tables only.
 - **Creature sheet** — an alternate sheet for `creature` actors. Health, speed and armor sit in the
   header; the Creature tab has the signature attack with a list of what each roll on its table
   does, mobility, observation and acid splash as roll buttons, special abilities and critical

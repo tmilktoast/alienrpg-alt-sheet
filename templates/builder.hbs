@@ -74,6 +74,32 @@
     {{/if}}
     {{/if}}
 
+    {{#if (eq step "origin")}}
+    <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.Origin.Hint'}}</p>
+    <section class="aas-panel">
+      <header class="aas-panel-head">
+        <h2>{{localize 'ALTSHEET.Origin.Label'}}</h2>
+        {{#if origin}}<span class="aas-tag">{{localize 'ALTSHEET.Builder.Origin.Rolled' roll=origin.roll}}</span>{{/if}}
+      </header>
+      {{#if origin}}
+      <dl class="aas-facts">
+        <dt>{{localize 'ALTSHEET.Origin.Supernation'}}</dt>
+        <dd><b>{{origin.supernation}}</b>{{#if origin.detail}}<br><span class="aas-empty">{{origin.detail}}</span>{{/if}}</dd>
+        <dt>{{localize 'ALTSHEET.Origin.SubAffiliation'}}</dt><dd><b>{{origin.subAffiliation}}</b></dd>
+        <dt>{{localize 'ALTSHEET.Origin.Home'}}</dt><dd><b>{{origin.home}}</b></dd>
+      </dl>
+      {{else}}
+      <p class="aas-empty">{{localize 'ALTSHEET.Builder.Origin.NotRolled'}}</p>
+      {{/if}}
+      <div class="aas-builder-roll">
+        <button type="button" class="aas-button {{#unless origin}}aas-button-primary{{/unless}}" data-action="rollOrigin">
+          <i class="fa-solid fa-dice" inert></i>
+          {{#if origin}}{{localize 'ALTSHEET.Builder.Origin.Reroll'}}{{else}}{{localize 'ALTSHEET.Builder.Origin.Roll'}}{{/if}}
+        </button>
+      </div>
+    </section>
+    {{/if}}
+
     {{#if (eq step "career")}}
     <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.CareerHint'}}</p>
     {{#each groups}}
@@ -165,6 +191,10 @@
       <dl class="aas-facts">
         <dt>{{localize 'ALIENRPG.Career'}}</dt><dd>{{career.name}}</dd>
         {{#if review.rank}}<dt>{{localize 'ALTSHEET.MilitaryRank'}}</dt><dd>{{review.rank}}</dd>{{/if}}
+        {{#if review.origin}}
+        <dt>{{localize 'ALTSHEET.Origin.Label'}}</dt>
+        <dd>{{review.origin.supernation}}, {{review.origin.subAffiliation}}, {{review.origin.home}}</dd>
+        {{/if}}
         <dt>{{localize 'ALIENRPG.Attributes'}}</dt>
         <dd>{{#each review.attributes}}<span class="aas-builder-pair">{{label}} <b>{{value}}</b></span>{{/each}}</dd>
         <dt>{{localize 'ALIENRPG.Skills'}}</dt>

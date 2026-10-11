@@ -51,8 +51,8 @@ system's sheet for `character`, `synthetic`, `creature`, `vehicles`, `spacecraft
   career, attributes, skills and a starting talent by the Evolved rules, then writes them to the
   character in one go. It offers the Career/Specialty items in the world's Items sidebar. It can
   build by the book, or by the Colonial Marine Life Path, which is written for a Colonial Marines
-  campaign and asks about the marine's rank and history first (so far, only whether they command
-  the unit, and their rank).
+  campaign and asks about the marine's rank and history first (so far, whether they command the
+  unit, their rank, and a rolled origin).
 - **Readable chat** — chat messages on a flat dark card in a plainer typeface, with the system's
   terminal green and display font kept for the sender, headings and labels. Each player can turn it
   off under Configure Settings → Alien RPG Alternate Sheet.
@@ -90,16 +90,17 @@ A career it can't work out either way isn't offered. The creation rules' numbers
 table at the top of the file, and the steps are the `STEPS` list, which is where further steps go.
 A step with `method: "lifepath"` is only asked on the Colonial Marine Life Path.
 
-The system has no rank field, so the Bio tab's Rank is stored on the actor as the module flag
-`flags.alienrpg-alt-sheet.rank`.
+The system has no rank or origin fields, so the Bio tab's Rank, Supernation, Sub-affiliation and
+Home are stored on the actor as the module flags `flags.alienrpg-alt-sheet.rank` and
+`flags.alienrpg-alt-sheet.origin`.
 
 ## Life path tables
 
 The module ships a compendium pack, **Life Path Tables**, with the roll tables for a Colonial
 Marines life path: Life Path - Origin (which draws a sub-affiliation and a home from the six `EV`
 tables), Early Life (which draws from the three EL tables), Joining the Marines, and the Enlisted
-and NCO event tables. They are tables only; the character builder
-doesn't use them.
+and NCO event tables. The character builder's Colonial Marine Life Path rolls on Life Path -
+Origin, which it finds in the pack by name; it doesn't use the others yet.
 
 The tables stand on their own: they only draw from each other, and talents and gear are named in
 the text rather than linked.

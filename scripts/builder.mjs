@@ -36,6 +36,12 @@ const CORE_CAREERS = {
 const COMMANDER_RANK = "Corporal";
 const ENLISTED_RANKS = ["Private", "Private First Class"];
 
+/** The module's pack of life path roll tables, and the one a marine's origin is rolled on. */
+const LIFE_PATH_PACK = `${MODULE_ID}.life-path`;
+const ORIGIN_TABLE = "Life Path - Origin";
+/** The parts of an origin, by the name the tables give the result that carries each. */
+const ORIGIN_PARTS = { SUPERNATION: "supernation", "SUB-AFFILIATION": "subAffiliation", HOME: "home" };
+
 /**
  * Every step the builder knows, in order. Each says whether what has been chosen so far completes
  * it, and may name the one creation method it belongs to: "book" spends the rulebook's points and
@@ -46,6 +52,7 @@ const STEPS = [
   { id: "method", done: (state) => !!state.method },
   // The commander's rank is fixed; anyone else has one to pick.
   { id: "commander", method: "lifepath", done: (state) => state.commander === "yes" || (state.commander === "no" && !!state.rank) },
+  { id: "origin", method: "lifepath", done: (state) => !!state.origin },
   { id: "career", done: (state) => !!state.career },
   { id: "attributes", done: (state) => spent(state.attributes) === RULES.attributePoints },
   { id: "skills", done: (state) => spent(state.skills) === RULES.skillPoints },
@@ -109,6 +116,34 @@ function findTalent(name) {
 }
 
 /* -------------------------------------------- */
+/*  Life path                                   */
+/* -------------------------------------------- */
+
+/**
+ * Roll a marine's origin on the life path tables: a supernation, and from that supernation's own
+ * tables a sub-affiliation and a home. The draw is shown in chat, as a roll at the table would be.
+ * @returns {Promise<{roll: number, supernation: string, detail: string, subAffiliation: string,
+ *   home: string}|null>}  Null if the tables aren't there to roll on.
+ */
+async function rollOrigin() {
+  const pack = game.packs.get(LIFE_PATH_PACK);
+  const entry = pack?.index.find((table) => table.name === ORIGIN_TABLE);
+  const table = entry && (await pack.getDocument(entry._id));
+  if (!table) return null;
+  const draw = await table.draw({ recursive: true });
+  const origin = { roll: draw.roll.total, supernation: "", detail: "", subAffiliation: "", home: "" };
+  for (const result of draw.results) {
+    const part = ORIGIN_PARTS[result.name?.trim().toUpperCase()];
+    if (!part) continue;
+    // A supernation's result is its name and then a line about being born there.
+    const [value, ...rest] = (result.description ?? "").split(/<\/p>/i).map(plain).filter(Boolean);
+    origin[part] = value ?? "";
+    if (part === "supernation") origin.detail = rest.join(" ");
+  }
+  return origin;
+}
+
+/* -------------------------------------------- */
 /*  Application                                 */
 /* -------------------------------------------- */
 
@@ -130,6 +165,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       next: CharacterBuilder.#onNext,
       back: CharacterBuilder.#onBack,
       pick: CharacterBuilder.#onPick,
+      rollOrigin: CharacterBuilder.#onRollOrigin,
       pickCareer: CharacterBuilder.#onPickCareer,
       pickTalent: CharacterBuilder.#onPickTalent,
       adjust: CharacterBuilder.#onAdjust,
@@ -151,13 +187,14 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     this.step = STEPS[0].id;
     /**
      * What has been chosen so far. The method is "book" or "lifepath"; commander is "yes" or "no";
-     * rank is the one a marine who isn't the commander picked; a career is the id of its Career
-     * item; a talent is its name.
+     * rank is the one a marine who isn't the commander picked; origin is what was rolled for it; a
+     * career is the id of its Career item; a talent is its name.
      */
     this.choices = {
       method: null,
       commander: null,
       rank: null,
+      origin: null,
       career: null,
       attributes: Object.fromEntries(ATTRIBUTES.map((key) => [key, RULES.attributeMin])),
       skills: Object.fromEntries(Object.keys(CONFIG.ALIENRPG.skills).map((key) => [key, 0])),
@@ -317,8 +354,10 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
         })),
       },
       talents,
+      origin: state.origin,
       review: {
         rank: this.#rank,
+        origin: state.method === "lifepath" ? state.origin : null,
         talent: state.talent,
         attributes: ATTRIBUTES.map((key) => ({ label: attributeLabel(key), value: state.attributes[key] })),
         skills: Object.entries(state.skills)
@@ -379,6 +418,15 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     return this.render();
   }
 
+  /** Roll the marine's origin, or roll it again. */
+  static async #onRollOrigin(event, target) {
+    target.disabled = true;
+    const origin = await rollOrigin();
+    if (!origin) return ui.notifications.warn(loc("ALTSHEET.Builder.Origin.NoTable"));
+    this.choices.origin = origin;
+    return this.render();
+  }
+
   static #onPickCareer(event, target) {
     this.choices.career = target.dataset.careerId;
     this.#fitToCareer();
@@ -424,6 +472,10 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     const legacy = Object.entries(CONFIG.ALIENRPG.career_list).find(([, entry]) => sameName(loc(entry.label), careerItem.name));
     if (legacy) update["system.general.career.value"] = legacy[0];
     if (this.#rank) update[`flags.${MODULE_ID}.rank`] = this.#rank;
+    if (state.method === "lifepath" && state.origin) {
+      const { supernation, subAffiliation, home } = state.origin;
+      update[`flags.${MODULE_ID}.origin`] = { supernation, subAffiliation, home };
+    }
     await actor.update(update);
     // A new character starts unhurt; the system works out maximum Health from the scores just set.
     const { calculatedMax, max } = actor.system.header.health;

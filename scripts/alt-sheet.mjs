@@ -492,8 +492,9 @@ function prepareBio(actor) {
   const legacy = Number(career.value) ? CONFIG.ALIENRPG.career_list[career.value] : null;
   return {
     career: legacy ? loc(legacy.label) : "",
-    // The system has no field for a rank, so it is kept on the module's own flags.
+    // The system has no fields for a rank or an origin, so they are kept on the module's own flags.
     rank: actor.getFlag(MODULE_ID, "rank") ?? "",
+    origin: actor.getFlag(MODULE_ID, "origin") ?? {},
     xp: { value: xp.value, max: xp.max, pips: pips(xp.value, xp.max) },
     sp: { value: sp.value, max: sp.max, pips: pips(sp.value, sp.max) },
   };

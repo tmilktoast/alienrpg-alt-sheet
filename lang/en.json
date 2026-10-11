@@ -36,6 +36,7 @@
       "Steps": {
         "method": "Method",
         "commander": "Command",
+        "origin": "Origin",
         "career": "Career",
         "attributes": "Attributes",
         "skills": "Skills",
@@ -65,6 +66,14 @@
           "Hint": "You follow the commander's orders. Choose your rank below."
         },
         "RankQuestion": "What is your rank?"
+      },
+      "Origin": {
+        "Hint": "Roll where your marine comes from: a supernation, a sub-affiliation within it, and a home world or sector. The roll is shown in chat.",
+        "NotRolled": "Not rolled yet.",
+        "Roll": "Roll origin",
+        "Reroll": "Roll again",
+        "Rolled": "Rolled {roll}",
+        "NoTable": "The Life Path - Origin table is missing from the Life Path Tables compendium."
       },
       "CareerHint": "Your career sets your key attribute, your key skills and the talents you can start with.",
       "NoCareers": "No careers found. Import the rulebook's Career items into the world's Items sidebar.",
@@ -168,6 +177,12 @@
     "AttributesSkills": "Attributes & Skills",
     "Rank": "Rank",
     "MilitaryRank": "Rank",
+    "Origin": {
+      "Label": "Origin",
+      "Supernation": "Supernation",
+      "SubAffiliation": "Sub-affiliation",
+      "Home": "Home"
+    },
     "Base": "Base",
     "Max": "Max",
     "Stunts": "Stunts",

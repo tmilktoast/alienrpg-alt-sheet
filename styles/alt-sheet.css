@@ -1948,6 +1948,12 @@
   flex: 0 0 110px;
 }
 
+.alien-alt-sheet .aas-builder-roll {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
 .alien-alt-sheet .aas-builder-pair {
   display: inline-block;
   margin-right: 12px;
