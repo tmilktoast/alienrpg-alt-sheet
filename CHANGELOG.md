@@ -7,6 +7,8 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
 
 ### Added
 
+- **Nickname** — a Nickname field on the character sheet's Bio tab, labelled Callsign when the
+  character's career is a marine's or a pilot's.
 - **Builder creation methods** — the character builder now starts by asking how to create the
   character. By the book is the builder as it was. Colonial Marine Life Path, for a Colonial
   Marines campaign, adds its own steps first. Command asks whether you are the unit commander: the

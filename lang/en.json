@@ -320,6 +320,8 @@
     "AttributesSkills": "Attributes & Skills",
     "Rank": "Rank",
     "MilitaryRank": "Rank",
+    "Nickname": "Nickname",
+    "Callsign": "Callsign",
     "EarlyLife": "Early life",
     "Joining": "Joining the Marines",
     "FieldEvents": "Field events",

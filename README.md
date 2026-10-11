@@ -104,9 +104,10 @@ The Gear step's lists are `MARINE_GEAR` in `scripts/builder.mjs`: the basic gear
 gets, the two bonus lists to pick one from each, and each MOS's gear. They name Gear items in the
 world's Items sidebar; one with no item there is added as a plain item of that name.
 
-The system has no rank or life path fields, so the Bio tab's Rank, Supernation, Sub-affiliation,
+The system has no nickname, rank or life path fields, so the Bio tab's Nickname (labelled
+Callsign for a marine or a pilot, going by the character's career), Rank, Supernation, Sub-affiliation,
 Home, Early life, Joining the Marines and Field events are stored on the actor as the module flags
-`rank`, `origin`, `earlyLife`, `joining` and `fieldEvents` under `flags.alienrpg-alt-sheet`.
+`nickname`, `rank`, `origin`, `earlyLife`, `joining` and `fieldEvents` under `flags.alienrpg-alt-sheet`.
 
 ## Life path tables
 

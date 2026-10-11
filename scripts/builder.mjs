@@ -138,7 +138,7 @@ const MARINE_SKILLS = ["closeCbt", "stamina", "rangedCbt"];
  * The Military Occupational Specialties a marine on the life path chooses from, by the name of
  * their Career item and in the order they are offered. An MOS is the marine's career.
  */
-const MARINE_MOS = [
+export const MARINE_MOS = [
   "Assault Marine (Breacher)",
   "Automatic Rifleman (Smartgunner)",
   "Comtech Marine",

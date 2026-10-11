@@ -1,4 +1,4 @@
-import { CharacterBuilder } from "./builder.mjs";
+import { CharacterBuilder, MARINE_MOS } from "./builder.mjs";
 
 const MODULE_ID = "alienrpg-alt-sheet";
 const SYSTEM_ID = "alienrpg";
@@ -485,6 +485,18 @@ async function prepareActionsLink() {
   );
 }
 
+/**
+ * Whether a character's nickname is a callsign: marines and pilots have those. A marine's career
+ * may be one of the MOSs, which don't all say "marine".
+ */
+function hasCallsign(actor) {
+  const { career } = actor.system.general;
+  const legacy = Number(career.value) ? CONFIG.ALIENRPG.career_list[career.value] : null;
+  const careers = [...actor.items.filter((item) => item.type === "specialty").map((item) => item.name), legacy ? loc(legacy.label) : ""];
+  const marine = [...MARINE_MOS, "Dropship Crew Chief"].map((name) => name.toLowerCase());
+  return careers.some((name) => /marine|pilot/i.test(name) || marine.includes(name.trim().toLowerCase()));
+}
+
 function prepareBio(actor) {
   const { xp, sp, career } = actor.system.general;
   // Careers are Career/Specialty items now. The system's older career field shares its list with
@@ -494,6 +506,8 @@ function prepareBio(actor) {
     career: legacy ? loc(legacy.label) : "",
     // The system has no fields for a rank or a life path, so they are kept on the module's own flags.
     rank: actor.getFlag(MODULE_ID, "rank") ?? "",
+    nickname: actor.getFlag(MODULE_ID, "nickname") ?? "",
+    nicknameLabel: loc(hasCallsign(actor) ? "ALTSHEET.Callsign" : "ALTSHEET.Nickname"),
     origin: actor.getFlag(MODULE_ID, "origin") ?? {},
     earlyLife: actor.getFlag(MODULE_ID, "earlyLife") ?? "",
     joining: actor.getFlag(MODULE_ID, "joining") ?? "",
