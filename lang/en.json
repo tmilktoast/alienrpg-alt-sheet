@@ -134,6 +134,15 @@
           "Another marine outside the unit is blackmailing you over a secret or something shameful. It might be time to silence them one way or another."
         ]
       },
+      "MarineSkills": {
+        "Title": "Skill limits",
+        "Tag": "Marine",
+        "Intro": "Spend {points} skill points.",
+        "Mos": "Your <strong>MOS skills</strong> ({keys}) can be raised to {max}",
+        "Marine": "The <strong>marine skills</strong> ({keys}) can be raised to {max}",
+        "Other": "Every other skill can be raised to {max}",
+        "Minimum": "You need at least {min} in each MOS skill and each marine skill, so those points are already placed"
+      },
       "Mos": {
         "Title": "Military Occupational Specialty",
         "Intro": "Your Military Occupational Specialty (MOS) defines your role in your unit.",

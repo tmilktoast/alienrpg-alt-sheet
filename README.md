@@ -92,8 +92,9 @@ A career it can't work out either way isn't offered. The creation rules' numbers
 table at the top of the file, and the steps are the `STEPS` list, which is where further steps go.
 A step with `method: "lifepath"` is only asked on the Colonial Marine Life Path. On that path the
 career step is the MOS step, and offers only the Career items named in the `MARINE_MOS` list.
-An MOS's skills can be raised to `mosSkillMax` there, and the early life's skill point counts
-toward the skill's limit.
+An MOS's skills can be raised to `mosSkillMax` there and the `MARINE_SKILLS` every marine is
+trained in to `marineSkillMax`; each of those starts with at least `trainedSkillMin`, and the
+early life's skill point counts toward a skill's limit and its minimum.
 
 The personal agendas the Agenda step offers are the `ALTSHEET.Builder.Agenda.Examples` list in
 `lang/en.json`: edit, add or remove lines there, and the roll's die follows the list's length.

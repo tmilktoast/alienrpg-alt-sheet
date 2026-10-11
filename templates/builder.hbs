@@ -1,7 +1,7 @@
 {{!-- One attribute or skill being bought: its pips and the buttons to spend or take back a point. --}}
 {{#*inline "scoreRow"}}
 <div class="aas-builder-score {{#if isKey}}key{{/if}}">
-  <span class="aas-builder-score-name">{{label}}{{#if isKey}} <span class="aas-tag">{{localize 'ALTSHEET.Builder.Key'}}</span>{{/if}}{{#if bonus}} <span class="aas-tag">{{localize 'ALTSHEET.Builder.EarlyLife.Bonus'}}</span>{{/if}}</span>
+  <span class="aas-builder-score-name">{{label}}{{#if isKey}} <span class="aas-tag">{{localize 'ALTSHEET.Builder.Key'}}</span>{{/if}}{{#if isMarine}} <span class="aas-tag">{{localize 'ALTSHEET.Builder.MarineSkills.Tag'}}</span>{{/if}}{{#if bonus}} <span class="aas-tag">{{localize 'ALTSHEET.Builder.EarlyLife.Bonus'}}</span>{{/if}}</span>
   <span class="aas-pips aas-pips-static">{{#each pips}}<span class="aas-pip {{#if filled}}filled{{/if}}"></span>{{/each}}</span>
   <div class="aas-stepper aas-stepper-small">
     <button type="button" data-action="adjust" data-kind="{{kind}}" data-key="{{key}}" data-step="-1"
@@ -240,9 +240,25 @@
     {{/if}}
 
     {{#if (eq step "skills")}}
+    {{#if isLifePath}}
+    <details class="aas-details" open>
+      <summary>{{localize 'ALTSHEET.Builder.MarineSkills.Title'}}</summary>
+      <div class="aas-prose">
+        <p>{{localize 'ALTSHEET.Builder.MarineSkills.Intro' points=rules.skillPoints}}</p>
+        <ul>
+          <li>{{{localize 'ALTSHEET.Builder.MarineSkills.Mos' keys=career.skillLabels max=rules.keySkillMax}}}</li>
+          <li>{{{localize 'ALTSHEET.Builder.MarineSkills.Marine' keys=marineSkills max=rules.marineSkillMax}}}</li>
+          <li>{{localize 'ALTSHEET.Builder.MarineSkills.Other' max=rules.skillMax}}</li>
+          <li>{{localize 'ALTSHEET.Builder.MarineSkills.Minimum' min=rules.trainedSkillMin}}</li>
+          {{#if bonusSkill}}<li>{{localize 'ALTSHEET.Builder.EarlyLife.Counts' skill=bonusSkill}}</li>{{/if}}
+        </ul>
+      </div>
+    </details>
+    {{else}}
     <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i>
       {{localize 'ALTSHEET.Builder.SkillsHint' points=rules.skillPoints max=rules.skillMax keyMax=rules.keySkillMax keys=career.skillLabels}}
       {{#if bonusSkill}}{{localize 'ALTSHEET.Builder.EarlyLife.Counts' skill=bonusSkill}}{{/if}}</p>
+    {{/if}}
     <section class="aas-panel">
       <header class="aas-panel-head">
         <h2>{{localize 'ALIENRPG.Skills'}}</h2>

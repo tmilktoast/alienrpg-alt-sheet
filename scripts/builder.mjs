@@ -16,6 +16,10 @@ const RULES = {
   // Not the rulebook's: an MOS's skills go higher on the Colonial Marine Life Path, for a marine's
   // specialized and extensive training.
   mosSkillMax: 4,
+  // Nor these: every marine is trained in a few skills, which go higher than most on the life path,
+  // and has to start with something in those and in their MOS's.
+  marineSkillMax: 3,
+  trainedSkillMin: 1,
   // Nor this: what a field event adds may pass the limits above, but no score goes higher than this.
   scoreMax: 5,
 };
@@ -57,6 +61,8 @@ const FIELD_EVENT_TABLES = [
   { id: "enlisted", table: "EVENT TABLE A – ENLISTED (BC)" },
   { id: "nco", table: "EVENT TABLE B – NCO (BC)", nco: true },
 ];
+/** The skills every marine is trained in, whatever their MOS. */
+const MARINE_SKILLS = ["closeCbt", "stamina", "rangedCbt"];
 /**
  * The Military Occupational Specialties a marine on the life path chooses from, by the name of
  * their Career item and in the order they are offered. An MOS is the marine's career.
@@ -447,8 +453,9 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
   #limit(kind, key) {
     const career = this.career;
     if (kind === "attributes") return career?.attribute === key ? RULES.keyAttributeMax : RULES.attributeMax;
-    if (!career?.skills.includes(key)) return RULES.skillMax;
-    return this.choices.method === "lifepath" ? RULES.mosSkillMax : RULES.keySkillMax;
+    const lifePath = this.choices.method === "lifepath";
+    if (career?.skills.includes(key)) return lifePath ? RULES.mosSkillMax : RULES.keySkillMax;
+    return lifePath && MARINE_SKILLS.includes(key) ? RULES.marineSkillMax : RULES.skillMax;
   }
 
   /** The most points that may be spent on a score: the life path's own point counts toward its limit. */
@@ -456,8 +463,15 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     return this.#limit(kind, key) - (kind === "skills" && key === this.#bonusSkill ? 1 : 0);
   }
 
-  #min(kind) {
-    return kind === "attributes" ? RULES.attributeMin : 0;
+  /**
+   * The fewest points that may be spent on a score. On the life path a marine starts with something
+   * in each skill they are trained in, which the life path's own point counts toward.
+   */
+  #min(kind, key) {
+    if (kind === "attributes") return RULES.attributeMin;
+    const trained = MARINE_SKILLS.includes(key) || this.career?.skills.includes(key);
+    if (this.choices.method !== "lifepath" || !trained) return 0;
+    return Math.max(0, RULES.trainedSkillMin - (key === this.#bonusSkill ? 1 : 0));
   }
 
   /** How far through the steps the choices so far allow: the first one not yet complete. */
@@ -495,9 +509,10 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
         value,
         max,
         isKey,
+        isMarine: kind === "skills" && !isKey && state.method === "lifepath" && MARINE_SKILLS.includes(key),
         bonus,
         pips: Array.from({ length: max }, (_, i) => ({ filled: i < value })),
-        canLower: paid > this.#min(kind),
+        canLower: paid > this.#min(kind, key),
         canRaise: value < max && left > 0,
       };
     };
@@ -570,6 +585,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       canNext: index < reach,
       rules: { ...RULES, keySkillMax: state.method === "lifepath" ? RULES.mosSkillMax : RULES.keySkillMax },
       bonusSkill: bonusSkill && skillLabel(bonusSkill),
+      marineSkills: MARINE_SKILLS.map(skillLabel).join(", "),
       isLifePath: state.method === "lifepath",
       methods: ["book", "lifepath"].map((id) => ({
         id,
@@ -673,8 +689,18 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
   #fitToCareer() {
     for (const kind of ["attributes", "skills"]) {
       for (const key of Object.keys(this.choices[kind])) {
-        this.choices[kind][key] = Math.min(this.choices[kind][key], this.#max(kind, key));
+        const fitted = Math.min(this.choices[kind][key], this.#max(kind, key));
+        this.choices[kind][key] = Math.max(fitted, this.#min(kind, key));
       }
+    }
+    // Points a marine has to have in their trained skills come out of the others if there are none left.
+    const { skills } = this.choices;
+    while (spent(skills) > RULES.skillPoints) {
+      const spare = Object.keys(skills)
+        .filter((key) => skills[key] > this.#min("skills", key))
+        .sort((a, b) => skills[b] - skills[a])[0];
+      if (!spare) break;
+      skills[spare] -= 1;
     }
     if (!this.career?.talents.includes(this.choices.talent)) this.choices.talent = null;
   }
@@ -832,7 +858,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     const scores = this.choices[kind];
     const total = kind === "attributes" ? RULES.attributePoints : RULES.skillPoints;
     const next = scores[key] + Number(target.dataset.step);
-    if (next < this.#min(kind) || next > this.#max(kind, key)) return;
+    if (next < this.#min(kind, key) || next > this.#max(kind, key)) return;
     if (next > scores[key] && spent(scores) >= total) return;
     scores[key] = next;
     return this.render();
