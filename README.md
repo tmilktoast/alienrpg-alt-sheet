@@ -1,6 +1,6 @@
-# Alien RPG Alternate Sheet
+# Alien RPG Companion
 
-An alternate character sheet for the [Alien RPG system](https://github.com/pwatson100/alienrpg)
+Alternate sheets and a character builder for the [Alien RPG system](https://github.com/pwatson100/alienrpg)
 (`alienrpg` 4.x, Foundry v13–v14), built for the **Evolved** rules. It registers alongside the
 system's sheet for `character`, `synthetic`, `creature`, `vehicles`, `spacecraft`, `territory`, `colony` and `planet` actors, so either can be used per actor.
 
@@ -57,7 +57,7 @@ system's sheet for `character`, `synthetic`, `creature`, `vehicles`, `spacecraft
   ends with the marine's starting gear.
 - **Readable chat** — chat messages on a flat dark card in a plainer typeface, with the system's
   terminal green and display font kept for the sender, headings and labels. Each player can turn it
-  off under Configure Settings → Alien RPG Alternate Sheet.
+  off under Configure Settings → Alien RPG Companion.
 
 The sheet subclasses the system's own sheet class and calls the system's roll methods, so dice,
 pushes, panic and supply rolls behave exactly as they do on the original sheet.

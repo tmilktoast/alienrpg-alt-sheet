@@ -1,9 +1,14 @@
 # Changelog
 
-Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` field in
+Notable changes to the Alien RPG Companion (formerly the Alien RPG Alternate Sheet). Versions follow the `version` field in
 `module.json`.
 
 ## Unreleased
+
+### Changed
+
+- **Renamed** — the module is now the Alien RPG Companion, since it has grown past a character
+  sheet. Its id is still `alienrpg-alt-sheet`, so nothing saved in a world changes.
 
 ### Added
 

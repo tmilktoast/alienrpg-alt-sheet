@@ -1,7 +1,7 @@
 {
   "id": "alienrpg-alt-sheet",
-  "title": "Alien RPG Alternate Sheet",
-  "description": "An alternate character sheet for the Alien RPG system (Evolved rules): a play view with every roll as a visible button, readable type, and gear you can equip, carry or stow in one click.",
+  "title": "Alien RPG Companion",
+  "description": "A companion for the Alien RPG system (Evolved rules): alternate sheets with every roll as a visible button, readable type and one-click gear, and a character builder that works by the book or by a Colonial Marine life path.",
   "version": "0.2.1",
   "authors": [
     {
