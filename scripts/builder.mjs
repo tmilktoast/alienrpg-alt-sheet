@@ -98,6 +98,15 @@ const sameName = (a, b) => a.trim().toLowerCase() === b.trim().toLowerCase();
 /*  Careers                                     */
 /* -------------------------------------------- */
 
+/**
+ * Talents the Colonial Marines manual names that the Evolved rules renamed, by the manual's name
+ * in lower case.
+ */
+const RENAMED_TALENTS = { "field surgeon": "Field Medic" };
+
+/** The name a talent goes by now, for one a career names. */
+const talentName = (name) => RENAMED_TALENTS[name.trim().toLowerCase()] ?? name.trim();
+
 /** Look up an attribute or skill key by the name the rulebook prints for it. */
 function keyByLabel(labels, name) {
   return Object.keys(labels).find((key) => sameName(labels[key], name));
@@ -122,7 +131,7 @@ export function careerDefinition(item) {
   if (written) {
     const attribute = keyByLabel(attributeLabels, written[1]);
     const skills = written[2].split(",").map((name) => keyByLabel(skillLabels, name)).filter(Boolean);
-    const talents = written[3].split(",").map((name) => name.trim()).filter(Boolean);
+    const talents = written[3].split(",").map((name) => name.trim()).filter(Boolean).map(talentName);
     if (attribute && skills.length) return { ...base, core: false, attribute, skills, talents };
   }
 
@@ -149,8 +158,9 @@ function careerDescription(item) {
   return (item?.system.general.comment.value ?? "")
     .replace(/^(\s*<p>(\s|&nbsp;|<br\s*\/?>)*<\/p>)+/i, "")
     .replace(/<a\b[^>]*\bclass="entity-link"[^>]*>(.*?)<\/a>/gis, (link, label) => {
-      const talent = findTalent(plain(label));
-      return talent ? `@UUID[${talent.uuid}]{${plain(label)}}` : label;
+      const name = talentName(plain(label));
+      const talent = findTalent(name);
+      return talent ? `@UUID[${talent.uuid}]{${name}}` : name;
     });
 }
 
