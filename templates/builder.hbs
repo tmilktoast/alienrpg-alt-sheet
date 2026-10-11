@@ -33,6 +33,27 @@
 </button>
 {{/inline}}
 
+{{!-- Gear the character is given, as a list: each opens its item where the world has one. --}}
+{{#*inline "gearList"}}
+<ul class="aas-builder-gear">
+  {{#each gear}}
+  <li>
+    <img src="{{img}}" alt="">
+    {{#if uuid}}<a class="content-link" data-link data-uuid="{{uuid}}" data-type="Item">{{label}}</a>{{else}}<span>{{label}}</span>{{/if}}
+  </li>
+  {{/each}}
+</ul>
+{{/inline}}
+
+{{!-- One piece of gear to pick from a list. --}}
+{{#*inline "gearChoice"}}
+<button type="button" class="aas-builder-choice {{#if selected}}active{{/if}}" data-action="pick"
+  data-choice="{{choice}}" data-value="{{id}}" aria-pressed="{{#if selected}}true{{else}}false{{/if}}">
+  <img src="{{img}}" alt="">
+  <span class="aas-builder-choice-body"><b>{{label}}</b></span>
+</button>
+{{/inline}}
+
 {{!-- One answer to a simple question: the creation method, or one of a life path's. --}}
 {{#*inline "answer"}}
 <button type="button" class="aas-builder-choice {{#if selected}}active{{/if}}" data-action="pick"
@@ -389,6 +410,42 @@
     </section>
     {{/if}}
 
+    {{#if (eq step "gear")}}
+    <section class="aas-panel">
+      <header class="aas-panel-head"><h2>{{localize 'ALTSHEET.Builder.Gear.Basic'}}</h2></header>
+      <div class="aas-prose">
+        <p>{{{localize 'ALTSHEET.Builder.Gear.Intro'}}}</p>
+      </div>
+      {{> gearList gear=gear.basic}}
+    </section>
+    {{#each gear.lists}}
+    <section class="aas-panel">
+      <header class="aas-panel-head"><h2>{{title}}</h2></header>
+      <div class="aas-builder-choices">
+        {{#each options}}
+        {{> gearChoice choice=../choice}}
+        {{/each}}
+      </div>
+    </section>
+    {{/each}}
+    <section class="aas-panel">
+      <header class="aas-panel-head"><h2>{{gear.mosTitle}}</h2></header>
+      {{#if gear.mos.length}}
+      {{> gearList gear=gear.mos}}
+      {{else}}
+      <p class="aas-empty">{{localize 'ALTSHEET.Builder.Gear.NoMos'}}</p>
+      {{/if}}
+      {{#if gear.mosOptions.length}}
+      <h3>{{localize 'ALTSHEET.Builder.Gear.MosChoice'}}</h3>
+      <div class="aas-builder-choices">
+        {{#each gear.mosOptions}}
+        {{> gearChoice choice="gearMos"}}
+        {{/each}}
+      </div>
+      {{/if}}
+    </section>
+    {{/if}}
+
     {{#if (eq step "review")}}
     <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.ReviewHint'}}</p>
     <section class="aas-panel">
@@ -408,6 +465,7 @@
         <dt>{{localize 'ALTSHEET.Builder.Steps.talent'}}</dt><dd>{{review.talent}}</dd>
         {{#each review.fieldEvents}}<dt>{{title}}</dt><dd>{{text}}</dd>{{/each}}
         {{#if review.agenda}}<dt>{{localize 'ALIENRPG.PersonalAgenda'}}</dt><dd>{{review.agenda}}</dd>{{/if}}
+        {{#if review.gear}}<dt>{{localize 'ALTSHEET.Builder.Steps.gear'}}</dt><dd>{{review.gear}}</dd>{{/if}}
       </dl>
     </section>
     {{#if review.replaces}}

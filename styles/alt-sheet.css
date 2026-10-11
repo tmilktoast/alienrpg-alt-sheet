@@ -1979,6 +1979,30 @@
   margin-bottom: 0;
 }
 
+.alien-alt-sheet .window-content .aas-builder-gear {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 4px 12px;
+  list-style: none;
+  font-size: 13px;
+}
+
+.alien-alt-sheet .window-content .aas-builder-gear > li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.alien-alt-sheet .aas-builder-gear img {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+  border: 0;
+  border-radius: 3px;
+}
+
 .alien-alt-sheet .aas-builder-tags {
   display: flex;
   gap: 6px;

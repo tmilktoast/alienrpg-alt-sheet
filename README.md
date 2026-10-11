@@ -53,8 +53,8 @@ system's sheet for `character`, `synthetic`, `creature`, `vehicles`, `spacecraft
   build by the book, or by the Colonial Marine Life Path, which is written for a Colonial Marines
   campaign and asks about the marine's rank and history first (so far, whether they command the
   unit, their rank, a rolled origin, a rolled early life and why they joined the Marines),
-  offers the marine MOSs as its careers, rolls a field event after the talent, and ends with a
-  personal agenda to pick, roll or write.
+  offers the marine MOSs as its careers, rolls a field event after the talent, offers a personal agenda to pick, roll or write, and
+  ends with the marine's starting gear.
 - **Readable chat** — chat messages on a flat dark card in a plainer typeface, with the system's
   terminal green and display font kept for the sender, headings and labels. Each player can turn it
   off under Configure Settings → Alien RPG Alternate Sheet.
@@ -98,6 +98,10 @@ early life's skill point counts toward a skill's limit and its minimum.
 
 The personal agendas the Agenda step offers are the `ALTSHEET.Builder.Agenda.Examples` list in
 `lang/en.json`: edit, add or remove lines there, and the roll's die follows the list's length.
+
+The Gear step's lists are `MARINE_GEAR` in `scripts/builder.mjs`: the basic gear every marine
+gets, the two bonus lists to pick one from each, and each MOS's gear. They name Gear items in the
+world's Items sidebar; one with no item there is added as a plain item of that name.
 
 The system has no rank or life path fields, so the Bio tab's Rank, Supernation, Sub-affiliation,
 Home, Early life, Joining the Marines and Field events are stored on the actor as the module flags

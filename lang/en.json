@@ -46,6 +46,7 @@
         "talent": "Talent",
         "fieldEvent": "Field Event",
         "agenda": "Agenda",
+        "gear": "Gear",
         "review": "Review"
       },
       "MethodHint": "Choose how to create this character. You can come back and change this before applying.",
@@ -114,6 +115,15 @@
         "Over": "This event would raise a score above {max}. Roll again.",
         "NoTable": "The field event table is missing from the Life Path Tables compendium."
       },
+      "Gear": {
+        "Basic": "Basic gear",
+        "Intro": "Every marine starts with all of the basic gear below. <strong>Choose</strong> one item from List A and one from List B. Your MOS then adds its own gear.",
+        "ListA": "Bonus gear: List A (choose one)",
+        "ListB": "Bonus gear: List B (choose one)",
+        "Mos": "{career} gear",
+        "MosChoice": "Choose one",
+        "NoMos": "This MOS has no gear of its own."
+      },
       "Agenda": {
         "Intro": "Even as part of a unit, everyone has a personal agenda.",
         "IntroPick": "<strong>Choose</strong> from the list below, click Roll, or write your own.",
@@ -176,6 +186,7 @@
       "Next": "Next",
       "Apply": "Apply to character",
       "Applied": "{name} is built. Name, appearance, agenda, gear and cash are still yours to fill in.",
+      "AppliedLifePath": "{name} is built. Name, appearance and a signature item are still yours to fill in.",
       "CareerGone": "That career is no longer in the world's Items.",
       "TalentMissing": "{name} isn't in this world's Items, so add that talent by hand."
     },

@@ -61,6 +61,73 @@ const FIELD_EVENT_TABLES = [
   { id: "enlisted", table: "EVENT TABLE A – ENLISTED (BC)" },
   { id: "nco", table: "EVENT TABLE B – NCO (BC)", nco: true },
 ];
+/**
+ * The gear a marine on the life path starts with, by the name of each Gear item in the world: all
+ * of the basic gear, one pick from each bonus list, and all of their MOS's. A number is how many;
+ * an inner list in an MOS's gear is a choice of one. Gear with no item in the world is added as a
+ * plain item of that name.
+ */
+const MARINE_GEAR = {
+  basic: [
+    "“Dog Tags” Military ID Key",
+    "BATTLEDRESS UTILITIES (BDUs)",
+    "M3B Standard Boots",
+    "Individual Marine Pack",
+    "M10 Ballistic Helmet",
+    "M3 Personnel Armor",
+    "TNR High Beam Shoulder Lamp",
+  ],
+  listA: [
+    ["Signal Flares", 6],
+    "Combat Knife",
+    "Personal Data Transmitter",
+    "Bi-Mex Anti-Flash Sunglasses",
+    "Polymer Climbing Rope",
+    "Folding Winch",
+    "Folding Entrenching Spade",
+    "Electronic Tools",
+    ["Handcuffs", 3],
+    "Maintenance Jack",
+    "UDEP Ultra Diffusive Environmental Poncho",
+    "Samani E-Series Watch",
+  ],
+  listB: [
+    "M4A3 Service Pistol",
+    "VP-70MA6 Service Pistol",
+    ["G2 Electroshock Grenade", 2],
+    "SpaceSub ASSO-400 Harpoon Gun",
+    "M240 Incinerator Unit",
+    ["ARMAT M40 HEDP Grenade", 4],
+    "Mechanical Cutting Torch*",
+  ],
+  mos: {
+    "AFV Marine": ["Armat M41A Pulse Rifle", "Electronic Tools"],
+    "Assault Marine (Breacher)": [
+      "Armat M41A Pulse Rifle",
+      "M230 Baton Rounds",
+      "Stun Baton",
+      "M5A3 RPG Launcher",
+      "Armat CM4 Plastisteel Riot Shield",
+    ],
+    "Automatic Rifleman (Smartgunner)": ["M56 Smart Gun", "Head-mounted Sight"],
+    "Comtech Marine": ["Armat M41A Pulse Rifle", "Electronic Tools", "Seegson System Diagnostic Device"],
+    "CBRN Specialist": [
+      "Armat M41A Pulse Rifle",
+      { oneOf: ["U4 QTC Firebomb Ammunition", "M240 Incinerator Unit"] },
+      "CBRN Detection Kit",
+      "UDEP Ultra Diffusive Environmental Poncho",
+      "Military Grade HAZMAT Suit",
+    ],
+    "Hospital Corpsman": ["Armat M41A Pulse Rifle", "Surgical Kit*", ["Naproleve", 5], ["Neversleep Pills", 10]],
+    "Forward Observer": [
+      "Armat M41A Pulse Rifle",
+      "F3S Full Spectrum Spotter Scope",
+      "Parameter Uplink Spectograph Mapping Device",
+      "Ghillie Suit",
+    ],
+    Rifleman: ["Armat M41A Pulse Rifle", "M314 Motion Tracker"],
+  },
+};
 /** The Officer talents a unit commander, as an NCO, may start with one of instead of their MOS's. */
 const OFFICER_TALENTS = ["Field Commander", "Frontline Leader", "Pull Rank"];
 /** The skills every marine is trained in, whatever their MOS. */
@@ -112,6 +179,12 @@ const STEPS = [
   },
   // An agenda is the player's to pick, roll, write or leave for later.
   { id: "agenda", method: "lifepath", done: () => true },
+  // One pick from each bonus list, and from any choice the MOS's gear leaves open.
+  {
+    id: "gear",
+    method: "lifepath",
+    done: (state) => !!state.gearA && !!state.gearB && (!mosGearChoice(state) || !!state.gearMos),
+  },
   { id: "review", done: () => true },
 ];
 
@@ -282,6 +355,47 @@ async function rollEarlyLife() {
   };
 }
 
+/** One piece of starting gear, from its entry in the gear lists: a name, or a name and how many. */
+function gearEntry(entry) {
+  const [name, quantity] = Array.isArray(entry) ? entry : [entry, 1];
+  const item = game.items.find((candidate) => !["specialty", "talent", "agenda"].includes(candidate.type) && sameName(candidate.name, name));
+  return {
+    name,
+    quantity,
+    item,
+    uuid: item?.uuid,
+    img: item?.img ?? "icons/svg/item-bag.svg",
+    label: quantity > 1 ? `${quantity} × ${name}` : name,
+  };
+}
+
+/** The gear a marine's MOS gives them, as its entries in the gear lists. */
+const mosGear = (state) => MARINE_GEAR.mos[game.items.get(state.career)?.name.trim()] ?? [];
+
+/** The names an MOS's gear leaves the marine to pick one of, or null if it leaves no choice. */
+const mosGearChoice = (state) => mosGear(state).find((entry) => entry.oneOf)?.oneOf ?? null;
+
+/**
+ * All the gear a marine starts with: the basic gear, their two bonus picks and their MOS's.
+ * The same thing from two lists is one entry, of both amounts.
+ * @returns {ReturnType<typeof gearEntry>[]}
+ */
+function startingGear(state) {
+  const entries = [
+    ...MARINE_GEAR.basic,
+    ...[...MARINE_GEAR.listA, ...MARINE_GEAR.listB].filter((entry) => [state.gearA, state.gearB].includes(gearEntry(entry).name)),
+    ...mosGear(state).map((entry) => (entry.oneOf ? state.gearMos : entry)).filter(Boolean),
+  ].map(gearEntry);
+  const gear = [];
+  for (const entry of entries) {
+    const held = gear.find((other) => sameName(other.name, entry.name));
+    if (!held) gear.push(entry);
+    // Armor isn't counted, so a second suit of it is nothing more.
+    else if (entry.item?.type !== "armor") Object.assign(held, gearEntry([held.name, held.quantity + entry.quantity]));
+  }
+  return gear;
+}
+
 /**
  * The personal agendas a marine may pick from or roll for: the list in the language file, which is
  * where to edit it.
@@ -406,7 +520,9 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
      * rank is the one a marine who isn't the commander picked; origin and earlyLife are what was
      * rolled for them; joining is why they joined the Marines, picked or rolled; a career is the
      * id of its Career item; a talent is its name; fieldEvents are the events rolled, by the id
-     * of the table each was rolled on; agenda is the personal agenda picked, rolled or written.
+     * of the table each was rolled on; agenda is the personal agenda picked, rolled or written;
+     * gearA, gearB and gearMos are the names of the gear picked from the two bonus lists and from
+     * any choice the MOS's gear leaves.
      */
     this.choices = {
       method: null,
@@ -421,6 +537,9 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       talent: null,
       fieldEvents: {},
       agenda: "",
+      gearA: null,
+      gearB: null,
+      gearMos: null,
     };
   }
 
@@ -658,6 +777,19 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
         })),
       },
       fieldEvents,
+      gear: state.method === "lifepath" && {
+        basic: MARINE_GEAR.basic.map(gearEntry),
+        lists: [
+          { choice: "gearA", title: loc("ALTSHEET.Builder.Gear.ListA"), options: MARINE_GEAR.listA },
+          { choice: "gearB", title: loc("ALTSHEET.Builder.Gear.ListB"), options: MARINE_GEAR.listB },
+        ].map((list) => ({
+          ...list,
+          options: list.options.map(gearEntry).map((entry) => ({ ...entry, id: entry.name, selected: state[list.choice] === entry.name })),
+        })),
+        mos: mosGear(state).filter((entry) => !entry.oneOf).map(gearEntry),
+        mosTitle: fmt("ALTSHEET.Builder.Gear.Mos", { career: career?.name ?? "" }),
+        mosOptions: (mosGearChoice(state) ?? []).map(gearEntry).map((entry) => ({ ...entry, id: entry.name, selected: state.gearMos === entry.name })),
+      },
       agenda: {
         text: state.agenda,
         examples: agendaExamples().map((text, i) => ({
@@ -669,6 +801,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       },
       review: {
         agenda: state.method === "lifepath" ? state.agenda.trim() : "",
+        gear: state.method === "lifepath" ? startingGear(state).map((entry) => entry.label).join(", ") : "",
         fieldEvents: fieldEvents.filter(({ event }) => event).map(({ title, event }) => ({ title, text: event.text })),
         rank: this.#rank,
         origin: state.method === "lifepath" ? state.origin : null,
@@ -708,6 +841,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       if (!spare) break;
       skills[spare] -= 1;
     }
+    if (!mosGearChoice(this.choices)?.includes(this.choices.gearMos)) this.choices.gearMos = null;
     const talents = [...(this.career?.talents ?? []), ...this.#officerTalents];
     if (!talents.includes(this.choices.talent)) this.choices.talent = null;
   }
@@ -784,6 +918,10 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       const event = this.choices.fieldEvents[id];
       if (!event?.gains.some((gain) => gain.id === pick) || fieldEventOver(this.choices, id, pick)) return;
       event.pick = pick;
+    } else if (["gearA", "gearB", "gearMos"].includes(choice)) {
+      const offered = { gearA: MARINE_GEAR.listA, gearB: MARINE_GEAR.listB, gearMos: mosGearChoice(this.choices) ?? [] }[choice];
+      if (!offered.some((entry) => gearEntry(entry).name === value)) return;
+      this.choices[choice] = value;
     } else if (choice === "agenda") {
       const text = agendaExamples()[Number(value)];
       if (!text) return;
@@ -949,10 +1087,17 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
         !create.some((item) => item.type === "talent" && sameName(item.name, talentItem.name))
       ) create.push(talentItem.toObject());
     }
+    // Starting gear, less anything the character already carries.
+    for (const entry of state.method === "lifepath" ? startingGear(state) : []) {
+      if (actor.items.some((item) => sameName(item.name, entry.name))) continue;
+      const data = entry.item?.toObject() ?? { name: entry.name, type: "item" };
+      if (data.type !== "armor") foundry.utils.setProperty(data, "system.attributes.quantity.value", entry.quantity);
+      create.push(data);
+    }
     await actor.createEmbeddedDocuments("Item", create);
 
     for (const name of missing) ui.notifications.warn(fmt("ALTSHEET.Builder.TalentMissing", { name }));
-    ui.notifications.info(fmt("ALTSHEET.Builder.Applied", { name: actor.name }));
+    ui.notifications.info(fmt(`ALTSHEET.Builder.${state.method === "lifepath" ? "AppliedLifePath" : "Applied"}`, { name: actor.name }));
     return this.close();
   }
 }
