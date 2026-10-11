@@ -1239,8 +1239,7 @@ function makeSheet(Base, type) {
         gear: prepareGear(actor),
         itemStates: true,
         powerRolls: true,
-        // Androids are built by different rules, which the builder doesn't cover yet.
-        canBuild: actor.type === "character" && this.isEditable,
+        canBuild: this.isEditable,
         conditions: prepareConditions(actor, context.statuses, { hasStress }),
         radiation: prepareRadiation(actor),
         supplies: prepareSupplies(actor),

@@ -84,6 +84,19 @@
         "Joining": "Born a marine, always a marine.",
         "JoiningHint": "An artificial womb soldier never chose to join, so there is nothing to pick."
       },
+      "Android": {
+        "Title": "Playing an android",
+        "Intro": "An android is built like anyone else, by the book, and can have any career. A few rules are different:",
+        "Attributes": "After spending your attribute points, you add <strong>+{bonus} to {count} attributes</strong> of your choice",
+        "Push": "You <strong>can't push</strong> skill rolls",
+        "Stress": "You <strong>don't suffer stress</strong> and never make panic rolls",
+        "Damage": "At zero Health you roll for <strong>critical system damage</strong>, not a critical injury, and you don't heal: you are repaired with COMTECH",
+        "Needs": "You don't need air, food, water or sleep, and are immune to vacuum, cold and disease",
+        "BonusTitle": "Android bonus",
+        "BonusHint": "Add +{bonus} to {count} attributes of your choice, on top of the points you spent. Click one again to take it back.",
+        "Left": "{left} left",
+        "Tag": "+{bonus} Android"
+      },
       "MethodHint": "Choose how to create this character. You can come back and change this before applying.",
       "Methods": {
         "book": {

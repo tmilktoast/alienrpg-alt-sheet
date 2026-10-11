@@ -104,6 +104,10 @@ The Gear step's lists are `MARINE_GEAR` in `scripts/builder.mjs`: the basic gear
 gets, the two bonus lists to pick one from each, and each MOS's gear. They name Gear items in the
 world's Items sidebar; one with no item there is added as a plain item of that name.
 
+A synthetic's sheet has the builder too. An android is only built by the book, so the builder
+skips the method and type steps for one, and its Attributes step has two +3 bonuses to place
+(`androidBonus` and `androidBonusCount`) after the points are spent.
+
 An artificial womb soldier is a character with `flags.alienrpg-alt-sheet.kind` set to `womb`, not
 an actor type of its own: the system's rolls and sheets only know its own types. The builder asks
 for the type after the method, and for a womb soldier offers only marine careers, caps the

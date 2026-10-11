@@ -22,6 +22,9 @@ const RULES = {
   trainedSkillMin: 1,
   // Nor this: what a field event adds may pass the limits above, but no score goes higher than this.
   scoreMax: 5,
+  // An android adds this to each of a number of attributes of its choice, after the points are spent.
+  androidBonus: 3,
+  androidBonusCount: 2,
   // Nor these: an artificial womb soldier is bred strong and little else, whatever their career's
   // key attribute.
   wombAttributeMax: { str: 7, wit: 3, emp: 3 },
@@ -196,8 +199,9 @@ const ORIGIN_PARTS = { SUPERNATION: "supernation", "SUB-AFFILIATION": "subAffili
  * life path question is another entry here and another block in the template.
  */
 const STEPS = [
-  { id: "method", done: (state) => !!state.method },
-  { id: "kind", done: (state) => !!state.kind },
+  // An android is only ever built by the book, and isn't a kind of human.
+  { id: "method", human: true, done: (state) => !!state.method },
+  { id: "kind", human: true, done: (state) => !!state.kind },
   // The commander's rank is fixed; anyone else has one to pick.
   { id: "commander", method: "lifepath", done: (state) => state.commander === "yes" || (state.commander === "no" && !!state.rank) },
   { id: "origin", method: "lifepath", done: (state) => !!state.origin },
@@ -207,7 +211,12 @@ const STEPS = [
   { id: "earlyLife", method: "lifepath", done: (state) => !!state.earlyLife && (!state.earlyLife.skills.length || !!state.earlyLife.skill) },
   { id: "joining", method: "lifepath", done: (state) => !!state.joining },
   { id: "career", done: (state) => !!state.career },
-  { id: "attributes", done: (state) => spent(state.attributes) === RULES.attributePoints },
+  // An android has its bonus to place as well as its points.
+  {
+    id: "attributes",
+    done: (state) =>
+      spent(state.attributes) === RULES.attributePoints && (!state.synthetic || state.android.length === RULES.androidBonusCount),
+  },
   { id: "skills", done: (state) => spent(state.skills) === RULES.skillPoints },
   { id: "talent", done: (state) => !!state.talent },
   // A field event that offers a choice isn't settled until one is picked, and none may take a score too high.
@@ -236,7 +245,8 @@ const STEPS = [
 ];
 
 /** The steps the chosen creation method walks through. */
-const stepsFor = (state) => STEPS.filter((step) => !step.method || step.method === state.method);
+const stepsFor = (state) =>
+  STEPS.filter((step) => (!step.method || step.method === state.method) && !(step.human && state.synthetic));
 
 const loc = (key) => game.i18n.localize(key);
 const fmt = (key, data) => game.i18n.format(key, data);
@@ -610,9 +620,10 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
   constructor(options) {
     super({ ...options, id: `${MODULE_ID}-builder-${options.actor.id}` });
     this.actor = options.actor;
-    this.step = STEPS[0].id;
+    const synthetic = options.actor.type === "synthetic";
     /**
-     * What has been chosen so far. The method is "book" or "lifepath"; the kind is one of KINDS; commander is "yes" or "no";
+     * What has been chosen so far. Synthetic says the character is an android, which is built by
+     * the book and then adds a bonus to the attributes listed in android. The method is "book" or "lifepath"; the kind is one of KINDS; commander is "yes" or "no";
      * rank is the one a marine who isn't the commander picked; origin and earlyLife are what was
      * rolled for them; joining is why they joined the Marines, picked or rolled; a career is the
      * id of its Career item; a talent is its name; fieldEvents are the events rolled, by the id
@@ -622,8 +633,10 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
      * any choice the MOS's gear leaves.
      */
     this.choices = {
-      method: null,
-      kind: KINDS.includes(options.actor.getFlag(MODULE_ID, "kind")) ? options.actor.getFlag(MODULE_ID, "kind") : "human",
+      synthetic,
+      method: synthetic ? "book" : null,
+      kind: !synthetic && KINDS.includes(options.actor.getFlag(MODULE_ID, "kind")) ? options.actor.getFlag(MODULE_ID, "kind") : "human",
+      android: [],
       commander: null,
       rank: null,
       origin: null,
@@ -640,6 +653,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       gearB: null,
       gearMos: null,
     };
+    this.step = stepsFor(this.choices)[0].id;
   }
 
   get title() {
@@ -723,10 +737,11 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     const bonusSkill = this.#bonusSkill;
     const scoreRow = (kind, key, label, isKey, left) => {
       const bonus = kind === "skills" && key === bonusSkill;
+      const android = kind === "attributes" && state.android.includes(key) ? RULES.androidBonus : 0;
       const paid = state[kind][key];
       // The score shown includes the life path's point, which isn't one of the points spent.
-      const value = paid + (bonus ? 1 : 0);
-      const max = this.#limit(kind, key);
+      const value = paid + (bonus ? 1 : 0) + android;
+      const max = this.#limit(kind, key) + android;
       return {
         key,
         kind,
@@ -734,6 +749,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
         value,
         max,
         isKey,
+        android,
         isMarine: kind === "skills" && !isKey && state.method === "lifepath" && MARINE_SKILLS.includes(key),
         bonus,
         pips: Array.from({ length: max }, (_, i) => ({ filled: i < value })),
@@ -819,6 +835,17 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       marineSkills: MARINE_SKILLS.map(skillLabel).join(", "),
       isLifePath: state.method === "lifepath",
       isWomb: state.kind === "womb",
+      isSynthetic: state.synthetic,
+      android: state.synthetic && {
+        left: RULES.androidBonusCount - state.android.length,
+        options: ATTRIBUTES.map((key) => ({
+          id: key,
+          icon: "fa-solid fa-microchip",
+          label: `+${RULES.androidBonus} ${attributeLabel(key)}`,
+          selected: state.android.includes(key),
+          disabled: !state.android.includes(key) && state.android.length >= RULES.androidBonusCount,
+        })),
+      },
       wombMax: {
         str: RULES.wombAttributeMax.str,
         other: RULES.wombAttributeMax.wit,
@@ -943,7 +970,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
         talent: state.talent,
         attributes: ATTRIBUTES.map((key) => ({
           label: attributeLabel(key),
-          value: state.attributes[key] + (eventGains.attributes[key] ?? 0),
+          value: state.attributes[key] + (eventGains.attributes[key] ?? 0) + (state.android.includes(key) ? RULES.androidBonus : 0),
         })),
         skills: Object.entries(state.skills)
           .map(([key, value]) => ({
@@ -1078,6 +1105,13 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       const offered = { gearA: MARINE_GEAR.listA, gearB: MARINE_GEAR.listB, gearMos: mosGearChoice(this.choices) ?? [] }[choice];
       if (!offered.some((entry) => gearEntry(entry).name === value)) return;
       this.choices[choice] = value;
+    } else if (choice === "android") {
+      // Picking an attribute again takes its bonus back.
+      const { android } = this.choices;
+      if (!this.choices.synthetic || !ATTRIBUTES.includes(value)) return;
+      if (android.includes(value)) android.splice(android.indexOf(value), 1);
+      else if (android.length < RULES.androidBonusCount) android.push(value);
+      else return;
     } else if (choice in WRITTEN) {
       const text = writtenExamples(choice)[Number(value)];
       if (!text) return;
@@ -1211,7 +1245,8 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     const update = {};
     const eventGains = fieldEventGains(state);
     for (const [key, value] of Object.entries(state.attributes)) {
-      update[`system.attributes.${key}.value`] = value + (eventGains.attributes[key] ?? 0);
+      const android = state.android.includes(key) ? RULES.androidBonus : 0;
+      update[`system.attributes.${key}.value`] = value + (eventGains.attributes[key] ?? 0) + android;
     }
     const bonusSkill = this.#bonusSkill;
     for (const [key, value] of Object.entries(state.skills)) {
@@ -1225,7 +1260,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     const legacy = Object.entries(CONFIG.ALIENRPG.career_list).find(([, entry]) => sameName(loc(entry.label), careerItem.name));
     if (legacy) update["system.general.career.value"] = legacy[0];
     if (this.#rank) update[`flags.${MODULE_ID}.rank`] = this.#rank;
-    update[`flags.${MODULE_ID}.kind`] = state.kind;
+    if (!state.synthetic) update[`flags.${MODULE_ID}.kind`] = state.kind;
     if (state.method === "lifepath" && state.origin) {
       const { supernation, subAffiliation, home } = state.origin;
       update[`flags.${MODULE_ID}.origin`] = { supernation, subAffiliation, home };
