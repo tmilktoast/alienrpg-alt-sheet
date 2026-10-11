@@ -37,7 +37,7 @@
 {{#*inline "gearList"}}
 <ul class="aas-builder-gear">
   {{#each gear}}
-  <li>
+  <li{{#if description}} data-tooltip-html="{{description}}" data-tooltip-class="aas-gear-tooltip" data-tooltip-direction="UP"{{/if}}>
     <img src="{{img}}" alt="">
     {{#if uuid}}<a class="content-link" data-link data-uuid="{{uuid}}" data-type="Item">{{label}}</a>{{else}}<span>{{label}}</span>{{/if}}
   </li>
@@ -48,7 +48,7 @@
 {{!-- One piece of gear to pick from a list. --}}
 {{#*inline "gearChoice"}}
 <button type="button" class="aas-builder-choice {{#if selected}}active{{/if}}" data-action="pick"
-  data-choice="{{choice}}" data-value="{{id}}" aria-pressed="{{#if selected}}true{{else}}false{{/if}}">
+  data-choice="{{choice}}" data-value="{{id}}" aria-pressed="{{#if selected}}true{{else}}false{{/if}}"{{#if description}} data-tooltip-html="{{description}}" data-tooltip-class="aas-gear-tooltip" data-tooltip-direction="UP"{{/if}}>
   <img src="{{img}}" alt="">
   <span class="aas-builder-choice-body"><b>{{label}}</b></span>
 </button>
@@ -415,6 +415,7 @@
       <header class="aas-panel-head"><h2>{{localize 'ALTSHEET.Builder.Gear.Basic'}}</h2></header>
       <div class="aas-prose">
         <p>{{{localize 'ALTSHEET.Builder.Gear.Intro'}}}</p>
+        <p>{{localize 'ALTSHEET.Builder.Gear.IntroHover'}}</p>
       </div>
       {{> gearList gear=gear.basic}}
     </section>

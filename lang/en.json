@@ -118,6 +118,7 @@
       "Gear": {
         "Basic": "Basic gear",
         "Intro": "Every marine starts with all of the basic gear below. <strong>Choose</strong> one item from List A and one from List B. Your MOS then adds its own gear.",
+        "IntroHover": "Hover over an item to read about it.",
         "ListA": "Bonus gear: List A (choose one)",
         "ListB": "Bonus gear: List B (choose one)",
         "Mos": "{career} gear",

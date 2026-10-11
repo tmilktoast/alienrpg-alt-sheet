@@ -367,6 +367,8 @@ function gearEntry(entry) {
     item,
     uuid: item?.uuid,
     img: item?.img ?? "icons/svg/item-bag.svg",
+    // What the item says about itself, to read on hover.
+    description: plain(item?.system.attributes?.comment?.value) ? item.system.attributes.comment.value : "",
     label: quantity > 1 ? `${quantity} × ${name}` : name,
   };
 }

@@ -2003,6 +2003,18 @@
   border-radius: 3px;
 }
 
+/* An item's description, shown on hover in the builder's gear step. The tooltip sits outside the window. */
+#tooltip.aas-gear-tooltip {
+  max-width: 380px;
+  text-align: left;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+#tooltip.aas-gear-tooltip p {
+  margin: 0 0 0.5em;
+}
+
 .alien-alt-sheet .aas-builder-tags {
   display: flex;
   gap: 6px;
