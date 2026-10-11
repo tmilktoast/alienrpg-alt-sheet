@@ -519,7 +519,7 @@
     <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.ReviewHint'}}</p>
     <section class="aas-panel">
       <dl class="aas-facts">
-        <dt>{{#if isLifePath}}{{localize 'ALTSHEET.Builder.Steps.mos'}}{{else}}{{localize 'ALIENRPG.Career'}}{{/if}}</dt><dd>{{career.name}}</dd>
+        <dt>{{#if isLifePath}}{{localize 'ALTSHEET.Builder.Review.Mos'}}{{else}}{{localize 'ALIENRPG.Career'}}{{/if}}</dt><dd>{{career.name}}</dd>
         {{#if review.kind}}<dt>{{localize 'ALTSHEET.Kind.Label'}}</dt><dd>{{review.kind}}</dd>{{/if}}
         {{#if review.rank}}<dt>{{localize 'ALTSHEET.MilitaryRank'}}</dt><dd>{{review.rank}}</dd>{{/if}}
         {{#if review.origin}}
@@ -532,11 +532,11 @@
         <dd>{{#each review.attributes}}<span class="aas-builder-pair">{{label}} <b>{{value}}</b></span>{{/each}}</dd>
         <dt>{{localize 'ALIENRPG.Skills'}}</dt>
         <dd>{{#each review.skills}}<span class="aas-builder-pair">{{label}} <b>{{value}}</b></span>{{/each}}</dd>
-        <dt>{{localize 'ALTSHEET.Builder.Steps.talent'}}</dt><dd>{{review.talent}}</dd>
+        <dt>{{localize 'ALTSHEET.Builder.Review.Talent'}}</dt><dd>{{review.talent}}</dd>
         {{#each review.fieldEvents}}<dt>{{title}}</dt><dd>{{text}}</dd>{{/each}}
         {{#if review.agenda}}<dt>{{localize 'ALIENRPG.PersonalAgenda'}}</dt><dd>{{review.agenda}}</dd>{{/if}}
         {{#if review.signature}}<dt>{{localize 'ALIENRPG.SignatureItem'}}</dt><dd>{{review.signature}}</dd>{{/if}}
-        {{#if review.gear}}<dt>{{localize 'ALTSHEET.Builder.Steps.gear'}}</dt><dd>{{review.gear}}</dd>{{/if}}
+        {{#if review.gear}}<dt>{{localize 'ALTSHEET.Builder.Review.Gear'}}</dt><dd>{{review.gear}}</dd>{{/if}}
       </dl>
     </section>
     {{#if review.replaces}}
