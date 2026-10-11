@@ -143,10 +143,10 @@
         "Title": "Skill limits",
         "Tag": "Marine",
         "Intro": "Spend {points} skill points.",
-        "Mos": "Your <strong>MOS skills</strong> ({keys}) can be raised to {max}",
-        "Marine": "The <strong>marine skills</strong> ({keys}) can be raised to {max}",
+        "Mos": "Your <strong>MOS skills</strong> ({keys}) must start at {min} and can be raised to {max}",
+        "Marine": "The <strong>marine skills</strong> ({keys}) must start at {min} and can be raised to {max}",
         "Other": "Every other skill can be raised to {max}",
-        "Minimum": "You need at least {min} in each MOS skill and each marine skill, so those points are already placed"
+        "Minimum": "The points for skills that must start at {min} are already placed, out of your {points}"
       },
       "Mos": {
         "Title": "Military Occupational Specialty",

@@ -262,10 +262,10 @@
       <div class="aas-prose">
         <p>{{localize 'ALTSHEET.Builder.MarineSkills.Intro' points=rules.skillPoints}}</p>
         <ul>
-          <li>{{{localize 'ALTSHEET.Builder.MarineSkills.Mos' keys=career.skillLabels max=rules.keySkillMax}}}</li>
-          <li>{{{localize 'ALTSHEET.Builder.MarineSkills.Marine' keys=marineSkills max=rules.marineSkillMax}}}</li>
+          <li>{{{localize 'ALTSHEET.Builder.MarineSkills.Mos' keys=career.skillLabels min=rules.trainedSkillMin max=rules.keySkillMax}}}</li>
+          <li>{{{localize 'ALTSHEET.Builder.MarineSkills.Marine' keys=marineSkills min=rules.trainedSkillMin max=rules.marineSkillMax}}}</li>
           <li>{{localize 'ALTSHEET.Builder.MarineSkills.Other' max=rules.skillMax}}</li>
-          <li>{{localize 'ALTSHEET.Builder.MarineSkills.Minimum' min=rules.trainedSkillMin}}</li>
+          <li>{{localize 'ALTSHEET.Builder.MarineSkills.Minimum' min=rules.trainedSkillMin points=rules.skillPoints}}</li>
           {{#if bonusSkill}}<li>{{localize 'ALTSHEET.Builder.EarlyLife.Counts' skill=bonusSkill}}</li>{{/if}}
         </ul>
       </div>
