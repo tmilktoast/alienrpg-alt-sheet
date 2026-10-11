@@ -485,6 +485,17 @@ async function prepareActionsLink() {
   );
 }
 
+/**
+ * A name with a nickname or callsign set into it, after the first word: Ellen "Boss" Ripley. A name
+ * of one word, or of more than two, takes it in the same place.
+ */
+export function nameWithNickname(name, nickname) {
+  const [first, ...rest] = name.trim().split(/\s+/);
+  // A name that already says it is left alone.
+  if (!first || name.toLowerCase().includes(nickname.toLowerCase())) return name;
+  return [first, `\u201c${nickname}\u201d`, ...rest].join(" ");
+}
+
 /** The names of a character's careers: their Career items, and the system's older career field. */
 function careerNames(actor) {
   const { career } = actor.system.general;
@@ -1909,6 +1920,13 @@ Hooks.once("init", () => {
     onChange: applyChat,
   });
   applyChat(game.settings.get(MODULE_ID, "readableChat"));
+
+  // A character with a nickname or callsign speaks in chat under it as well as their name.
+  Hooks.on("renderChatMessageHTML", (message, html) => {
+    const nickname = message.speakerActor?.getFlag(MODULE_ID, "nickname")?.trim();
+    const sender = html.querySelector(".message-sender");
+    if (nickname && sender) sender.textContent = nameWithNickname(sender.textContent, nickname);
+  });
 });
 
 // The system's sheet classes only show up in CONFIG once Foundry has applied the registrations

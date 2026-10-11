@@ -55,6 +55,8 @@ system's sheet for `character`, `synthetic`, `creature`, `vehicles`, `spacecraft
   unit, their rank, a rolled origin, a rolled early life and why they joined the Marines),
   offers the marine MOSs as its careers, rolls a field event after the talent, offers a personal agenda to pick, roll or write, and
   ends with the marine's starting gear.
+- **Callsigns in chat** — a character with a Nickname or Callsign on their Bio tab speaks in chat
+  under it too, set after the first word of their name: Ellen “Boss” Ripley.
 - **Readable chat** — chat messages on a flat dark card in a plainer typeface, with the system's
   terminal green and display font kept for the sender, headings and labels. Each player can turn it
   off under Configure Settings → Alien RPG Companion.
