@@ -34,6 +34,7 @@
       "Title": "Character Builder: {name}",
       "StepsLabel": "Steps",
       "StepOf": "Step {number} of {total}",
+      "NextStep": "Next: {step}",
       "Steps": {
         "method": "Method",
         "kind": "Type",

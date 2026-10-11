@@ -797,18 +797,20 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     const talents = await offered(this.#careerTalents);
     const officerTalents = await offered(this.#officerTalents);
 
+    // A marine's career is their MOS.
+    const stepLabel = (id) => loc(`ALTSHEET.Builder.Steps.${id === "career" && state.method === "lifepath" ? "mos" : id}`);
+
     return {
       step: this.step,
       steps: steps.map((step, i) => ({
         id: step.id,
         number: i + 1,
-        // A marine's career is their MOS.
-        label: loc(`ALTSHEET.Builder.Steps.${step.id === "career" && state.method === "lifepath" ? "mos" : step.id}`),
+        label: stepLabel(step.id),
         active: step.id === this.step,
         done: i < reach,
         enabled: i <= reach,
       })),
-      current: { number: index + 1, label: loc(`ALTSHEET.Builder.Steps.${this.step === "career" && state.method === "lifepath" ? "mos" : this.step}`) },
+      current: { number: index + 1, label: stepLabel(this.step), next: steps[index + 1] ? stepLabel(steps[index + 1].id) : "" },
       isFirst: index === 0,
       isLast: index === steps.length - 1,
       canNext: index < reach,

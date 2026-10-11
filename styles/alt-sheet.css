@@ -1850,6 +1850,10 @@
   color: var(--aas-muted);
 }
 
+.alien-alt-sheet .aas-builder-step-now > .aas-builder-step-next {
+  margin-left: auto;
+}
+
 .alien-alt-sheet .aas-builder-step-now > b {
   color: var(--aas-accent);
 }

@@ -81,6 +81,7 @@
     <p class="aas-builder-step-now">
       <span>{{localize 'ALTSHEET.Builder.StepOf' number=current.number total=steps.length}}</span>
       <b>{{current.label}}</b>
+      {{#if current.next}}<span class="aas-builder-step-next">{{localize 'ALTSHEET.Builder.NextStep' step=current.next}}</span>{{/if}}
     </p>
   </nav>
 
