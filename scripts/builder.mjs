@@ -294,6 +294,20 @@ const DROPPED_TALENTS = ["nerves of steel"];
  */
 const MARINE_TALENTS = ["Precise Shooter"];
 
+/**
+ * Talents an MOS offers besides those its item lists, by the MOS's name in lower case. The manual's
+ * lists leave some MOSs well behind others: these give each the talent for pushing rolls on its own
+ * key attribute, and something of its own to those that had little.
+ */
+const MOS_TALENTS = {
+  rifleman: ["Nimble", "Weapon Specialist (M41A Pulse Rifle)"],
+  "dedicated marksman": ["Nimble"],
+  "afv marine": ["Nimble"],
+  "comtech marine": ["Inquisitive", "Tech Savvy"],
+  "forward observer": ["Inquisitive", "Investigator"],
+  "cbrn specialist": ["Calm Breather"],
+};
+
 const talentName = (name) => RENAMED_TALENTS[name.trim().toLowerCase()] ?? name.trim();
 
 /** Look up an attribute or skill key by the name the rulebook prints for it. */
@@ -325,7 +339,8 @@ export function careerDefinition(item) {
       .map((name) => name.trim())
       .filter((name) => name && !DROPPED_TALENTS.includes(name.toLowerCase()))
       .map(talentName);
-    if (isMarineCareer(item.name)) talents.push(...MARINE_TALENTS.filter((name) => !talents.some((held) => sameName(held, name))));
+    const extra = [...(MOS_TALENTS[item.name.trim().toLowerCase()] ?? []), ...(isMarineCareer(item.name) ? MARINE_TALENTS : [])];
+    talents.push(...extra.filter((name) => !talents.some((held) => sameName(held, name))));
     if (attribute && skills.length) return { ...base, core: false, attribute, skills, talents };
   }
 

@@ -89,8 +89,9 @@ KEY ATTRIBUTE: Agility SKILLS: Piloting, Ranged Combat TALENTS: Banter, Overkill
 ```
 
 The manual's talent lists are older than the Evolved rules, so the builder adjusts them: a talent
-in `RENAMED_TALENTS` goes by its new name, one in `DROPPED_TALENTS` isn't offered, and every MOS
-also offers those in `MARINE_TALENTS`.
+in `RENAMED_TALENTS` goes by its new name, one in `DROPPED_TALENTS` isn't offered, every MOS
+also offers those in `MARINE_TALENTS`, and `MOS_TALENTS` adds a few to the MOSs whose own lists
+left them behind the others.
 
 A career it can't work out either way isn't offered. The creation rules' numbers are the `RULES`
 table at the top of the file, and the steps are the `STEPS` list, which is where further steps go.
