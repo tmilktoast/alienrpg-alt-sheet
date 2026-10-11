@@ -712,6 +712,17 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     if (!talents.includes(this.choices.talent)) this.choices.talent = null;
   }
 
+  /**
+   * Give back the point placed in a trained skill when the early life's point lands on it, since
+   * that point is the one the skill has to start with.
+   */
+  #freeTrainedPoint() {
+    const key = this.#bonusSkill;
+    const { skills } = this.choices;
+    const trained = MARINE_SKILLS.includes(key) || this.career?.skills.includes(key);
+    if (key && trained && skills[key] === RULES.trainedSkillMin) skills[key] = this.#min("skills", key);
+  }
+
   /** The Officer talents on offer besides the career's own: only to the life path's unit commander. */
   get #officerTalents() {
     const { method, commander } = this.choices;
@@ -766,6 +777,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     if (choice === "earlyLifeSkill") {
       if (!this.choices.earlyLife?.skills.includes(value)) return;
       this.choices.earlyLife.skill = value;
+      this.#freeTrainedPoint();
       this.#fitToCareer();
     } else if (choice === "fieldEvent") {
       const [id, pick] = value.split("/");
@@ -809,6 +821,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     const earlyLife = await rollEarlyLife();
     if (!earlyLife) return ui.notifications.warn(loc("ALTSHEET.Builder.EarlyLife.NoTable"));
     this.choices.earlyLife = earlyLife;
+    this.#freeTrainedPoint();
     this.#fitToCareer();
     return this.render();
   }
