@@ -924,6 +924,15 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
         talents: (event?.talents ?? []).map((name) => ({ name, missing: !findTalent(name) })),
       };
     });
+    // A talent an event gives is a link to its item, where the world has one.
+    for (const entry of fieldEvents) {
+      if (!entry.event) continue;
+      const linked = entry.event.html.replace(/(<(?:strong|b)>\s*)([^<]+?)(\s*<\/(?:strong|b)>\s*talent)/gi, (text, open, name, close) => {
+        const talent = findTalent(talentName(name));
+        return talent ? `${open}@UUID[${talent.uuid}]{${talentName(name)}}${close}` : text;
+      });
+      entry.html = await foundry.applications.ux.TextEditor.enrichHTML(linked);
+    }
 
     const offered = (names) =>
       Promise.all(
