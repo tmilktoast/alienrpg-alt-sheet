@@ -181,10 +181,13 @@
       <header class="aas-panel-head"><h2>{{localize 'ALTSHEET.Builder.Mos.Title'}}</h2></header>
       <div class="aas-prose">
         <p>{{localize 'ALTSHEET.Builder.Mos.Intro'}}</p>
-        <p>{{{localize 'ALTSHEET.Builder.Mos.IntroLimits' attribute=rules.keyAttributeMax skill=rules.keySkillMax}}}</p>
-        <p>{{{localize 'ALTSHEET.Builder.Mos.IntroTalents'}}}</p>
-        <p>{{localize 'ALTSHEET.Builder.Mos.IntroGear'}}</p>
-        <p>{{localize 'ALTSHEET.Builder.Mos.IntroPick'}}</p>
+        <p>{{localize 'ALTSHEET.Builder.Mos.IntroHas'}}</p>
+        <ul>
+          <li>{{localize 'ALTSHEET.Builder.Mos.IntroAttribute' attribute=rules.keyAttributeMax}}</li>
+          <li>{{localize 'ALTSHEET.Builder.Mos.IntroSkills' skill=rules.keySkillMax}}</li>
+          <li>{{{localize 'ALTSHEET.Builder.Mos.IntroTalents'}}}</li>
+          <li>{{localize 'ALTSHEET.Builder.Mos.IntroGear'}}</li>
+        </ul>
       </div>
     </section>
     {{else}}
