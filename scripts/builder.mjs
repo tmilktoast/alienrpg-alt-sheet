@@ -22,6 +22,8 @@ const RULES = {
   trainedSkillMin: 1,
   // Nor this: what a field event adds may pass the limits above, but no score goes higher than this.
   scoreMax: 5,
+  // How many things a career's list of gear gives, by the book.
+  kitPicks: 2,
   // An android adds this to each of a number of attributes of its choice, after the points are spent.
   androidBonus: 3,
   androidBonusCount: 2,
@@ -230,7 +232,7 @@ const STEPS = [
       }),
   },
   // An agenda is the player's to pick, roll, write or leave for later.
-  { id: "agenda", method: "lifepath", done: () => true },
+  { id: "agenda", done: () => true },
   // One pick from each bonus list, and from any choice the MOS's gear leaves open.
   {
     id: "gear",
@@ -238,7 +240,16 @@ const STEPS = [
     done: (state) => !!state.gearA && !!state.gearB && (!mosGearChoice(state) || !!state.gearMos),
   },
   // Nor does a signature item have to be settled here.
-  { id: "signature", method: "lifepath", done: () => true },
+  // By the book, a career gives two things from its own list of gear: nothing to pick if the
+  // rulebook's page for the career isn't in the world to read the list from.
+  {
+    id: "kit",
+    method: "book",
+    done: (state) => state.kit.length === Math.min(RULES.kitPicks, kitFor(state)?.gear.length ?? 0),
+  },
+  { id: "signature", done: () => true },
+  // And cash to roll for, likewise.
+  { id: "cash", method: "book", done: (state) => !kitFor(state)?.cash || state.cash !== null },
   { id: "review", done: () => true },
   // Nothing to answer: it says what is left to fill in on the sheet, and is where the life path applies.
   { id: "finish", method: "lifepath", done: () => true },
@@ -492,7 +503,85 @@ function startingGear(state) {
 }
 
 /**
- * The life path's questions answered in the player's own words, each with a list of examples to
+ * What the rulebook gives each of its careers to start with: gear to pick from, cash to roll for,
+ * and examples of a personal agenda and a signature item. None of it is written into this module;
+ * it is read from the rulebook's own page in the world's Journal, which lays each career out under
+ * a heading of its name. Cleared when a builder opens, so a journal imported since is found.
+ * @type {Map<string, {cash: number, gear: string[], agenda: string[], signature: string[]}|null>}
+ */
+const careerKits = new Map();
+
+function careerKit(name) {
+  const key = name?.trim().toLowerCase();
+  if (!key) return null;
+  if (careerKits.has(key)) return careerKits.get(key);
+  let kit = null;
+  for (const page of game.journal.contents.flatMap((entry) => entry.pages.contents)) {
+    const html = page.text?.content;
+    if (!html?.includes("evchapterheading")) continue;
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    const heading = [...doc.querySelectorAll("h2.evchapterheading")].find((h2) => sameName(h2.textContent, name));
+    const block = heading?.closest("div");
+    if (!block) continue;
+    // Each list sits in the cell under its heading's.
+    const lists = {};
+    for (const title of block.querySelectorAll("p.evheading")) {
+      const cell = title.closest("td");
+      const under = cell?.parentElement.nextElementSibling?.cells[cell.cellIndex];
+      lists[title.textContent.trim().toUpperCase()] = [...(under?.querySelectorAll("li") ?? [])].map((li) => plain(li.innerHTML));
+    }
+    const cash = plain(block.innerHTML).match(/Cash:\s*D6\s*[\u00d7x]\s*([\d,]+)/i)?.[1];
+    kit = {
+      cash: cash ? Number(cash.replace(/,/g, "")) : 0,
+      gear: lists.GEAR ?? [],
+      agenda: lists["PERSONAL AGENDA"] ?? [],
+      signature: lists["SIGNATURE ITEM"] ?? [],
+    };
+    break;
+  }
+  careerKits.set(key, kit);
+  return kit;
+}
+
+/** What the rulebook gives the career chosen, when building by the book. */
+const kitFor = (state) => (state.method === "book" ? careerKit(game.items.get(state.career)?.name) : null);
+
+const NUMBER_WORDS = { two: 2, three: 3, four: 4, five: 5, six: 6 };
+
+/**
+ * One thing on a career's list of gear, as the rulebook words it: "Two G2 Electroshock Grenades" is
+ * two of them, "D6 doses Naproleve" a roll's worth. The rulebook's name for a thing isn't always
+ * its item's, so the world's item is the closest by name.
+ */
+function kitEntry(text) {
+  let name = text;
+  let quantity = 1;
+  let dice = "";
+  const counted = text.match(/^(two|three|four|five|six|\d+)\s+(.+)$/i);
+  const doses = text.match(/^(D\d+)\s+doses\s+(?:of\s+)?(.+)$/i);
+  if (doses) [, dice, name] = doses;
+  else if (counted) [quantity, name] = [NUMBER_WORDS[counted[1].toLowerCase()] ?? Number(counted[1]), counted[2]];
+  const norm = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim().replace(/s$/, "");
+  const wanted = norm(name);
+  const item = game.items
+    .filter((candidate) => ["item", "weapon", "armor"].includes(candidate.type))
+    .map((candidate) => ({ candidate, held: norm(candidate.name) }))
+    .filter(({ held }) => held === wanted || (wanted.length > 4 && held.includes(wanted)) || (held.length > 4 && wanted.includes(held)))
+    .sort((a, b) => Math.abs(a.held.length - wanted.length) - Math.abs(b.held.length - wanted.length))[0]?.candidate;
+  return {
+    name: item?.name ?? name,
+    quantity,
+    dice: dice ? `1${dice.toLowerCase()}` : "",
+    item,
+    uuid: item?.uuid,
+    img: item?.img ?? "icons/svg/item-bag.svg",
+    description: plain(item?.system.attributes?.comment?.value) ? item.system.attributes.comment.value : "",
+    label: text,
+  };
+}
+
+/**
+ * The questions answered in the player's own words, each with a list of examples to
  * pick from or roll for: the step's id, the language file's section holding its examples, and the
  * label of the character's field it fills.
  */
@@ -507,7 +596,9 @@ const WRITTEN = {
  * @param {keyof WRITTEN} field
  * @returns {string[]}
  */
-function writtenExamples(field) {
+function writtenExamples(field, state) {
+  // By the book they are the career's own, from the rulebook's page.
+  if (state.method === "book") return kitFor(state)?.[field] ?? [];
   const key = `ALTSHEET.Builder.${WRITTEN[field].section}.Examples`;
   const list = foundry.utils.getProperty(game.i18n.translations, key) ?? foundry.utils.getProperty(game.i18n._fallback, key);
   return Object.values(list ?? {}).filter((entry) => typeof entry === "string");
@@ -602,6 +693,8 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       rollJoining: CharacterBuilder.#onRollJoining,
       rollFieldEvent: CharacterBuilder.#onRollFieldEvent,
       rollWritten: CharacterBuilder.#onRollWritten,
+      rollKit: CharacterBuilder.#onRollKit,
+      rollCash: CharacterBuilder.#onRollCash,
       pickCareer: CharacterBuilder.#onPickCareer,
       pickTalent: CharacterBuilder.#onPickTalent,
       adjust: CharacterBuilder.#onAdjust,
@@ -621,6 +714,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     super({ ...options, id: `${MODULE_ID}-builder-${options.actor.id}` });
     this.actor = options.actor;
     const synthetic = options.actor.type === "synthetic";
+    careerKits.clear();
     /**
      * What has been chosen so far. Synthetic says the character is an android, which is built by
      * the book and then adds a bonus to the attributes listed in android. The method is "book" or "lifepath"; the kind is one of KINDS; commander is "yes" or "no";
@@ -628,7 +722,8 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
      * rolled for them; joining is why they joined the Marines, picked or rolled; a career is the
      * id of its Career item; a talent is its name; fieldEvents are the events rolled, by the id
      * of the table each was rolled on; agenda is the personal agenda picked, rolled or written;
-     * signature is their signature item, likewise;
+     * signature is their signature item, likewise; kit is the gear picked from the career's
+     * list by the book, as it is worded there, and cash what was rolled for it;
      * gearA, gearB and gearMos are the names of the gear picked from the two bonus lists and from
      * any choice the MOS's gear leaves.
      */
@@ -649,6 +744,8 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       fieldEvents: {},
       agenda: "",
       signature: "",
+      kit: [],
+      cash: null,
       gearA: null,
       gearB: null,
       gearMos: null,
@@ -946,7 +1043,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
           field,
           {
             text: state[field],
-            examples: writtenExamples(field).map((text, i) => ({
+            examples: writtenExamples(field, state).map((text, i) => ({
               id: String(i),
               icon,
               label: text,
@@ -955,11 +1052,26 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
           },
         ]),
       ),
+      kit: state.method === "book" && {
+        found: !!kitFor(state),
+        picks: RULES.kitPicks,
+        left: Math.min(RULES.kitPicks, kitFor(state)?.gear.length ?? 0) - state.kit.length,
+        options: (kitFor(state)?.gear ?? []).map(kitEntry).map((entry) => ({
+          ...entry,
+          id: entry.label,
+          selected: state.kit.includes(entry.label),
+          disabled: !state.kit.includes(entry.label) && state.kit.length >= RULES.kitPicks,
+        })),
+        cash: kitFor(state)?.cash ?? 0,
+        rolled: state.cash,
+      },
       // A field event may have handed the marine a signature item already.
       signatureEvents: fieldEvents.filter(({ event }) => /signature item/i.test(event?.text ?? "")).map(({ event }) => event.text),
       review: {
-        agenda: state.method === "lifepath" ? state.agenda.trim() : "",
-        signature: state.method === "lifepath" ? state.signature.trim() : "",
+        agenda: state.agenda.trim(),
+        signature: state.signature.trim(),
+        kit: state.method === "book" ? state.kit.join(", ") : "",
+        cash: state.method === "book" && state.cash !== null ? fmt("ALTSHEET.Builder.Cash.Amount", { amount: state.cash }) : "",
         gear: state.method === "lifepath" ? startingGear(state).map((entry) => entry.label).join(", ") : "",
         fieldEvents: fieldEvents.filter(({ event }) => event).map(({ title, event }) => ({ title, text: event.text })),
         rank: this.#rank,
@@ -1002,6 +1114,9 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       skills[spare] -= 1;
     }
     if (!mosGearChoice(this.choices)?.includes(this.choices.gearMos)) this.choices.gearMos = null;
+    const kit = kitFor(this.choices);
+    this.choices.kit = this.choices.kit.filter((text) => kit?.gear.includes(text));
+    if (!kit?.cash) this.choices.cash = null;
     const talents = [...this.#careerTalents, ...this.#officerTalents];
     if (!talents.includes(this.choices.talent)) this.choices.talent = null;
     // With only one talent to start with, there is nothing to pick.
@@ -1105,6 +1220,13 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       const offered = { gearA: MARINE_GEAR.listA, gearB: MARINE_GEAR.listB, gearMos: mosGearChoice(this.choices) ?? [] }[choice];
       if (!offered.some((entry) => gearEntry(entry).name === value)) return;
       this.choices[choice] = value;
+    } else if (choice === "kit") {
+      // Picking a thing again puts it back.
+      const { kit } = this.choices;
+      if (!kitFor(this.choices)?.gear.includes(value)) return;
+      if (kit.includes(value)) kit.splice(kit.indexOf(value), 1);
+      else if (kit.length < RULES.kitPicks) kit.push(value);
+      else return;
     } else if (choice === "android") {
       // Picking an attribute again takes its bonus back.
       const { android } = this.choices;
@@ -1113,7 +1235,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       else if (android.length < RULES.androidBonusCount) android.push(value);
       else return;
     } else if (choice in WRITTEN) {
-      const text = writtenExamples(choice)[Number(value)];
+      const text = writtenExamples(choice, this.choices)[Number(value)];
       if (!text) return;
       this.choices[choice] = text;
     } else if (choice === "joining") {
@@ -1183,7 +1305,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     target.disabled = true;
     const { field } = target.dataset;
     if (!(field in WRITTEN)) return;
-    const examples = writtenExamples(field);
+    const examples = writtenExamples(field, this.choices);
     if (!examples.length) return this.render();
     const roll = await new Roll(`1d${examples.length}`).evaluate();
     const text = examples[roll.total - 1];
@@ -1192,6 +1314,39 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       flavor: `<b>${loc(WRITTEN[field].label)}</b><br>${foundry.utils.escapeHTML(text)}`,
     });
     this.choices[field] = text;
+    return this.render();
+  }
+
+  /** Roll for the gear a career gives by the book, in place of picking it: no thing comes up twice. */
+  static async #onRollKit(event, target) {
+    target.disabled = true;
+    const gear = kitFor(this.choices)?.gear ?? [];
+    const kit = [];
+    while (kit.length < Math.min(RULES.kitPicks, gear.length)) {
+      const roll = await new Roll(`1d${gear.length}`).evaluate();
+      const text = gear[roll.total - 1];
+      if (kit.includes(text)) continue;
+      kit.push(text);
+      await roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        flavor: `<b>${loc("ALTSHEET.Builder.Kit.Title")}</b><br>${foundry.utils.escapeHTML(text)}`,
+      });
+    }
+    this.choices.kit = kit;
+    return this.render();
+  }
+
+  /** Roll for the cash a career starts with by the book. */
+  static async #onRollCash(event, target) {
+    target.disabled = true;
+    const cash = kitFor(this.choices)?.cash;
+    if (!cash) return this.render();
+    const roll = await new Roll(`1d6 * ${cash}`).evaluate();
+    await roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      flavor: `<b>${loc("ALTSHEET.Builder.Cash.Title")}</b>`,
+    });
+    this.choices.cash = roll.total;
     return this.render();
   }
 
@@ -1253,8 +1408,9 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       update[`system.skills.${key}.value`] = value + (key === bonusSkill ? 1 : 0) + (eventGains.skills[key] ?? 0);
     }
     const events = state.method === "lifepath" ? fieldEventsFor(state).map(({ id }) => state.fieldEvents[id]).filter(Boolean) : [];
-    if (state.method === "lifepath" && state.agenda.trim()) update["system.general.agenda.value"] = state.agenda.trim();
-    if (state.method === "lifepath" && state.signature.trim()) update["system.general.sigItem.value"] = state.signature.trim();
+    if (state.agenda.trim()) update["system.general.agenda.value"] = state.agenda.trim();
+    if (state.signature.trim()) update["system.general.sigItem.value"] = state.signature.trim();
+    if (state.method === "book" && state.cash !== null) update["system.general.cash.value"] = String(state.cash);
     if (events.length) update[`flags.${MODULE_ID}.fieldEvents`] = events.map((event) => event.text).join("\n\n");
     // The system's older career field, for anything that still reads it.
     const legacy = Object.entries(CONFIG.ALIENRPG.career_list).find(([, entry]) => sameName(loc(entry.label), careerItem.name));
@@ -1287,8 +1443,12 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
         !create.some((item) => item.type === "talent" && sameName(item.name, talentItem.name))
       ) create.push(talentItem.toObject());
     }
-    // Starting gear, less anything the character already carries.
-    for (const entry of state.method === "lifepath" ? startingGear(state) : []) {
+    // Starting gear, less anything the character already carries. By the book some of it is a roll's worth.
+    const kit = [];
+    for (const entry of state.method === "book" ? state.kit.map(kitEntry) : []) {
+      kit.push(entry.dice ? { ...entry, quantity: (await new Roll(entry.dice).evaluate()).total } : entry);
+    }
+    for (const entry of state.method === "lifepath" ? startingGear(state) : kit) {
       if (actor.items.some((item) => sameName(item.name, entry.name))) continue;
       const data = entry.item?.toObject() ?? { name: entry.name, type: "item" };
       if (data.type !== "armor") foundry.utils.setProperty(data, "system.attributes.quantity.value", entry.quantity);
@@ -1297,7 +1457,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     await actor.createEmbeddedDocuments("Item", create);
 
     for (const name of missing) ui.notifications.warn(fmt("ALTSHEET.Builder.TalentMissing", { name }));
-    ui.notifications.info(fmt(`ALTSHEET.Builder.${state.method === "lifepath" ? "AppliedLifePath" : "Applied"}`, { name: actor.name }));
+    ui.notifications.info(fmt(`ALTSHEET.Builder.${state.method === "lifepath" || kitFor(state) ? "AppliedLifePath" : "Applied"}`, { name: actor.name }));
     return this.close();
   }
 }

@@ -48,7 +48,8 @@
 {{!-- One piece of gear to pick from a list. --}}
 {{#*inline "gearChoice"}}
 <button type="button" class="aas-builder-choice {{#if selected}}active{{/if}}" data-action="pick"
-  data-choice="{{choice}}" data-value="{{id}}" aria-pressed="{{#if selected}}true{{else}}false{{/if}}"{{#if description}} data-tooltip-html="{{description}}" data-tooltip-class="aas-gear-tooltip" data-tooltip-direction="UP"{{/if}}>
+  data-choice="{{choice}}" data-value="{{id}}" aria-pressed="{{#if selected}}true{{else}}false{{/if}}"
+  {{#if disabled}}disabled{{/if}}{{#if description}} data-tooltip-html="{{description}}" data-tooltip-class="aas-gear-tooltip" data-tooltip-direction="UP"{{/if}}>
   <img src="{{img}}" alt="">
   <span class="aas-builder-choice-body"><b>{{label}}</b></span>
 </button>
@@ -451,15 +452,17 @@
     <section class="aas-panel">
       <header class="aas-panel-head"><h2>{{localize 'ALIENRPG.PersonalAgenda'}}</h2></header>
       <div class="aas-prose">
-        <p>{{localize 'ALTSHEET.Builder.Agenda.Intro'}}</p>
-        <p>{{{localize 'ALTSHEET.Builder.Agenda.IntroPick'}}}</p>
+        <p>{{#if isLifePath}}{{localize 'ALTSHEET.Builder.Agenda.Intro'}}{{else}}{{localize 'ALTSHEET.Builder.Agenda.IntroBook'}}{{/if}}</p>
+        <p>{{#if agenda.examples.length}}{{{localize 'ALTSHEET.Builder.Agenda.IntroPick'}}}{{else}}{{localize 'ALTSHEET.Builder.Kit.WriteOnly'}}{{/if}}</p>
       </div>
+      {{#if agenda.examples.length}}
       <div class="aas-builder-roll aas-builder-roll-top">
         <button type="button" class="aas-button" data-action="rollWritten" data-field="agenda">
           <i class="fa-solid fa-dice" inert></i>
           {{localize 'ALTSHEET.Builder.Joining.Roll'}}
         </button>
       </div>
+      {{/if}}
       <label class="aas-labelled">
         <span>{{localize 'ALTSHEET.Builder.Agenda.Yours'}}</span>
         <textarea data-field="agenda" rows="3" placeholder="{{localize 'ALTSHEET.Builder.Agenda.Placeholder'}}">{{agenda.text}}</textarea>
@@ -516,22 +519,74 @@
     {{/if}}
     {{/if}}
 
+    {{#if (eq step "kit")}}
+    <section class="aas-panel">
+      <header class="aas-panel-head">
+        <h2>{{localize 'ALTSHEET.Builder.Kit.Title'}}</h2>
+        {{#if kit.found}}<span class="aas-tag {{#if kit.left}}aas-tag-warn{{/if}}">{{localize 'ALTSHEET.Builder.Android.Left' left=kit.left}}</span>{{/if}}
+      </header>
+      {{#if kit.options.length}}
+      <div class="aas-prose">
+        <p>{{{localize 'ALTSHEET.Builder.Kit.Intro' picks=kit.picks career=career.name}}}</p>
+        <p>{{localize 'ALTSHEET.Builder.Kit.Extras'}}</p>
+      </div>
+      <div class="aas-builder-roll aas-builder-roll-top">
+        <button type="button" class="aas-button" data-action="rollKit">
+          <i class="fa-solid fa-dice" inert></i>
+          {{localize 'ALTSHEET.Builder.Joining.Roll'}}
+        </button>
+      </div>
+      <div class="aas-builder-choices">
+        {{#each kit.options}}
+        {{> gearChoice choice="kit"}}
+        {{/each}}
+      </div>
+      {{else}}
+      <p class="aas-empty">{{localize 'ALTSHEET.Builder.Kit.None' career=career.name}}</p>
+      {{/if}}
+    </section>
+    {{/if}}
+
+    {{#if (eq step "cash")}}
+    <section class="aas-panel">
+      <header class="aas-panel-head">
+        <h2>{{localize 'ALTSHEET.Builder.Cash.Title'}}</h2>
+        {{#if review.cash}}<span class="aas-tag">{{review.cash}}</span>{{/if}}
+      </header>
+      {{#if kit.cash}}
+      <div class="aas-prose">
+        <p>{{localize 'ALTSHEET.Builder.Cash.Intro' career=career.name amount=kit.cash}}</p>
+      </div>
+      <div class="aas-builder-roll">
+        <button type="button" class="aas-button {{#unless review.cash}}aas-button-primary{{/unless}}" data-action="rollCash">
+          <i class="fa-solid fa-dice" inert></i>
+          {{#if review.cash}}{{localize 'ALTSHEET.Builder.Origin.Reroll'}}{{else}}{{localize 'ALTSHEET.Builder.Cash.Roll'}}{{/if}}
+        </button>
+      </div>
+      {{else}}
+      <p class="aas-empty">{{localize 'ALTSHEET.Builder.Kit.None' career=career.name}}</p>
+      {{/if}}
+    </section>
+    {{/if}}
+
     {{#if (eq step "signature")}}
     <section class="aas-panel">
       <header class="aas-panel-head"><h2>{{localize 'ALIENRPG.SignatureItem'}}</h2></header>
       <div class="aas-prose">
         <p>{{localize 'ALTSHEET.Builder.Signature.Intro'}}</p>
-        <p>{{{localize 'ALTSHEET.Builder.Signature.IntroPick'}}}</p>
+        <p>{{#if signature.examples.length}}{{{localize 'ALTSHEET.Builder.Signature.IntroPick'}}}{{else}}{{localize 'ALTSHEET.Builder.Kit.WriteOnly'}}{{/if}}</p>
         {{#each signatureEvents}}
         <p><strong>{{localize 'ALTSHEET.Builder.Signature.FromEvent'}}</strong> {{this}}</p>
         {{/each}}
       </div>
+      {{#if signature.examples.length}}
       <div class="aas-builder-roll aas-builder-roll-top">
         <button type="button" class="aas-button" data-action="rollWritten" data-field="signature">
           <i class="fa-solid fa-dice" inert></i>
           {{localize 'ALTSHEET.Builder.Joining.Roll'}}
         </button>
       </div>
+      {{/if}}
       <label class="aas-labelled">
         <span>{{localize 'ALTSHEET.Builder.Signature.Yours'}}</span>
         <textarea data-field="signature" rows="2" placeholder="{{localize 'ALTSHEET.Builder.Agenda.Placeholder'}}">{{signature.text}}</textarea>
@@ -565,6 +620,8 @@
         {{#each review.fieldEvents}}<dt>{{title}}</dt><dd>{{text}}</dd>{{/each}}
         {{#if review.agenda}}<dt>{{localize 'ALIENRPG.PersonalAgenda'}}</dt><dd>{{review.agenda}}</dd>{{/if}}
         {{#if review.signature}}<dt>{{localize 'ALIENRPG.SignatureItem'}}</dt><dd>{{review.signature}}</dd>{{/if}}
+        {{#if review.kit}}<dt>{{localize 'ALTSHEET.Builder.Review.Gear'}}</dt><dd>{{review.kit}}</dd>{{/if}}
+        {{#if review.cash}}<dt>{{localize 'ALTSHEET.Builder.Cash.Title'}}</dt><dd>{{review.cash}}</dd>{{/if}}
         {{#if review.gear}}<dt>{{localize 'ALTSHEET.Builder.Review.Gear'}}</dt><dd>{{review.gear}}</dd>{{/if}}
       </dl>
     </section>

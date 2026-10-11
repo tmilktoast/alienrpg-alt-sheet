@@ -104,6 +104,12 @@ The Gear step's lists are `MARINE_GEAR` in `scripts/builder.mjs`: the basic gear
 gets, the two bonus lists to pick one from each, and each MOS's gear. They name Gear items in the
 world's Items sidebar; one with no item there is added as a plain item of that name.
 
+By the book, the builder goes on to the career's starting gear (two picks from its list), a
+signature item, a personal agenda and cash. It doesn't carry the rulebook's lists itself: it reads
+them from the rulebook's character chapter in the world's Journal, where each career has a heading
+of its name, and matches the gear to the world's items by name. A career with no such page skips
+the gear and cash, and its agenda and signature item are only written in.
+
 A synthetic's sheet has the builder too. An android is only built by the book, so the builder
 skips the method and type steps for one, and its Attributes step has two +3 bonuses to place
 (`androidBonus` and `androidBonusCount`) after the points are spent.

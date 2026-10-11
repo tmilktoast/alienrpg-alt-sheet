@@ -7,6 +7,9 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
 
 ### Added
 
+- **Gear, cash, agenda and signature item by the book** — after the talent, building by the book
+  now offers the career's personal agendas and signature items, two picks from its list of gear,
+  and its roll for cash, read from the rulebook's character chapter in the world's Journal.
 - **Builder for synthetics** — the Builder button is on a synthetic's sheet as well. An android
   is built by the book, then adds +3 to two attributes of its choice.
 - **Artificial womb soldiers** — the character builder asks whether the character is a human or an

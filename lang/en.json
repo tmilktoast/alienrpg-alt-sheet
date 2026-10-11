@@ -56,6 +56,8 @@
         "agenda": "Personal Agenda",
         "gear": "Starting Gear",
         "signature": "Signature Item",
+        "kit": "Starting Gear",
+        "cash": "Roll for Cash",
         "review": "Review Your Character",
         "finish": "Finishing Touches"
       },
@@ -219,8 +221,22 @@
           "Photo of a place you've never been but dream of visiting"
         ]
       },
+      "Kit": {
+        "Title": "Starting gear",
+        "Intro": "<strong>Choose</strong> {picks} things from the {career}'s list below, or click Roll. Click one again to put it back.",
+        "Extras": "Any weapon comes with two full reloads, and you have a uniform or civilian clothing as well.",
+        "None": "The rulebook's page for the {career} isn't in this world's Journal, so there is nothing to offer here. Add it by hand on the sheet.",
+        "WriteOnly": "Write your own below, or leave it for later."
+      },
+      "Cash": {
+        "Title": "Cash",
+        "Intro": "A {career} starts with D6 \u00d7 {amount} W-Y dollars.",
+        "Roll": "Roll for cash",
+        "Amount": "${amount}"
+      },
       "Agenda": {
         "Intro": "Even as part of a unit, everyone has a personal agenda.",
+        "IntroBook": "Your personal agenda is what drives you, apart from the job in front of you.",
         "IntroPick": "<strong>Choose</strong> from the list below, click Roll, or write your own.",
         "Yours": "Your agenda",
         "Placeholder": "Write your own, or leave it for later.",
