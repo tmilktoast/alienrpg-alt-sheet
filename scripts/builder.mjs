@@ -282,6 +282,12 @@ const RENAMED_TALENTS = { "field surgeon": "Field Medic", "past the limit": "Tru
  */
 const DROPPED_TALENTS = ["nerves of steel"];
 
+/**
+ * Talents every MOS offers besides its own, which the Colonial Marines manual's lists predate: the
+ * Evolved rules made them a marine's.
+ */
+const MARINE_TALENTS = ["Precise Shooter"];
+
 const talentName = (name) => RENAMED_TALENTS[name.trim().toLowerCase()] ?? name.trim();
 
 /** Look up an attribute or skill key by the name the rulebook prints for it. */
@@ -313,6 +319,7 @@ export function careerDefinition(item) {
       .map((name) => name.trim())
       .filter((name) => name && !DROPPED_TALENTS.includes(name.toLowerCase()))
       .map(talentName);
+    if (isMarineCareer(item.name)) talents.push(...MARINE_TALENTS.filter((name) => !talents.some((held) => sameName(held, name))));
     if (attribute && skills.length) return { ...base, core: false, attribute, skills, talents };
   }
 

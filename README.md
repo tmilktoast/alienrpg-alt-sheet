@@ -88,6 +88,10 @@ form the Colonial Marines manual's specialties use:
 KEY ATTRIBUTE: Agility SKILLS: Piloting, Ranged Combat TALENTS: Banter, Overkill
 ```
 
+The manual's talent lists are older than the Evolved rules, so the builder adjusts them: a talent
+in `RENAMED_TALENTS` goes by its new name, one in `DROPPED_TALENTS` isn't offered, and every MOS
+also offers those in `MARINE_TALENTS`.
+
 A career it can't work out either way isn't offered. The creation rules' numbers are the `RULES`
 table at the top of the file, and the steps are the `STEPS` list, which is where further steps go.
 A step with `method: "lifepath"` is only asked on the Colonial Marine Life Path. On that path the
