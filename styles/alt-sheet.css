@@ -1804,25 +1804,54 @@
 .alien-alt-sheet .aas-builder-steps {
   flex: none;
   display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  padding: 10px 14px;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 14px;
   background: var(--aas-panel);
   border-bottom: 1px solid var(--aas-border);
 }
 
+/* Each step is its number alone, so a long path's steps fit one row; the current one is named below. */
+.alien-alt-sheet .aas-builder-step-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
 .alien-alt-sheet .window-content .aas-builder-step {
-  flex: 1 0 auto;
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  width: auto;
   min-width: 0;
-  padding: 4px 6px;
+  padding: 2px;
   color: var(--aas-muted);
+  font-size: 12px;
+  border-color: var(--aas-border);
+}
+
+.alien-alt-sheet .aas-builder-step .aas-die {
+  min-width: 24px;
+  padding: 2px 4px;
+  font-size: 13px;
+}
+
+.alien-alt-sheet .window-content .aas-builder-step-now {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  border-color: var(--aas-border);
+}
+
+.alien-alt-sheet .aas-builder-step-now > span {
+  color: var(--aas-muted);
+}
+
+.alien-alt-sheet .aas-builder-step-now > b {
+  color: var(--aas-accent);
 }
 
 .alien-alt-sheet .window-content .aas-builder-step.active {

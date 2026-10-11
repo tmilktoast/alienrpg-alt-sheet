@@ -808,6 +808,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
         done: i < reach,
         enabled: i <= reach,
       })),
+      current: { number: index + 1, label: loc(`ALTSHEET.Builder.Steps.${this.step === "career" && state.method === "lifepath" ? "mos" : this.step}`) },
       isFirst: index === 0,
       isLast: index === steps.length - 1,
       canNext: index < reach,

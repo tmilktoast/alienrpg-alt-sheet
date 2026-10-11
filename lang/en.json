@@ -33,6 +33,7 @@
       "OpenHint": "Create this character step by step, by the book or with the Colonial Marine life path: career, attributes, skills and a talent.",
       "Title": "Character Builder: {name}",
       "StepsLabel": "Steps",
+      "StepOf": "Step {number} of {total}",
       "Steps": {
         "method": "Method",
         "kind": "Type",

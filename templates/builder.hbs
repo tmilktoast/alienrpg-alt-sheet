@@ -69,13 +69,19 @@
 
 <div class="aas-builder-frame">
   <nav class="aas-builder-steps" aria-label="{{localize 'ALTSHEET.Builder.StepsLabel'}}">
-    {{#each steps}}
-    <button type="button" class="aas-builder-step {{#if active}}active{{/if}} {{#if done}}done{{/if}}" data-action="goTo"
-      data-step="{{id}}" {{#unless enabled}}disabled{{/unless}} {{#if active}}aria-current="step"{{/if}}>
-      <span class="aas-die">{{#if done}}<i class="fa-solid fa-check" inert></i>{{else}}{{number}}{{/if}}</span>
-      <span>{{label}}</span>
-    </button>
-    {{/each}}
+    <div class="aas-builder-step-row">
+      {{#each steps}}
+      <button type="button" class="aas-builder-step {{#if active}}active{{/if}} {{#if done}}done{{/if}}" data-action="goTo"
+        data-step="{{id}}" {{#unless enabled}}disabled{{/unless}} {{#if active}}aria-current="step"{{/if}}
+        data-tooltip="{{label}}" data-tooltip-direction="DOWN" aria-label="{{number}}. {{label}}">
+        <span class="aas-die">{{#if done}}<i class="fa-solid fa-check" inert></i>{{else}}{{number}}{{/if}}</span>
+      </button>
+      {{/each}}
+    </div>
+    <p class="aas-builder-step-now">
+      <span>{{localize 'ALTSHEET.Builder.StepOf' number=current.number total=steps.length}}</span>
+      <b>{{current.label}}</b>
+    </p>
   </nav>
 
   <div class="aas-builder-body">
