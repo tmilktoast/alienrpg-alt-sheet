@@ -36,10 +36,14 @@ const CORE_CAREERS = {
 const COMMANDER_RANK = "Corporal";
 const ENLISTED_RANKS = ["Private", "Private First Class"];
 
-/** The module's pack of life path roll tables, and the ones a marine's origin and early life are rolled on. */
+/**
+ * The module's pack of life path roll tables, and the ones a marine's origin, early life and
+ * reason for joining are rolled on.
+ */
 const LIFE_PATH_PACK = `${MODULE_ID}.life-path`;
 const ORIGIN_TABLE = "Life Path - Origin";
 const EARLY_LIFE_TABLE = "Early Life";
+const JOINING_TABLE = "Joining the Marines";
 /** The parts of an origin, by the name the tables give the result that carries each. */
 const ORIGIN_PARTS = { SUPERNATION: "supernation", "SUB-AFFILIATION": "subAffiliation", HOME: "home" };
 
@@ -56,6 +60,7 @@ const STEPS = [
   { id: "origin", method: "lifepath", done: (state) => !!state.origin },
   // An early life that offers a choice of skills isn't settled until one is picked.
   { id: "earlyLife", method: "lifepath", done: (state) => !!state.earlyLife && (!state.earlyLife.skills.length || !!state.earlyLife.skill) },
+  { id: "joining", method: "lifepath", done: (state) => !!state.joining },
   { id: "career", done: (state) => !!state.career },
   { id: "attributes", done: (state) => spent(state.attributes) === RULES.attributePoints },
   { id: "skills", done: (state) => spent(state.skills) === RULES.skillPoints },
@@ -135,10 +140,27 @@ function findTalent(name) {
  * @returns {Promise<{roll: Roll, results: TableResult[]}|null>}  Null if the table isn't there.
  */
 async function drawLifePath(name) {
+  const table = await lifePathTable(name);
+  return table ? table.draw({ recursive: true }) : null;
+}
+
+/** One of the life path tables, by its name in the life path pack, or null if it isn't there. */
+async function lifePathTable(name) {
   const pack = game.packs.get(LIFE_PATH_PACK);
   const entry = pack?.index.find((table) => table.name === name);
-  const table = entry && (await pack.getDocument(entry._id));
-  return table ? table.draw({ recursive: true }) : null;
+  return entry ? pack.getDocument(entry._id) : null;
+}
+
+/**
+ * The reasons for joining the Marines, as the table lists them: a marine picks one or rolls for it.
+ * @returns {Promise<{id: string, name: string, text: string}[]>}  Empty if the table isn't there.
+ */
+async function joiningReasons() {
+  const table = await lifePathTable(JOINING_TABLE);
+  if (!table) return [];
+  return table.results.contents
+    .sort((a, b) => a.range[0] - b.range[0])
+    .map((result) => ({ id: result.id, name: result.name?.trim() ?? "", text: plain(result.description) }));
 }
 
 async function rollOrigin() {
@@ -213,6 +235,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       pick: CharacterBuilder.#onPick,
       rollOrigin: CharacterBuilder.#onRollOrigin,
       rollEarlyLife: CharacterBuilder.#onRollEarlyLife,
+      rollJoining: CharacterBuilder.#onRollJoining,
       pickCareer: CharacterBuilder.#onPickCareer,
       pickTalent: CharacterBuilder.#onPickTalent,
       adjust: CharacterBuilder.#onAdjust,
@@ -235,7 +258,8 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     /**
      * What has been chosen so far. The method is "book" or "lifepath"; commander is "yes" or "no";
      * rank is the one a marine who isn't the commander picked; origin and earlyLife are what was
-     * rolled for them; a career is the id of its Career item; a talent is its name.
+     * rolled for them; joining is why they joined the Marines, picked or rolled; a career is the
+     * id of its Career item; a talent is its name.
      */
     this.choices = {
       method: null,
@@ -243,6 +267,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       rank: null,
       origin: null,
       earlyLife: null,
+      joining: null,
       career: null,
       attributes: Object.fromEntries(ATTRIBUTES.map((key) => [key, RULES.attributeMin])),
       skills: Object.fromEntries(Object.keys(CONFIG.ALIENRPG.skills).map((key) => [key, 0])),
@@ -416,10 +441,21 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
           selected: state.earlyLife.skill === key,
         })),
       },
+      joining: {
+        rolled: state.joining?.roll,
+        reasons: (state.method === "lifepath" ? await this.#joiningReasons() : []).map((reason) => ({
+          id: reason.id,
+          icon: "fa-solid fa-medal",
+          label: reason.name,
+          hint: reason.text,
+          selected: state.joining?.id === reason.id,
+        })),
+      },
       review: {
         rank: this.#rank,
         origin: state.method === "lifepath" ? state.origin : null,
         earlyLife: state.method === "lifepath" ? state.earlyLife?.story : null,
+        joining: state.method === "lifepath" ? state.joining?.name : null,
         talent: state.talent,
         attributes: ATTRIBUTES.map((key) => ({ label: attributeLabel(key), value: state.attributes[key] })),
         skills: Object.entries(state.skills)
@@ -446,6 +482,12 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     const { method, commander, rank } = this.choices;
     if (method !== "lifepath") return null;
     return commander === "yes" ? COMMANDER_RANK : commander === "no" ? rank : null;
+  }
+
+  /** The reasons for joining the Marines, read from their table once. */
+  async #joiningReasons() {
+    this._joiningReasons ??= await joiningReasons();
+    return this._joiningReasons;
   }
 
   /** The skill the life path gives a point in, over and above the points spent, or null. */
@@ -484,6 +526,10 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     if (choice === "earlyLifeSkill") {
       if (!this.choices.earlyLife?.skills.includes(value)) return;
       this.choices.earlyLife.skill = value;
+    } else if (choice === "joining") {
+      const reason = this._joiningReasons?.find((entry) => entry.id === value);
+      if (!reason) return;
+      this.choices.joining = { ...reason, roll: null };
     } else if (["method", "commander", "rank"].includes(choice)) this.choices[choice] = value;
     else return;
     return this.render();
@@ -504,6 +550,16 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     const earlyLife = await rollEarlyLife();
     if (!earlyLife) return ui.notifications.warn(loc("ALTSHEET.Builder.EarlyLife.NoTable"));
     this.choices.earlyLife = earlyLife;
+    return this.render();
+  }
+
+  /** Roll the marine's reason for joining the Marines, instead of picking one. */
+  static async #onRollJoining(event, target) {
+    target.disabled = true;
+    const draw = await drawLifePath(JOINING_TABLE);
+    const reason = (await this.#joiningReasons()).find((entry) => entry.id === draw?.results[0]?.id);
+    if (!reason) return ui.notifications.warn(loc("ALTSHEET.Builder.Joining.NoTable"));
+    this.choices.joining = { ...reason, roll: draw.roll.total };
     return this.render();
   }
 
@@ -560,6 +616,9 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       update[`flags.${MODULE_ID}.origin`] = { supernation, subAffiliation, home };
     }
     if (state.method === "lifepath" && state.earlyLife) update[`flags.${MODULE_ID}.earlyLife`] = state.earlyLife.story;
+    if (state.method === "lifepath" && state.joining) {
+      update[`flags.${MODULE_ID}.joining`] = `${state.joining.name}. ${state.joining.text}`;
+    }
     await actor.update(update);
     // A new character starts unhurt; the system works out maximum Health from the scores just set.
     const { calculatedMax, max } = actor.system.header.health;
