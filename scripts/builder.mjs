@@ -280,7 +280,7 @@ const RENAMED_TALENTS = { "field surgeon": "Field Medic", "past the limit": "Tru
  * Talents the Colonial Marines manual names that aren't carried over to the Evolved rules, in lower
  * case: a career that lists one doesn't offer it.
  */
-const DROPPED_TALENTS = ["nerves of steel"];
+const DROPPED_TALENTS = ["nerves of steel", "merciless"];
 
 /**
  * Talents every MOS offers besides its own, which the Colonial Marines manual's lists predate: the
