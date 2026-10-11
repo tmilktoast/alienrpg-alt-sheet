@@ -103,10 +103,10 @@
         "Title": "Military Occupational Specialty",
         "Intro": "Your Military Occupational Specialty (MOS) defines your role in your unit.",
         "IntroHas": "Each MOS has the following:",
-        "IntroAttribute": "A Key Attribute that can be raised to a rank of {attribute}",
-        "IntroSkills": "A set of skills that can be raised to {skill} at character creation",
+        "IntroAttribute": "A <strong>Key Attribute</strong> that can be raised to a rank of {attribute}",
+        "IntroSkills": "A set of <strong>skills</strong> that can be raised to {skill} at character creation",
         "IntroTalents": "Starting <strong>talents</strong>, of which you choose one",
-        "IntroGear": "A selection of starting gear",
+        "IntroGear": "A selection of starting <strong>gear</strong>",
         "None": "No MOS found. Import the Colonial Marines manual's MOS Career items into the world's Items sidebar."
       },
       "CareerHint": "Your career sets your key attribute, your key skills and the talents you can start with.",
