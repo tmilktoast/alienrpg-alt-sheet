@@ -485,17 +485,21 @@ async function prepareActionsLink() {
   );
 }
 
-/**
- * Whether a character's nickname is a callsign: marines and pilots have those. A marine's career
- * may be one of the MOSs, which don't all say "marine".
- */
-function hasCallsign(actor) {
+/** The names of a character's careers: their Career items, and the system's older career field. */
+function careerNames(actor) {
   const { career } = actor.system.general;
   const legacy = Number(career.value) ? CONFIG.ALIENRPG.career_list[career.value] : null;
-  const careers = [...actor.items.filter((item) => item.type === "specialty").map((item) => item.name), legacy ? loc(legacy.label) : ""];
-  const marine = [...MARINE_MOS, "Dropship Crew Chief"].map((name) => name.toLowerCase());
-  return careers.some((name) => /marine|pilot/i.test(name) || marine.includes(name.trim().toLowerCase()));
+  return [...actor.items.filter((item) => item.type === "specialty").map((item) => item.name), legacy ? loc(legacy.label) : ""];
 }
+
+/** Whether a character is a marine. Their career may be one of the MOSs, which don't all say "marine". */
+function isMarine(actor) {
+  const mos = [...MARINE_MOS, "Dropship Crew Chief"].map((name) => name.toLowerCase());
+  return careerNames(actor).some((name) => /marine/i.test(name) || mos.includes(name.trim().toLowerCase()));
+}
+
+/** Whether a character's nickname is a callsign: marines and pilots have those. */
+const hasCallsign = (actor) => isMarine(actor) || careerNames(actor).some((name) => /pilot/i.test(name));
 
 function prepareBio(actor) {
   const { xp, sp, career } = actor.system.general;
@@ -506,6 +510,8 @@ function prepareBio(actor) {
     career: legacy ? loc(legacy.label) : "",
     // The system has no fields for a rank or a life path, so they are kept on the module's own flags.
     rank: actor.getFlag(MODULE_ID, "rank") ?? "",
+    // A marine's fields: on anyone else's sheet only the ones already filled in are shown.
+    marine: isMarine(actor),
     nickname: actor.getFlag(MODULE_ID, "nickname") ?? "",
     nicknameLabel: loc(hasCallsign(actor) ? "ALTSHEET.Callsign" : "ALTSHEET.Nickname"),
     origin: actor.getFlag(MODULE_ID, "origin") ?? {},

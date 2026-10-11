@@ -108,6 +108,8 @@ The system has no nickname, rank or life path fields, so the Bio tab's Nickname 
 Callsign for a marine or a pilot, going by the character's career), Rank, Supernation, Sub-affiliation,
 Home, Early life, Joining the Marines and Field events are stored on the actor as the module flags
 `nickname`, `rank`, `origin`, `earlyLife`, `joining` and `fieldEvents` under `flags.alienrpg-alt-sheet`.
+Rank, Joining the Marines and Field events are a marine's: on another character's sheet each is
+shown only if it already holds something.
 
 ## Life path tables
 

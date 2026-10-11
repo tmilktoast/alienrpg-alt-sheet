@@ -6,10 +6,12 @@
           <span>{{bio.nicknameLabel}}</span>
           <input type="text" name="flags.alienrpg-alt-sheet.nickname" value="{{bio.nickname}}">
         </label>
+        {{#if (or bio.marine bio.rank)}}
         <label class="aas-labelled">
           <span>{{localize 'ALTSHEET.MilitaryRank'}}</span>
           <input type="text" name="flags.alienrpg-alt-sheet.rank" value="{{bio.rank}}">
         </label>
+        {{/if}}
         <label class="aas-labelled">
           <span>{{localize 'ALTSHEET.Origin.Supernation'}}</span>
           <input type="text" name="flags.alienrpg-alt-sheet.origin.supernation" value="{{bio.origin.supernation}}">
@@ -26,14 +28,18 @@
           <span>{{localize 'ALTSHEET.EarlyLife'}}</span>
           <textarea name="flags.alienrpg-alt-sheet.earlyLife" rows="3">{{bio.earlyLife}}</textarea>
         </label>
+        {{#if (or bio.marine bio.joining)}}
         <label class="aas-labelled">
           <span>{{localize 'ALTSHEET.Joining'}}</span>
           <textarea name="flags.alienrpg-alt-sheet.joining" rows="3">{{bio.joining}}</textarea>
         </label>
+        {{/if}}
+        {{#if (or bio.marine bio.fieldEvents)}}
         <label class="aas-labelled">
           <span>{{localize 'ALTSHEET.FieldEvents'}}</span>
           <textarea name="flags.alienrpg-alt-sheet.fieldEvents" rows="4">{{bio.fieldEvents}}</textarea>
         </label>
+        {{/if}}
         <label class="aas-labelled">
           <span>{{localize 'ALIENRPG.Appearance'}}</span>
           <textarea name="system.general.appearance.value" rows="4">{{system.general.appearance.value}}</textarea>

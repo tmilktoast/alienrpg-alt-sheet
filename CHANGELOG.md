@@ -31,6 +31,7 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
   Rolls show in chat.
 - **Rank, origin, early life, joining and field events** — Rank, Supernation, Sub-affiliation,
   Home, Early life, Joining the Marines and Field events fields on the character sheet's Bio tab.
+  Rank, Joining the Marines and Field events show for marines only.
 - **Life Path Tables** — a compendium pack of fourteen roll tables for a Colonial Marines life
   path: Life Path - Origin and its six sub-affiliation and home tables, Early Life and its three EL
   tables, Joining the Marines, and the Enlisted and NCO event tables. The character builder uses
