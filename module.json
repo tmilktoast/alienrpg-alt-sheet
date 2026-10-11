@@ -2,7 +2,7 @@
   "id": "alienrpg-alt-sheet",
   "title": "Alien RPG Companion",
   "description": "A companion for the Alien RPG system (Evolved rules): alternate sheets with every roll as a visible button, readable type and one-click gear, and a character builder that works by the book or by a Colonial Marine life path.",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "authors": [
     {
       "name": "Brian",
@@ -64,7 +64,7 @@
   ],
   "url": "https://github.com/tmilktoast/alienrpg-alt-sheet",
   "manifest": "https://github.com/tmilktoast/alienrpg-alt-sheet/releases/latest/download/module.json",
-  "download": "https://github.com/tmilktoast/alienrpg-alt-sheet/releases/download/v0.3.1/alienrpg-alt-sheet-0.3.1.zip",
+  "download": "https://github.com/tmilktoast/alienrpg-alt-sheet/releases/download/v0.3.2/alienrpg-alt-sheet-0.3.2.zip",
   "bugs": "https://github.com/tmilktoast/alienrpg-alt-sheet/issues",
   "changelog": "https://github.com/tmilktoast/alienrpg-alt-sheet/blob/main/CHANGELOG.md"
 }
