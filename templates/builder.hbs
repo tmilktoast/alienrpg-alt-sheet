@@ -236,7 +236,8 @@
 
     {{#if (eq step "skills")}}
     <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i>
-      {{localize 'ALTSHEET.Builder.SkillsHint' points=rules.skillPoints max=rules.skillMax keyMax=rules.keySkillMax keys=career.skillLabels}}</p>
+      {{localize 'ALTSHEET.Builder.SkillsHint' points=rules.skillPoints max=rules.skillMax keyMax=rules.keySkillMax keys=career.skillLabels}}
+      {{#if bonusSkill}}{{localize 'ALTSHEET.Builder.EarlyLife.Counts' skill=bonusSkill}}{{/if}}</p>
     <section class="aas-panel">
       <header class="aas-panel-head">
         <h2>{{localize 'ALIENRPG.Skills'}}</h2>

@@ -15,7 +15,8 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
   as a youth, in whose company and what you experienced, and gives the skill point that comes with
   it (your pick, where the table offers a choice) on top of the points you spend. Joining lists
   the reasons a marine joined up, to pick one or roll for it. The career step becomes MOS and
-  offers the eight marine MOSs. Rolls show in chat.
+  offers the eight marine MOSs, whose skills can be raised to 4 rather than 3. The Early Life
+  skill point counts toward the skill's limit. Rolls show in chat.
 - **Rank, origin, early life and joining** — Rank, Supernation, Sub-affiliation, Home, Early life
   and Joining the Marines fields on the character sheet's Bio tab.
 - **Life Path Tables** — a compendium pack of fourteen roll tables for a Colonial Marines life

@@ -90,6 +90,7 @@
         "Roll": "Roll early life",
         "SkillQuestion": "Which skill did it teach you?",
         "Bonus": "+1 Early life",
+        "Counts": "Your Early Life point in {skill} is free, but counts toward that skill's limit.",
         "NoTable": "The Early Life table is missing from the Life Path Tables compendium."
       },
       "Joining": {

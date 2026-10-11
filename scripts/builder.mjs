@@ -13,6 +13,9 @@ const RULES = {
   skillPoints: 10,
   skillMax: 1,
   keySkillMax: 3,
+  // Not the rulebook's: an MOS's skills go higher on the Colonial Marine Life Path, for a marine's
+  // specialized and extensive training.
+  mosSkillMax: 4,
 };
 
 /**
@@ -316,11 +319,17 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     return this.careers.find((career) => career.id === this.choices.career) ?? null;
   }
 
-  /** The highest a score may go, which depends on the career chosen. */
-  #max(kind, key) {
+  /** The highest a score may be, which depends on the career chosen and the creation method. */
+  #limit(kind, key) {
     const career = this.career;
     if (kind === "attributes") return career?.attribute === key ? RULES.keyAttributeMax : RULES.attributeMax;
-    return career?.skills.includes(key) ? RULES.keySkillMax : RULES.skillMax;
+    if (!career?.skills.includes(key)) return RULES.skillMax;
+    return this.choices.method === "lifepath" ? RULES.mosSkillMax : RULES.keySkillMax;
+  }
+
+  /** The most points that may be spent on a score: the life path's own point counts toward its limit. */
+  #max(kind, key) {
+    return this.#limit(kind, key) - (kind === "skills" && key === this.#bonusSkill ? 1 : 0);
   }
 
   #min(kind) {
@@ -350,8 +359,11 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
 
     const bonusSkill = this.#bonusSkill;
     const scoreRow = (kind, key, label, isKey, left) => {
-      const value = state[kind][key];
-      const max = this.#max(kind, key);
+      const bonus = kind === "skills" && key === bonusSkill;
+      const paid = state[kind][key];
+      // The score shown includes the life path's point, which isn't one of the points spent.
+      const value = paid + (bonus ? 1 : 0);
+      const max = this.#limit(kind, key);
       return {
         key,
         kind,
@@ -359,9 +371,9 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
         value,
         max,
         isKey,
-        bonus: kind === "skills" && key === bonusSkill,
+        bonus,
         pips: Array.from({ length: max }, (_, i) => ({ filled: i < value })),
-        canLower: value > this.#min(kind),
+        canLower: paid > this.#min(kind),
         canRaise: value < max && left > 0,
       };
     };
@@ -409,7 +421,8 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       isFirst: index === 0,
       isLast: index === steps.length - 1,
       canNext: index < reach,
-      rules: RULES,
+      rules: { ...RULES, keySkillMax: state.method === "lifepath" ? RULES.mosSkillMax : RULES.keySkillMax },
+      bonusSkill: bonusSkill && skillLabel(bonusSkill),
       isLifePath: state.method === "lifepath",
       methods: ["book", "lifepath"].map((id) => ({
         id,
@@ -552,15 +565,17 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     if (choice === "earlyLifeSkill") {
       if (!this.choices.earlyLife?.skills.includes(value)) return;
       this.choices.earlyLife.skill = value;
+      this.#fitToCareer();
     } else if (choice === "joining") {
       const reason = this._joiningReasons?.find((entry) => entry.id === value);
       if (!reason) return;
       this.choices.joining = { ...reason, roll: null };
     } else if (["method", "commander", "rank"].includes(choice)) {
       this.choices[choice] = value;
-      // The two methods offer different careers, so one picked under the other may not carry over.
-      if (choice === "method" && !this.career) {
-        this.choices.career = null;
+      // The two methods offer different careers, so one picked under the other may not carry
+      // over, and they set different limits.
+      if (choice === "method") {
+        if (!this.career) this.choices.career = null;
         this.#fitToCareer();
       }
     } else return;
@@ -582,6 +597,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     const earlyLife = await rollEarlyLife();
     if (!earlyLife) return ui.notifications.warn(loc("ALTSHEET.Builder.EarlyLife.NoTable"));
     this.choices.earlyLife = earlyLife;
+    this.#fitToCareer();
     return this.render();
   }
 
