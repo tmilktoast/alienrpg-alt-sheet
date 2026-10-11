@@ -1963,6 +1963,10 @@
   margin-top: 8px;
 }
 
+.alien-alt-sheet .aas-builder-roll-top {
+  margin: 0 0 8px;
+}
+
 .alien-alt-sheet .aas-builder-pair {
   display: inline-block;
   margin-right: 12px;

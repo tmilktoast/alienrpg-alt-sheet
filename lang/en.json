@@ -95,8 +95,8 @@
       },
       "Joining": {
         "Intro": "Now that you have an Origin and have experienced a defining event of your youth, it's time to determine how and why you joined the Colonial Marines, the finest fighting force in known space. Oorah!",
-        "IntroPick": "At this point, it might be best to pick one of the selections below, but you can roll on the table if you prefer.",
-        "Roll": "Roll instead",
+        "IntroPick": "Choose from the list below, or click Roll.",
+        "Roll": "Roll",
         "NoTable": "The Joining the Marines table is missing from the Life Path Tables compendium."
       },
       "Mos": {

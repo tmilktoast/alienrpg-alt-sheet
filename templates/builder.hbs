@@ -158,16 +158,16 @@
         <p>{{localize 'ALTSHEET.Builder.Joining.Intro'}}</p>
         <p>{{localize 'ALTSHEET.Builder.Joining.IntroPick'}}</p>
       </div>
-      <div class="aas-builder-choices aas-builder-choices-wide">
-        {{#each joining.reasons}}
-        {{> answer choice="joining"}}
-        {{/each}}
-      </div>
-      <div class="aas-builder-roll">
+      <div class="aas-builder-roll aas-builder-roll-top">
         <button type="button" class="aas-button" data-action="rollJoining">
           <i class="fa-solid fa-dice" inert></i>
           {{localize 'ALTSHEET.Builder.Joining.Roll'}}
         </button>
+      </div>
+      <div class="aas-builder-choices aas-builder-choices-wide">
+        {{#each joining.reasons}}
+        {{> answer choice="joining"}}
+        {{/each}}
       </div>
       {{else}}
       <p class="aas-empty">{{localize 'ALTSHEET.Builder.Joining.NoTable'}}</p>
@@ -177,8 +177,9 @@
 
     {{#if (eq step "career")}}
     {{#if isLifePath}}
-    <section class="aas-panel">
-      <header class="aas-panel-head"><h2>{{localize 'ALTSHEET.Builder.Mos.Title'}}</h2></header>
+    {{!-- The explanation folds away once an MOS is picked, and opens again on a click. --}}
+    <details class="aas-details" {{#unless career}}open{{/unless}}>
+      <summary>{{localize 'ALTSHEET.Builder.Mos.Title'}}</summary>
       <div class="aas-prose">
         <p>{{localize 'ALTSHEET.Builder.Mos.Intro'}}</p>
         <p>{{localize 'ALTSHEET.Builder.Mos.IntroHas'}}</p>
@@ -189,7 +190,7 @@
           <li>{{{localize 'ALTSHEET.Builder.Mos.IntroGear'}}}</li>
         </ul>
       </div>
-    </section>
+    </details>
     {{else}}
     <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.CareerHint'}}</p>
     {{/if}}
