@@ -108,7 +108,11 @@ An artificial womb soldier is a character with `flags.alienrpg-alt-sheet.kind` s
 an actor type of its own: the system's rolls and sheets only know its own types. The builder asks
 for the type after the method, and for a womb soldier offers only marine careers, caps the
 attributes by `wombAttributeMax` and gives Overkill as the starting talent. The Bio tab's Type
-field shows and changes it.
+field shows and changes it. On the life path a womb soldier's origin, upbringing and reason for
+joining are fixed (the `ALTSHEET.Builder.Womb` strings in `lang/en.json`); only what they
+experienced is rolled, on a table named `EL - And Experienced (AW Soldier)` in the life path pack
+or the world's Rollable Tables, written like the EL - And Experienced table. Without that table
+nothing is rolled for it.
 
 The system has no nickname, rank or life path fields, so the Bio tab's Nickname (labelled
 Callsign for a marine or a pilot, going by the character's career), Rank, Supernation, Sub-affiliation,

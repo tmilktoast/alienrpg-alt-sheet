@@ -57,6 +57,11 @@ const ORIGIN_TABLE = "Life Path - Origin";
 const EARLY_LIFE_TABLE = "Early Life";
 const JOINING_TABLE = "Joining the Marines";
 /**
+ * The table an artificial womb soldier's early life experience is rolled on. It is the GM's to
+ * write, in the life path pack or the world's own Rollable Tables, and is done without until then.
+ */
+const WOMB_EXPERIENCE_TABLE = "EL - And Experienced (AW Soldier)";
+/**
  * The tables a marine's field events are rolled on. Everyone rolls on the first; only an NCO, which
  * among new marines is the unit commander, rolls on the one marked so.
  */
@@ -152,6 +157,17 @@ function scoreCap(state, kind, key) {
   return RULES.scoreMax;
 }
 
+/** An artificial womb soldier's origin and reason for joining, which are the same for them all. */
+const wombOrigin = () => ({
+  fixed: true,
+  roll: null,
+  supernation: loc("ALTSHEET.Builder.Womb.Supernation"),
+  detail: loc("ALTSHEET.Builder.Womb.Detail"),
+  subAffiliation: loc("ALTSHEET.Builder.Womb.SubAffiliation"),
+  home: loc("ALTSHEET.Builder.Womb.Home"),
+});
+const wombJoining = () => ({ fixed: true, id: "womb", name: loc("ALTSHEET.Builder.Womb.Joining"), text: "", roll: null });
+
 /** The Officer talents a unit commander, as an NCO, may start with one of instead of their MOS's. */
 const OFFICER_TALENTS = ["Field Commander", "Frontline Leader", "Pull Rank"];
 /** The skills every marine is trained in, whatever their MOS. */
@@ -185,6 +201,8 @@ const STEPS = [
   // The commander's rank is fixed; anyone else has one to pick.
   { id: "commander", method: "lifepath", done: (state) => state.commander === "yes" || (state.commander === "no" && !!state.rank) },
   { id: "origin", method: "lifepath", done: (state) => !!state.origin },
+  // An artificial womb soldier's origin, early life but for what they experienced, and reason for
+  // joining are the same for them all, so those steps only show them.
   // An early life that offers a choice of skills isn't settled until one is picked.
   { id: "earlyLife", method: "lifepath", done: (state) => !!state.earlyLife && (!state.earlyLife.skills.length || !!state.earlyLife.skill) },
   { id: "joining", method: "lifepath", done: (state) => !!state.joining },
@@ -321,7 +339,8 @@ async function drawLifePath(name) {
 async function lifePathTable(name) {
   const pack = game.packs.get(LIFE_PATH_PACK);
   const entry = pack?.index.find((table) => table.name === name);
-  return entry ? pack.getDocument(entry._id) : null;
+  // A table of the world's own stands in for one the pack lacks.
+  return entry ? pack.getDocument(entry._id) : (game.tables.getName(name) ?? null);
 }
 
 /**
@@ -367,7 +386,29 @@ function skillsGranted(text) {
 async function rollEarlyLife() {
   const draw = await drawLifePath(EARLY_LIFE_TABLE);
   if (!draw) return null;
-  const parts = draw.results.map((result) => ({ label: result.name?.trim() ?? "", text: plain(result.description) }));
+  return earlyLifeFrom(draw.results.map((result) => ({ label: result.name?.trim() ?? "", text: plain(result.description) })));
+}
+
+/**
+ * An artificial womb soldier's early life: what they were and in whose company is the same for
+ * them all, and only what they experienced is rolled, on a table of their own.
+ * @returns {Promise<ReturnType<typeof earlyLifeFrom> & {missing: boolean}>}  Missing says the
+ *   table isn't there, so nothing was experienced.
+ */
+async function rollWombEarlyLife() {
+  const parts = [
+    { label: loc("ALTSHEET.Builder.Womb.YouthLabel"), text: loc("ALTSHEET.Builder.Womb.Youth") },
+    { label: loc("ALTSHEET.Builder.Womb.CompanyLabel"), text: loc("ALTSHEET.Builder.Womb.Company") },
+  ];
+  const draw = await drawLifePath(WOMB_EXPERIENCE_TABLE);
+  for (const result of draw?.results ?? []) {
+    parts.push({ label: loc("ALTSHEET.Builder.Womb.ExperiencedLabel"), text: plain(result.description) });
+  }
+  return { ...earlyLifeFrom(parts), womb: true, missing: !draw };
+}
+
+/** An early life from its parts: the story they tell, and the skill or choice of skills they give. */
+function earlyLifeFrom(parts) {
   const skills = [...new Set(parts.flatMap((part) => skillsGranted(part.text)))];
   // The story leaves the skill off the end of a result, unless the result words it into a sentence.
   const told = parts.map(({ label, text }) => {
@@ -839,6 +880,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       },
       joining: {
         rolled: state.joining?.roll,
+        fixed: state.joining?.fixed ? state.joining.name : "",
         reasons: (state.method === "lifepath" ? await this.#joiningReasons() : []).map((reason) => ({
           id: reason.id,
           icon: "fa-solid fa-medal",
@@ -927,6 +969,21 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     if (!talents.includes(this.choices.talent)) this.choices.talent = null;
     // With only one talent to start with, there is nothing to pick.
     if (this.career && talents.length === 1) this.choices.talent = talents[0];
+  }
+
+  /**
+   * Give an artificial womb soldier on the life path the origin and reason for joining they all
+   * share, and take them (and a womb soldier's early life) back from anyone else.
+   */
+  #fixLifePath() {
+    const state = this.choices;
+    const womb = state.method === "lifepath" && state.kind === "womb";
+    if (womb) Object.assign(state, { origin: wombOrigin(), joining: wombJoining() });
+    else {
+      if (state.origin?.fixed) state.origin = null;
+      if (state.joining?.fixed) state.joining = null;
+    }
+    if (!!state.earlyLife?.womb !== womb) state.earlyLife = null;
   }
 
   /** The talents on offer from the career: an artificial womb soldier starts with one, whatever it is. */
@@ -1025,6 +1082,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       // The two methods, and the kinds of character, offer different careers, so one picked under
       // another may not carry over, and they set different limits.
       if (choice === "method" || choice === "kind") {
+        this.#fixLifePath();
         if (!this.career) this.choices.career = null;
         this.#fitToCareer();
       }
@@ -1046,8 +1104,10 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
   /** Roll the marine's early life, or roll it again. */
   static async #onRollEarlyLife(event, target) {
     target.disabled = true;
-    const earlyLife = await rollEarlyLife();
+    const womb = this.choices.kind === "womb";
+    const earlyLife = await (womb ? rollWombEarlyLife() : rollEarlyLife());
     if (!earlyLife) return ui.notifications.warn(loc("ALTSHEET.Builder.EarlyLife.NoTable"));
+    if (earlyLife.missing) ui.notifications.warn(fmt("ALTSHEET.Builder.Womb.NoTable", { table: WOMB_EXPERIENCE_TABLE }));
     this.choices.earlyLife = earlyLife;
     this.#freeTrainedPoint();
     this.#fitToCareer();
@@ -1162,7 +1222,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     }
     if (state.method === "lifepath" && state.earlyLife) update[`flags.${MODULE_ID}.earlyLife`] = state.earlyLife.story;
     if (state.method === "lifepath" && state.joining) {
-      update[`flags.${MODULE_ID}.joining`] = `${state.joining.name}. ${state.joining.text}`;
+      update[`flags.${MODULE_ID}.joining`] = [state.joining.name, state.joining.text].filter(Boolean).join(". ");
     }
     await actor.update(update);
     // A new character starts unhurt; the system works out maximum Health from the scores just set.

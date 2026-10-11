@@ -127,7 +127,7 @@
     <section class="aas-panel">
       <header class="aas-panel-head">
         <h2>{{localize 'ALTSHEET.Origin.Label'}}</h2>
-        {{#if origin}}<span class="aas-tag">{{localize 'ALTSHEET.Builder.Origin.Rolled' roll=origin.roll}}</span>{{/if}}
+        {{#if origin.roll}}<span class="aas-tag">{{localize 'ALTSHEET.Builder.Origin.Rolled' roll=origin.roll}}</span>{{/if}}
       </header>
       {{#if origin}}
       <dl class="aas-facts">
@@ -147,12 +147,16 @@
         <p>{{localize 'ALTSHEET.Builder.Origin.IntroRoll'}}</p>
       </div>
       {{/if}}
+      {{#if origin.fixed}}
+      <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.Womb.OriginHint'}}</p>
+      {{else}}
       <div class="aas-builder-roll">
         <button type="button" class="aas-button {{#unless origin}}aas-button-primary{{/unless}}" data-action="rollOrigin">
           <i class="fa-solid fa-dice" inert></i>
           {{#if origin}}{{localize 'ALTSHEET.Builder.Origin.Reroll'}}{{else}}{{localize 'ALTSHEET.Builder.Origin.Roll'}}{{/if}}
         </button>
       </div>
+      {{/if}}
     </section>
     {{/if}}
 
@@ -169,6 +173,12 @@
         {{/each}}
       </dl>
       {{else}}
+      {{#if isWomb}}
+      <div class="aas-prose">
+        <p>{{localize 'ALTSHEET.Builder.Womb.EarlyLifeIntro'}}</p>
+        <p>{{localize 'ALTSHEET.Builder.Womb.EarlyLifeRoll'}}</p>
+      </div>
+      {{else}}
       <div class="aas-prose">
         <p>{{localize 'ALTSHEET.Builder.EarlyLife.Intro'}}</p>
         <p>{{localize 'ALTSHEET.Builder.EarlyLife.IntroBackground'}}</p>
@@ -176,6 +186,7 @@
         <p><strong>{{localize 'ALTSHEET.Builder.EarlyLife.IntroReroll'}}</strong></p>
         <p>{{localize 'ALTSHEET.Builder.EarlyLife.IntroRoll'}}</p>
       </div>
+      {{/if}}
       {{/if}}
       <div class="aas-builder-roll">
         <button type="button" class="aas-button {{#unless earlyLife}}aas-button-primary{{/unless}}" data-action="rollEarlyLife">
@@ -202,7 +213,10 @@
         <h2>{{localize 'ALTSHEET.Joining'}}</h2>
         {{#if joining.rolled}}<span class="aas-tag">{{localize 'ALTSHEET.Builder.Origin.Rolled' roll=joining.rolled}}</span>{{/if}}
       </header>
-      {{#if joining.reasons.length}}
+      {{#if joining.fixed}}
+      <p><b>{{joining.fixed}}</b></p>
+      <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.Womb.JoiningHint'}}</p>
+      {{else if joining.reasons.length}}
       <div class="aas-prose">
         <p>{{localize 'ALTSHEET.Builder.Joining.Intro'}}</p>
         <p>{{{localize 'ALTSHEET.Builder.Joining.IntroPick'}}}</p>
