@@ -134,6 +134,11 @@
           "Another marine outside the unit is blackmailing you over a secret or something shameful. It might be time to silence them one way or another."
         ]
       },
+      "OfficerTalents": {
+        "Mos": "{career} talents",
+        "Title": "Officer talents",
+        "Hint": "As the unit commander, you may take one of these instead of an MOS talent."
+      },
       "MarineSkills": {
         "Title": "Skill limits",
         "Tag": "Marine",

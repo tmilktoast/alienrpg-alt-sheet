@@ -61,6 +61,8 @@ const FIELD_EVENT_TABLES = [
   { id: "enlisted", table: "EVENT TABLE A – ENLISTED (BC)" },
   { id: "nco", table: "EVENT TABLE B – NCO (BC)", nco: true },
 ];
+/** The Officer talents a unit commander, as an NCO, may start with one of instead of their MOS's. */
+const OFFICER_TALENTS = ["Field Commander", "Frontline Leader", "Pull Rank"];
 /** The skills every marine is trained in, whatever their MOS. */
 const MARINE_SKILLS = ["closeCbt", "stamina", "rangedCbt"];
 /**
@@ -554,20 +556,23 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       };
     });
 
-    const talents = await Promise.all(
-      (career?.talents ?? []).map(async (name) => {
-        const item = findTalent(name);
-        return {
-          name,
-          img: item?.img ?? "icons/svg/item-bag.svg",
-          missing: !item,
-          selected: name === state.talent,
-          description: item
-            ? await foundry.applications.ux.TextEditor.enrichHTML(item.system.general.comment.value ?? "", { relativeTo: item })
-            : "",
-        };
-      }),
-    );
+    const offered = (names) =>
+      Promise.all(
+        names.map(async (name) => {
+          const item = findTalent(name);
+          return {
+            name,
+            img: item?.img ?? "icons/svg/item-bag.svg",
+            missing: !item,
+            selected: name === state.talent,
+            description: item
+              ? await foundry.applications.ux.TextEditor.enrichHTML(item.system.general.comment.value ?? "", { relativeTo: item })
+              : "",
+          };
+        }),
+      );
+    const talents = await offered(career?.talents ?? []);
+    const officerTalents = await offered(this.#officerTalents);
 
     return {
       step: this.step,
@@ -629,6 +634,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
         })),
       },
       talents,
+      officerTalents,
       origin: state.origin,
       earlyLife: state.earlyLife && {
         ...state.earlyLife,
@@ -702,7 +708,14 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       if (!spare) break;
       skills[spare] -= 1;
     }
-    if (!this.career?.talents.includes(this.choices.talent)) this.choices.talent = null;
+    const talents = [...(this.career?.talents ?? []), ...this.#officerTalents];
+    if (!talents.includes(this.choices.talent)) this.choices.talent = null;
+  }
+
+  /** The Officer talents on offer besides the career's own: only to the life path's unit commander. */
+  get #officerTalents() {
+    const { method, commander } = this.choices;
+    return method === "lifepath" && commander === "yes" ? OFFICER_TALENTS : [];
   }
 
   /** The rank the choices so far give the character, or null if they leave it alone. */
@@ -775,6 +788,8 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
         if (!this.career) this.choices.career = null;
         this.#fitToCareer();
       }
+      // Only the commander may hold an Officer talent.
+      if (choice === "commander") this.#fitToCareer();
     } else return;
     return this.render();
   }

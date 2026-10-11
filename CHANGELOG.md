@@ -17,7 +17,8 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
   the reasons a marine joined up, to pick one or roll for it. The career step becomes MOS and
   offers the eight marine MOSs, whose skills can be raised to 4 rather than 3; Close Combat,
   Stamina and Ranged Combat can be raised to 3, and each of those and the MOS's starts at 1. The Early Life
-  skill point counts toward the skill's limit. Field Event, after the talent, rolls an event from
+  skill point counts toward the skill's limit. The commander may
+  take an Officer talent instead of an MOS one. Field Event, after the talent, rolls an event from
   the marine's career (and a second, NCO event for the commander) and adds the skill point,
   attribute point or talent it gives; these may pass the creation limits but no score goes above 5.
   Agenda offers a list of personal agendas to pick from or roll for, or room to write your own.

@@ -17,6 +17,22 @@
 </div>
 {{/inline}}
 
+{{!-- One talent on offer as the character's starting talent. --}}
+{{#*inline "talentChoice"}}
+<button type="button" class="aas-builder-choice {{#if selected}}active{{/if}}" data-action="pickTalent"
+  data-talent="{{name}}" aria-pressed="{{#if selected}}true{{else}}false{{/if}}">
+  <img src="{{img}}" alt="">
+  <span class="aas-builder-choice-body">
+    <b>{{name}}</b>
+    {{#if missing}}
+    <span class="aas-empty">{{localize 'ALTSHEET.Builder.TalentNotInWorld'}}</span>
+    {{else}}
+    <span class="aas-prose">{{{description}}}</span>
+    {{/if}}
+  </span>
+</button>
+{{/inline}}
+
 {{!-- One answer to a simple question: the creation method, or one of a life path's. --}}
 {{#*inline "answer"}}
 <button type="button" class="aas-builder-choice {{#if selected}}active{{/if}}" data-action="pick"
@@ -276,23 +292,24 @@
     {{#if (eq step "talent")}}
     <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.TalentHint' career=career.name}}</p>
     <section class="aas-panel">
+      {{#if officerTalents.length}}<header class="aas-panel-head"><h2>{{localize 'ALTSHEET.Builder.OfficerTalents.Mos' career=career.name}}</h2></header>{{/if}}
       <div class="aas-builder-choices aas-builder-choices-wide">
         {{#each talents}}
-        <button type="button" class="aas-builder-choice {{#if selected}}active{{/if}}" data-action="pickTalent"
-          data-talent="{{name}}" aria-pressed="{{#if selected}}true{{else}}false{{/if}}">
-          <img src="{{img}}" alt="">
-          <span class="aas-builder-choice-body">
-            <b>{{name}}</b>
-            {{#if missing}}
-            <span class="aas-empty">{{localize 'ALTSHEET.Builder.TalentNotInWorld'}}</span>
-            {{else}}
-            <span class="aas-prose">{{{description}}}</span>
-            {{/if}}
-          </span>
-        </button>
+        {{> talentChoice}}
         {{/each}}
       </div>
     </section>
+    {{#if officerTalents.length}}
+    <section class="aas-panel">
+      <header class="aas-panel-head"><h2>{{localize 'ALTSHEET.Builder.OfficerTalents.Title'}}</h2></header>
+      <p class="aas-hint">{{localize 'ALTSHEET.Builder.OfficerTalents.Hint'}}</p>
+      <div class="aas-builder-choices aas-builder-choices-wide">
+        {{#each officerTalents}}
+        {{> talentChoice}}
+        {{/each}}
+      </div>
+    </section>
+    {{/if}}
     {{/if}}
 
     {{#if (eq step "fieldEvent")}}
