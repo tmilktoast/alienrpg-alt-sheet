@@ -450,8 +450,9 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
         ...career,
         attributeLabel: attributeLabel(career.attribute),
         skillLabels: career.skills.map(skillLabel).join(", "),
+        // The manuals' descriptions open with an empty paragraph, which is only blank lines here.
         description: await foundry.applications.ux.TextEditor.enrichHTML(
-          game.items.get(career.id)?.system.general.comment.value ?? "",
+          (game.items.get(career.id)?.system.general.comment.value ?? "").replace(/^(\s*<p>(\s|&nbsp;|<br\s*\/?>)*<\/p>)+/i, ""),
         ),
       },
       attributes: {

@@ -1963,6 +1963,22 @@
   margin-top: 8px;
 }
 
+/* The manuals lay a career's description out in a table of a fixed size, wider than the panel. */
+.alien-alt-sheet .window-content .aas-builder-description :is(table, tbody, tr, td) {
+  display: block;
+  width: auto !important;
+  height: auto !important;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+}
+
+.alien-alt-sheet .window-content .aas-builder-description > :last-child,
+.alien-alt-sheet .window-content .aas-builder-description td > :last-child {
+  margin-bottom: 0;
+}
+
 .alien-alt-sheet .aas-builder-roll-top {
   margin: 0 0 8px;
 }
