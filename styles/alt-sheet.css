@@ -144,6 +144,21 @@
   min-width: 0;
 }
 
+/* A character's career sits on its own line under the name, which is long with a rank and a callsign in it. */
+.alien-alt-sheet .aas-identity-stacked {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+}
+
+.alien-alt-sheet .window-content .aas-identity-stacked .aas-name {
+  flex: none;
+}
+
+.alien-alt-sheet .aas-identity-stacked .aas-career {
+  flex-wrap: wrap;
+}
+
 .alien-alt-sheet .window-content .aas-name {
   flex: 1 1 auto;
   min-width: 0;
