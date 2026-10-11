@@ -108,7 +108,6 @@
     {{/if}}
 
     {{#if (eq step "earlyLife")}}
-    <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.EarlyLife.Hint'}}</p>
     <section class="aas-panel">
       <header class="aas-panel-head">
         <h2>{{localize 'ALTSHEET.EarlyLife'}}</h2>
@@ -121,7 +120,13 @@
         {{/each}}
       </dl>
       {{else}}
-      <p class="aas-empty">{{localize 'ALTSHEET.Builder.Origin.NotRolled'}}</p>
+      <div class="aas-prose">
+        <p>{{localize 'ALTSHEET.Builder.EarlyLife.Intro'}}</p>
+        <p>{{localize 'ALTSHEET.Builder.EarlyLife.IntroBackground'}}</p>
+        <p>{{localize 'ALTSHEET.Builder.EarlyLife.IntroSkill'}}</p>
+        <p><strong>{{localize 'ALTSHEET.Builder.EarlyLife.IntroReroll'}}</strong></p>
+        <p>{{localize 'ALTSHEET.Builder.EarlyLife.IntroRoll'}}</p>
+      </div>
       {{/if}}
       <div class="aas-builder-roll">
         <button type="button" class="aas-button {{#unless earlyLife}}aas-button-primary{{/unless}}" data-action="rollEarlyLife">
