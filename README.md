@@ -58,8 +58,7 @@ system's sheet for `character`, `synthetic`, `creature`, `vehicles`, `spacecraft
 - **Rank and callsign in the name** — while the sheet isn't in Edit mode, its header shows the
   character's name with their rank's abbreviation before it and their nickname or callsign inside
   it: PVT Kalah “Dagger” Hardnick.
-- **Callsigns in chat** — a character with a Nickname or Callsign on their Bio tab speaks in chat
-  under it too, set after the first word of their name: Ellen “Boss” Ripley.
+- **Rank and callsign in chat** — chat messages show the speaker's name the same way.
 - **Readable chat** — chat messages on a flat dark card in a plainer typeface, with the system's
   terminal green and display font kept for the sender, headings and labels. Each player can turn it
   off under Configure Settings → Alien RPG Companion.

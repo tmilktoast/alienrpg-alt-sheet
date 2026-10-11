@@ -9,7 +9,8 @@ Notable changes to the Alien RPG Companion (formerly the Alien RPG Alternate She
 
 - The sheet's header, when not in Edit mode, shows the character's name with their rank's
   abbreviation before it and their nickname or callsign inside it, as in PVT Kalah “Dagger”
-  Hardnick. A Colonial Marines rank is abbreviated; any other is shown as written.
+  Hardnick. A Colonial Marines rank is abbreviated; any other is shown as written. Chat messages
+  show the speaker's name the same way.
 
 ## 0.3.0 — 2026-10-11
 

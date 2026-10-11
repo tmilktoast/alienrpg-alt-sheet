@@ -533,12 +533,18 @@ export function rankAbbreviation(rank) {
   return RANK_ABBREVIATIONS[key] ?? rank.trim();
 }
 
-/** A character's name as it is shown when it isn't being edited: PVT Kalah "Dagger" Hardnick. */
-export function displayName(actor) {
+/**
+ * A character's name as it is shown when it isn't being edited: PVT Kalah "Dagger" Hardnick.
+ * @param {Actor} actor
+ * @param {string} [plainName]  The name to dress, where it isn't the actor's own: a token's, in chat
+ */
+export function displayName(actor, plainName = actor.name) {
   const rank = actor.getFlag(MODULE_ID, "rank")?.trim();
   const nickname = actor.getFlag(MODULE_ID, "nickname")?.trim();
-  const name = nickname ? nameWithNickname(actor.name, nickname) : actor.name;
-  return rank ? `${rankAbbreviation(rank)} ${name}` : name;
+  const name = nickname ? nameWithNickname(plainName, nickname) : plainName;
+  const short = rank && rankAbbreviation(rank);
+  // A name that already leads with the rank is left without a second one.
+  return short && !name.toLowerCase().startsWith(`${short.toLowerCase()} `) ? `${short} ${name}` : name;
 }
 
 /** The names of a character's careers: their Career items, and the system's older career field. */
@@ -1967,11 +1973,11 @@ Hooks.once("init", () => {
   });
   applyChat(game.settings.get(MODULE_ID, "readableChat"));
 
-  // A character with a nickname or callsign speaks in chat under it as well as their name.
+  // A character speaks in chat under their rank and their nickname or callsign as well as their name.
   Hooks.on("renderChatMessageHTML", (message, html) => {
-    const nickname = message.speakerActor?.getFlag(MODULE_ID, "nickname")?.trim();
+    const actor = message.speakerActor;
     const sender = html.querySelector(".message-sender");
-    if (nickname && sender) sender.textContent = nameWithNickname(sender.textContent, nickname);
+    if (actor && sender) sender.textContent = displayName(actor, sender.textContent.trim());
   });
 });
 
