@@ -44,6 +44,20 @@ const LIFE_PATH_PACK = `${MODULE_ID}.life-path`;
 const ORIGIN_TABLE = "Life Path - Origin";
 const EARLY_LIFE_TABLE = "Early Life";
 const JOINING_TABLE = "Joining the Marines";
+/**
+ * The Military Occupational Specialties a marine on the life path chooses from, by the name of
+ * their Career item and in the order they are offered. An MOS is the marine's career.
+ */
+const MARINE_MOS = [
+  "Assault Marine (Breacher)",
+  "Automatic Rifleman (Smartgunner)",
+  "Comtech Marine",
+  "CBRN Specialist",
+  "Dedicated Marksman",
+  "Hospital Corpsman",
+  "Forward Observer",
+  "Rifleman",
+];
 /** The parts of an origin, by the name the tables give the result that carries each. */
 const ORIGIN_PARTS = { SUPERNATION: "supernation", "SUB-AFFILIATION": "subAffiliation", HOME: "home" };
 
@@ -279,13 +293,23 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     return fmt("ALTSHEET.Builder.Title", { name: this.actor.name });
   }
 
-  /** Every career the builder understands: the rulebook's first, then by folder and name. */
+  /**
+   * Every career the builder understands: the rulebook's first, then by folder and name. On the
+   * life path they are the marine's MOSs and nothing else, in one list.
+   */
   get careers() {
-    return game.items
+    const careers = game.items
       .filter((item) => item.type === "specialty")
       .map(careerDefinition)
-      .filter(Boolean)
-      .sort((a, b) => b.core - a.core || a.group.localeCompare(b.group) || a.name.localeCompare(b.name));
+      .filter(Boolean);
+    if (this.choices.method === "lifepath") {
+      const place = (career) => MARINE_MOS.findIndex((name) => sameName(name, career.name));
+      return careers
+        .filter((career) => place(career) >= 0)
+        .sort((a, b) => place(a) - place(b))
+        .map((career) => ({ ...career, group: "" }));
+    }
+    return careers.sort((a, b) => b.core - a.core || a.group.localeCompare(b.group) || a.name.localeCompare(b.name));
   }
 
   get career() {
@@ -376,7 +400,8 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       steps: steps.map((step, i) => ({
         id: step.id,
         number: i + 1,
-        label: loc(`ALTSHEET.Builder.Steps.${step.id}`),
+        // A marine's career is their MOS.
+        label: loc(`ALTSHEET.Builder.Steps.${step.id === "career" && state.method === "lifepath" ? "mos" : step.id}`),
         active: step.id === this.step,
         done: i < reach,
         enabled: i <= reach,
@@ -385,6 +410,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       isLast: index === steps.length - 1,
       canNext: index < reach,
       rules: RULES,
+      isLifePath: state.method === "lifepath",
       methods: ["book", "lifepath"].map((id) => ({
         id,
         icon: id === "book" ? "fa-solid fa-book" : "fa-solid fa-route",
@@ -530,8 +556,14 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       const reason = this._joiningReasons?.find((entry) => entry.id === value);
       if (!reason) return;
       this.choices.joining = { ...reason, roll: null };
-    } else if (["method", "commander", "rank"].includes(choice)) this.choices[choice] = value;
-    else return;
+    } else if (["method", "commander", "rank"].includes(choice)) {
+      this.choices[choice] = value;
+      // The two methods offer different careers, so one picked under the other may not carry over.
+      if (choice === "method" && !this.career) {
+        this.choices.career = null;
+        this.#fitToCareer();
+      }
+    } else return;
     return this.render();
   }
 

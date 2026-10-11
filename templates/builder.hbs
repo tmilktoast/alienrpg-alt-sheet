@@ -176,7 +176,20 @@
     {{/if}}
 
     {{#if (eq step "career")}}
+    {{#if isLifePath}}
+    <section class="aas-panel">
+      <header class="aas-panel-head"><h2>{{localize 'ALTSHEET.Builder.Mos.Title'}}</h2></header>
+      <div class="aas-prose">
+        <p>{{localize 'ALTSHEET.Builder.Mos.Intro'}}</p>
+        <p>{{{localize 'ALTSHEET.Builder.Mos.IntroLimits' attribute=rules.keyAttributeMax skill=rules.keySkillMax}}}</p>
+        <p>{{{localize 'ALTSHEET.Builder.Mos.IntroTalents'}}}</p>
+        <p>{{localize 'ALTSHEET.Builder.Mos.IntroGear'}}</p>
+        <p>{{localize 'ALTSHEET.Builder.Mos.IntroPick'}}</p>
+      </div>
+    </section>
+    {{else}}
     <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.CareerHint'}}</p>
+    {{/if}}
     {{#each groups}}
     <section class="aas-panel">
       {{#if name}}<header class="aas-panel-head"><h2>{{name}}</h2></header>{{/if}}
@@ -197,7 +210,7 @@
       </div>
     </section>
     {{else}}
-    <p class="aas-empty">{{localize 'ALTSHEET.Builder.NoCareers'}}</p>
+    <p class="aas-empty">{{#if isLifePath}}{{localize 'ALTSHEET.Builder.Mos.None'}}{{else}}{{localize 'ALTSHEET.Builder.NoCareers'}}{{/if}}</p>
     {{/each}}
     {{#if career.description}}
     <section class="aas-panel">
@@ -264,7 +277,7 @@
     <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.ReviewHint'}}</p>
     <section class="aas-panel">
       <dl class="aas-facts">
-        <dt>{{localize 'ALIENRPG.Career'}}</dt><dd>{{career.name}}</dd>
+        <dt>{{#if isLifePath}}{{localize 'ALTSHEET.Builder.Steps.mos'}}{{else}}{{localize 'ALIENRPG.Career'}}{{/if}}</dt><dd>{{career.name}}</dd>
         {{#if review.rank}}<dt>{{localize 'ALTSHEET.MilitaryRank'}}</dt><dd>{{review.rank}}</dd>{{/if}}
         {{#if review.origin}}
         <dt>{{localize 'ALTSHEET.Origin.Label'}}</dt>

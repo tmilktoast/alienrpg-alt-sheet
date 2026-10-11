@@ -40,6 +40,7 @@
         "earlyLife": "Early Life",
         "joining": "Joining",
         "career": "Career",
+        "mos": "MOS",
         "attributes": "Attributes",
         "skills": "Skills",
         "talent": "Talent",
@@ -96,6 +97,15 @@
         "IntroPick": "At this point, it might be best to pick one of the selections below, but you can roll on the table if you prefer.",
         "Roll": "Roll instead",
         "NoTable": "The Joining the Marines table is missing from the Life Path Tables compendium."
+      },
+      "Mos": {
+        "Title": "Military Occupational Specialty",
+        "Intro": "Your Military Occupational Specialty (MOS) is, if we're using terms familiar to other RPGs, similar to a class, or sub-class. But, more to the point, it helps define your role in your unit.",
+        "IntroLimits": "Each MOS has a <strong>Key Attribute</strong> which can have a rank of {attribute}, and a set of skills that can be raised to a maximum of {skill} at character creation.",
+        "IntroTalents": "Additionally, each MOS has a short list of starting talents. <strong>One</strong> of these can be chosen at character creation.",
+        "IntroGear": "Later, your MOS will, in part, determine your starting gear.",
+        "IntroPick": "Click an MOS below to choose it and see its description.",
+        "None": "No MOS found. Import the Colonial Marines manual's MOS Career items into the world's Items sidebar."
       },
       "CareerHint": "Your career sets your key attribute, your key skills and the talents you can start with.",
       "NoCareers": "No careers found. Import the rulebook's Career items into the world's Items sidebar.",

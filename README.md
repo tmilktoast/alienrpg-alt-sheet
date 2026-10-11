@@ -52,7 +52,8 @@ system's sheet for `character`, `synthetic`, `creature`, `vehicles`, `spacecraft
   character in one go. It offers the Career/Specialty items in the world's Items sidebar. It can
   build by the book, or by the Colonial Marine Life Path, which is written for a Colonial Marines
   campaign and asks about the marine's rank and history first (so far, whether they command the
-  unit, their rank, a rolled origin, a rolled early life and why they joined the Marines).
+  unit, their rank, a rolled origin, a rolled early life and why they joined the Marines) and
+  offers the marine MOSs as its careers.
 - **Readable chat** — chat messages on a flat dark card in a plainer typeface, with the system's
   terminal green and display font kept for the sender, headings and labels. Each player can turn it
   off under Configure Settings → Alien RPG Alternate Sheet.
@@ -88,7 +89,8 @@ KEY ATTRIBUTE: Agility SKILLS: Piloting, Ranged Combat TALENTS: Banter, Overkill
 
 A career it can't work out either way isn't offered. The creation rules' numbers are the `RULES`
 table at the top of the file, and the steps are the `STEPS` list, which is where further steps go.
-A step with `method: "lifepath"` is only asked on the Colonial Marine Life Path.
+A step with `method: "lifepath"` is only asked on the Colonial Marine Life Path. On that path the
+career step is the MOS step, and offers only the Career items named in the `MARINE_MOS` list.
 
 The system has no rank or life path fields, so the Bio tab's Rank, Supernation, Sub-affiliation,
 Home, Early life and Joining the Marines are stored on the actor as the module flags `rank`,
