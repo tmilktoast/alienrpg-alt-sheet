@@ -90,6 +90,17 @@
     </section>
     {{/if}}
 
+    {{#if (eq step "kind")}}
+    <section class="aas-panel">
+      <header class="aas-panel-head"><h2>{{localize 'ALTSHEET.Builder.Kind.Question'}}</h2></header>
+      <div class="aas-builder-choices aas-builder-choices-wide">
+        {{#each kinds}}
+        {{> answer choice="kind"}}
+        {{/each}}
+      </div>
+    </section>
+    {{/if}}
+
     {{#if (eq step "commander")}}
     <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.Commander.Hint'}}</p>
     <section class="aas-panel">
@@ -264,7 +275,8 @@
 
     {{#if (eq step "attributes")}}
     <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i>
-      {{localize 'ALTSHEET.Builder.AttributesHint' points=rules.attributePoints min=rules.attributeMin max=rules.attributeMax keyMax=rules.keyAttributeMax key=career.attributeLabel}}</p>
+      {{localize 'ALTSHEET.Builder.AttributesHint' points=rules.attributePoints min=rules.attributeMin max=rules.attributeMax keyMax=rules.keyAttributeMax key=career.attributeLabel}}
+      {{#if isWomb}}{{localize 'ALTSHEET.Builder.Kind.AttributesHint' str=wombMax.str other=wombMax.other strLabel=wombMax.strLabel otherLabels=wombMax.otherLabels}}{{/if}}</p>
     <section class="aas-panel">
       <header class="aas-panel-head">
         <h2>{{localize 'ALIENRPG.Attributes'}}</h2>
@@ -311,7 +323,7 @@
     {{/if}}
 
     {{#if (eq step "talent")}}
-    <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{localize 'ALTSHEET.Builder.TalentHint' career=career.name}}</p>
+    <p class="aas-hint"><i class="fa-solid fa-circle-info" inert></i> {{#if isWomb}}{{localize 'ALTSHEET.Builder.Kind.TalentHint' talent=wombMax.talent}}{{else}}{{localize 'ALTSHEET.Builder.TalentHint' career=career.name}}{{/if}}</p>
     <section class="aas-panel">
       {{#if officerTalents.length}}<header class="aas-panel-head"><h2>{{localize 'ALTSHEET.Builder.OfficerTalents.Mos' career=career.name}}</h2></header>{{/if}}
       <div class="aas-builder-choices aas-builder-choices-wide">
@@ -487,6 +499,7 @@
     <section class="aas-panel">
       <dl class="aas-facts">
         <dt>{{#if isLifePath}}{{localize 'ALTSHEET.Builder.Steps.mos'}}{{else}}{{localize 'ALIENRPG.Career'}}{{/if}}</dt><dd>{{career.name}}</dd>
+        {{#if review.kind}}<dt>{{localize 'ALTSHEET.Kind.Label'}}</dt><dd>{{review.kind}}</dd>{{/if}}
         {{#if review.rank}}<dt>{{localize 'ALTSHEET.MilitaryRank'}}</dt><dd>{{review.rank}}</dd>{{/if}}
         {{#if review.origin}}
         <dt>{{localize 'ALTSHEET.Origin.Label'}}</dt>

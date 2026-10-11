@@ -2,6 +2,14 @@
   <div class="aas-columns">
     <div class="aas-column">
       <section class="aas-panel aas-form">
+        {{#unless isSynthetic}}
+        <label class="aas-labelled">
+          <span>{{localize 'ALTSHEET.Kind.Label'}}</span>
+          <select name="flags.alienrpg-alt-sheet.kind">
+            {{#each bio.kinds}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+          </select>
+        </label>
+        {{/unless}}
         <label class="aas-labelled">
           <span>{{bio.nicknameLabel}}</span>
           <input type="text" name="flags.alienrpg-alt-sheet.nickname" value="{{bio.nickname}}">

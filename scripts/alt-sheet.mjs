@@ -1,4 +1,4 @@
-import { CharacterBuilder, MARINE_MOS } from "./builder.mjs";
+import { CharacterBuilder, KINDS, isMarineCareer } from "./builder.mjs";
 
 const MODULE_ID = "alienrpg-alt-sheet";
 const SYSTEM_ID = "alienrpg";
@@ -494,8 +494,7 @@ function careerNames(actor) {
 
 /** Whether a character is a marine. Their career may be one of the MOSs, which don't all say "marine". */
 function isMarine(actor) {
-  const mos = [...MARINE_MOS, "Dropship Crew Chief"].map((name) => name.toLowerCase());
-  return careerNames(actor).some((name) => /marine/i.test(name) || mos.includes(name.trim().toLowerCase()));
+  return actor.getFlag(MODULE_ID, "kind") === "womb" || careerNames(actor).some(isMarineCareer);
 }
 
 /** Whether a character's nickname is a callsign: marines and pilots have those. */
@@ -512,6 +511,8 @@ function prepareBio(actor) {
     rank: actor.getFlag(MODULE_ID, "rank") ?? "",
     // A marine's fields: on anyone else's sheet only the ones already filled in are shown.
     marine: isMarine(actor),
+    // What kind of character this is: the system knows them all as characters.
+    kinds: KINDS.map((id) => ({ id, label: loc(`ALTSHEET.Kind.${id}`), selected: (actor.getFlag(MODULE_ID, "kind") ?? "human") === id })),
     nickname: actor.getFlag(MODULE_ID, "nickname") ?? "",
     nicknameLabel: loc(hasCallsign(actor) ? "ALTSHEET.Callsign" : "ALTSHEET.Nickname"),
     origin: actor.getFlag(MODULE_ID, "origin") ?? {},

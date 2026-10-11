@@ -22,6 +22,9 @@ const RULES = {
   trainedSkillMin: 1,
   // Nor this: what a field event adds may pass the limits above, but no score goes higher than this.
   scoreMax: 5,
+  // Nor these: an artificial womb soldier is bred strong and little else, whatever their career's
+  // key attribute.
+  wombAttributeMax: { str: 7, wit: 3, emp: 3 },
 };
 
 /**
@@ -130,6 +133,25 @@ const MARINE_GEAR = {
   },
   nco: ["Armat M41A Pulse Rifle", "Binoculars"],
 };
+/**
+ * The kinds of character the builder makes. An artificial womb soldier is a character like any
+ * other to the system, marked as one on the module's flags: always a marine, with their own limits
+ * on attributes and one talent to start with.
+ */
+export const KINDS = ["human", "womb"];
+const WOMB_TALENT = "Overkill";
+
+/** Whether a career is a marine's, by its name. The MOSs don't all say "marine". */
+export function isMarineCareer(name) {
+  return /marine/i.test(name) || [...MARINE_MOS, "Dropship Crew Chief"].some((mos) => sameName(mos, name));
+}
+
+/** The highest any of a character's scores may ever be, which a field event may not take it past. */
+function scoreCap(state, kind, key) {
+  if (kind === "attributes" && state.kind === "womb") return RULES.wombAttributeMax[key] ?? RULES.scoreMax;
+  return RULES.scoreMax;
+}
+
 /** The Officer talents a unit commander, as an NCO, may start with one of instead of their MOS's. */
 const OFFICER_TALENTS = ["Field Commander", "Frontline Leader", "Pull Rank"];
 /** The skills every marine is trained in, whatever their MOS. */
@@ -159,6 +181,7 @@ const ORIGIN_PARTS = { SUPERNATION: "supernation", "SUB-AFFILIATION": "subAffili
  */
 const STEPS = [
   { id: "method", done: (state) => !!state.method },
+  { id: "kind", done: (state) => !!state.kind },
   // The commander's rank is fixed; anyone else has one to pick.
   { id: "commander", method: "lifepath", done: (state) => state.commander === "yes" || (state.commander === "no" && !!state.rank) },
   { id: "origin", method: "lifepath", done: (state) => !!state.origin },
@@ -491,7 +514,7 @@ function fieldEventOver(state, id, pick) {
   if (!gain || gain.kind === "other") return false;
   const others = fieldEventGains(state, id)[gain.kind][gain.key] ?? 0;
   const early = gain.kind === "skills" && gain.key === earlyLifeSkill(state) ? 1 : 0;
-  return state[gain.kind][gain.key] + early + others + 1 > RULES.scoreMax;
+  return state[gain.kind][gain.key] + early + others + 1 > scoreCap(state, gain.kind, gain.key);
 }
 
 /* -------------------------------------------- */
@@ -541,7 +564,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     this.actor = options.actor;
     this.step = STEPS[0].id;
     /**
-     * What has been chosen so far. The method is "book" or "lifepath"; commander is "yes" or "no";
+     * What has been chosen so far. The method is "book" or "lifepath"; the kind is one of KINDS; commander is "yes" or "no";
      * rank is the one a marine who isn't the commander picked; origin and earlyLife are what was
      * rolled for them; joining is why they joined the Marines, picked or rolled; a career is the
      * id of its Career item; a talent is its name; fieldEvents are the events rolled, by the id
@@ -552,6 +575,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
      */
     this.choices = {
       method: null,
+      kind: KINDS.includes(options.actor.getFlag(MODULE_ID, "kind")) ? options.actor.getFlag(MODULE_ID, "kind") : "human",
       commander: null,
       rank: null,
       origin: null,
@@ -582,7 +606,9 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     const careers = game.items
       .filter((item) => item.type === "specialty")
       .map(careerDefinition)
-      .filter(Boolean);
+      .filter(Boolean)
+      // An artificial womb soldier is a marine and nothing else.
+      .filter((career) => this.choices.kind !== "womb" || isMarineCareer(career.name));
     if (this.choices.method === "lifepath") {
       const place = (career) => MARINE_MOS.findIndex((name) => sameName(name, career.name));
       return careers
@@ -600,7 +626,10 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
   /** The highest a score may be, which depends on the career chosen and the creation method. */
   #limit(kind, key) {
     const career = this.career;
-    if (kind === "attributes") return career?.attribute === key ? RULES.keyAttributeMax : RULES.attributeMax;
+    if (kind === "attributes") {
+      const womb = this.choices.kind === "womb" ? RULES.wombAttributeMax[key] : undefined;
+      return womb ?? (career?.attribute === key ? RULES.keyAttributeMax : RULES.attributeMax);
+    }
     const lifePath = this.choices.method === "lifepath";
     if (career?.skills.includes(key)) return lifePath ? RULES.mosSkillMax : RULES.keySkillMax;
     return lifePath && MARINE_SKILLS.includes(key) ? RULES.marineSkillMax : RULES.skillMax;
@@ -717,7 +746,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
           };
         }),
       );
-    const talents = await offered(career?.talents ?? []);
+    const talents = await offered(this.#careerTalents);
     const officerTalents = await offered(this.#officerTalents);
 
     return {
@@ -738,6 +767,21 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       bonusSkill: bonusSkill && skillLabel(bonusSkill),
       marineSkills: MARINE_SKILLS.map(skillLabel).join(", "),
       isLifePath: state.method === "lifepath",
+      isWomb: state.kind === "womb",
+      wombMax: {
+        str: RULES.wombAttributeMax.str,
+        other: RULES.wombAttributeMax.wit,
+        strLabel: attributeLabel("str"),
+        otherLabels: `${attributeLabel("wit")} and ${attributeLabel("emp")}`,
+        talent: WOMB_TALENT,
+      },
+      kinds: KINDS.map((id) => ({
+        id,
+        icon: id === "womb" ? "fa-solid fa-dna" : "fa-solid fa-person",
+        label: loc(`ALTSHEET.Kind.${id}`),
+        hint: fmt(`ALTSHEET.Builder.Kind.${id}`, { str: RULES.wombAttributeMax.str, other: RULES.wombAttributeMax.wit, talent: WOMB_TALENT }),
+        selected: state.kind === id,
+      })),
       methods: ["book", "lifepath"].map((id) => ({
         id,
         icon: id === "book" ? "fa-solid fa-book" : "fa-solid fa-route",
@@ -840,6 +884,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
         gear: state.method === "lifepath" ? startingGear(state).map((entry) => entry.label).join(", ") : "",
         fieldEvents: fieldEvents.filter(({ event }) => event).map(({ title, event }) => ({ title, text: event.text })),
         rank: this.#rank,
+        kind: state.kind === "human" ? "" : loc(`ALTSHEET.Kind.${state.kind}`),
         origin: state.method === "lifepath" ? state.origin : null,
         earlyLife: state.method === "lifepath" ? state.earlyLife?.story : null,
         joining: state.method === "lifepath" ? state.joining?.name : null,
@@ -878,8 +923,16 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       skills[spare] -= 1;
     }
     if (!mosGearChoice(this.choices)?.includes(this.choices.gearMos)) this.choices.gearMos = null;
-    const talents = [...(this.career?.talents ?? []), ...this.#officerTalents];
+    const talents = [...this.#careerTalents, ...this.#officerTalents];
     if (!talents.includes(this.choices.talent)) this.choices.talent = null;
+    // With only one talent to start with, there is nothing to pick.
+    if (this.career && talents.length === 1) this.choices.talent = talents[0];
+  }
+
+  /** The talents on offer from the career: an artificial womb soldier starts with one, whatever it is. */
+  get #careerTalents() {
+    if (this.choices.kind === "womb") return this.career ? [WOMB_TALENT] : [];
+    return this.career?.talents ?? [];
   }
 
   /**
@@ -895,8 +948,8 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
 
   /** The Officer talents on offer besides the career's own: only to the life path's unit commander. */
   get #officerTalents() {
-    const { method, commander } = this.choices;
-    return method === "lifepath" && commander === "yes" ? OFFICER_TALENTS : [];
+    const { method, commander, kind } = this.choices;
+    return method === "lifepath" && commander === "yes" && kind !== "womb" ? OFFICER_TALENTS : [];
   }
 
   /** The rank the choices so far give the character, or null if they leave it alone. */
@@ -966,11 +1019,12 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
       const reason = this._joiningReasons?.find((entry) => entry.id === value);
       if (!reason) return;
       this.choices.joining = { ...reason, roll: null };
-    } else if (["method", "commander", "rank"].includes(choice)) {
+    } else if (["method", "kind", "commander", "rank"].includes(choice)) {
+      if (choice === "kind" && !KINDS.includes(value)) return;
       this.choices[choice] = value;
-      // The two methods offer different careers, so one picked under the other may not carry
-      // over, and they set different limits.
-      if (choice === "method") {
+      // The two methods, and the kinds of character, offer different careers, so one picked under
+      // another may not carry over, and they set different limits.
+      if (choice === "method" || choice === "kind") {
         if (!this.career) this.choices.career = null;
         this.#fitToCareer();
       }
@@ -1101,6 +1155,7 @@ export class CharacterBuilder extends HandlebarsApplicationMixin(ApplicationV2) 
     const legacy = Object.entries(CONFIG.ALIENRPG.career_list).find(([, entry]) => sameName(loc(entry.label), careerItem.name));
     if (legacy) update["system.general.career.value"] = legacy[0];
     if (this.#rank) update[`flags.${MODULE_ID}.rank`] = this.#rank;
+    update[`flags.${MODULE_ID}.kind`] = state.kind;
     if (state.method === "lifepath" && state.origin) {
       const { supernation, subAffiliation, home } = state.origin;
       update[`flags.${MODULE_ID}.origin`] = { supernation, subAffiliation, home };

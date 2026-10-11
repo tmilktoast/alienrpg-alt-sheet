@@ -104,6 +104,12 @@ The Gear step's lists are `MARINE_GEAR` in `scripts/builder.mjs`: the basic gear
 gets, the two bonus lists to pick one from each, and each MOS's gear. They name Gear items in the
 world's Items sidebar; one with no item there is added as a plain item of that name.
 
+An artificial womb soldier is a character with `flags.alienrpg-alt-sheet.kind` set to `womb`, not
+an actor type of its own: the system's rolls and sheets only know its own types. The builder asks
+for the type after the method, and for a womb soldier offers only marine careers, caps the
+attributes by `wombAttributeMax` and gives Overkill as the starting talent. The Bio tab's Type
+field shows and changes it.
+
 The system has no nickname, rank or life path fields, so the Bio tab's Nickname (labelled
 Callsign for a marine or a pilot, going by the character's career), Rank, Supernation, Sub-affiliation,
 Home, Early life, Joining the Marines and Field events are stored on the actor as the module flags

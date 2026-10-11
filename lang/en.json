@@ -35,6 +35,7 @@
       "StepsLabel": "Steps",
       "Steps": {
         "method": "Method",
+        "kind": "Type",
         "commander": "Command",
         "origin": "Origin",
         "earlyLife": "Early Life",
@@ -50,6 +51,13 @@
         "finish": "Finishing Touches",
         "gear": "Gear",
         "review": "Review"
+      },
+      "Kind": {
+        "Question": "What are you?",
+        "human": "An ordinary person, built by the usual rules.",
+        "womb": "Grown for the Corps. Always a marine: Strength can go up to {str}, Wits and Empathy never above {other}, and your first talent is {talent}.",
+        "AttributesHint": "As an artificial womb soldier, your {strLabel} can go up to {str} and your {otherLabels} no higher than {other}, whatever your key attribute.",
+        "TalentHint": "An artificial womb soldier's first talent is always {talent}."
       },
       "MethodHint": "Choose how to create this character. You can come back and change this before applying.",
       "Methods": {
@@ -319,6 +327,11 @@
     "SkillBreakdown": "Rank {rank} + {attribute} {attr} + modifiers {mod} = {total} dice",
     "AttributesSkills": "Attributes & Skills",
     "Rank": "Rank",
+    "Kind": {
+      "Label": "Type",
+      "human": "Human",
+      "womb": "Artificial womb soldier"
+    },
     "MilitaryRank": "Rank",
     "Nickname": "Nickname",
     "Callsign": "Callsign",

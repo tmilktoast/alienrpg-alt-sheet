@@ -7,6 +7,9 @@ Notable changes to the Alien RPG Alternate Sheet. Versions follow the `version` 
 
 ### Added
 
+- **Artificial womb soldiers** — the character builder asks whether the character is a human or an
+  artificial womb soldier, and the Bio tab has a Type field for it. A womb soldier is always a
+  marine, can raise Strength to 7, can't raise Wits or Empathy above 3, and starts with Overkill.
 - **Nickname** — a Nickname field on the character sheet's Bio tab, labelled Callsign when the
   character's career is a marine's or a pilot's.
 - **Builder creation methods** — the character builder now starts by asking how to create the
